@@ -5585,6 +5585,20 @@ function confirmExportPDFExcel() {
 
   closeExportPdfModal();
 
+  if (new URLSearchParams(window.location.search).get('mock_print') === 'true') {
+    const el = document.getElementById("excel-pdf-content");
+    el.style.display = "block";
+    el.style.position = "fixed";
+    el.style.top = "0";
+    el.style.left = "0";
+    el.style.width = "100%";
+    el.style.height = "100%";
+    el.style.backgroundColor = "white";
+    el.style.zIndex = "999999";
+    el.style.overflow = "auto";
+    return;
+  }
+
   document.body.classList.add('print-excel-pdf');
 
   window.print();
@@ -7612,7 +7626,7 @@ function generateWorkbook(project) {
       }
 
       if (qtyFormula) {
-        formulaMap.push({ r: aoaRow, c: 6, f: qtyFormula });
+        formulaMap.push({ r: aoaRow, c: 6, f: qtyFormula, v: item.qty });
       }
       curRow++;
     };
@@ -7823,7 +7837,7 @@ function generateWorkbook(project) {
 
     aoa.push(preVatRow);
 
-    formulaMap.push({ r: curRow, c: 8, f: `SUM(I11:I${curRow})` });
+    formulaMap.push({ r: curRow, c: 8, f: `SUM(I11:I${curRow})`, v: roomTotal });
 
     merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 7 } });
 
@@ -7837,7 +7851,7 @@ function generateWorkbook(project) {
 
     aoa.push(vatRow);
 
-    formulaMap.push({ r: curRow, c: 8, f: `ROUND(I${preVatExcelRow}*${(project.vatRate ?? 8)/100},0)` });
+    formulaMap.push({ r: curRow, c: 8, f: `ROUND(I${preVatExcelRow}*${(project.vatRate ?? 8)/100},0)`, v: Math.round(roomTotal * (project.vatRate ?? 8)/100) });
 
     merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 7 } });
 
@@ -7851,7 +7865,7 @@ function generateWorkbook(project) {
 
     aoa.push(grandRow);
 
-    formulaMap.push({ r: curRow, c: 8, f: `I${preVatExcelRow}+I${vatExcelRow}` });
+    formulaMap.push({ r: curRow, c: 8, f: `I${preVatExcelRow}+I${vatExcelRow}`, v: roomTotal + Math.round(roomTotal * (project.vatRate ?? 8)/100) });
 
     merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 7 } });
 
@@ -7974,11 +7988,19 @@ function generateWorkbook(project) {
 
     // Apply quantity formulas
 
-    formulaMap.forEach(({r, c, f}) => {
+    formulaMap.forEach(({r, c, f, v}) => {
 
       const cellRef = XLSX.utils.encode_cell({r, c});
 
       wsDetail[cellRef] = { t: 'n', f };
+
+      if (v !== undefined && v !== null) {
+
+        wsDetail[cellRef].v = v;
+
+        wsDetail[cellRef].w = fmt(v, c === 6 ? 2 : 0);
+
+      }
 
     });
 
@@ -8030,7 +8052,7 @@ function generateWorkbook(project) {
 
     }
 
-    roomSheets.push({ room, ws: wsDetail, finalSheetName, rowMap });
+    roomSheets.push({ room, ws: wsDetail, finalSheetName, rowMap, calcItems: calc.items });
 
   });
 
@@ -8123,6 +8145,9 @@ function generateWorkbook(project) {
 
           if (itemRowInRoom) {
 
+            const roomItem = rSheet.calcItems.find(ci => ci.label.trim() === item.label.trim() && ci.unit.trim() === item.unit.trim());
+            const qtyVal = roomItem ? roomItem.qty : 0;
+
             row.push(null);
 
             formulaMapSum.push({
@@ -8131,7 +8156,9 @@ function generateWorkbook(project) {
 
               c: 3 + rIdx,
 
-              f: `'${rSheet.finalSheetName}'!G${itemRowInRoom}`
+              f: `'${rSheet.finalSheetName}'!G${itemRowInRoom}`,
+
+              v: qtyVal
 
             });
 
@@ -8163,7 +8190,9 @@ function generateWorkbook(project) {
 
           c: 3 + rooms.length,
 
-          f: `SUM(${firstRoomCol}${exRSum}:${lastRoomCol}${exRSum})`
+          f: `SUM(${firstRoomCol}${exRSum}:${lastRoomCol}${exRSum})`,
+
+          v: item.qty
 
         });
 
@@ -8181,7 +8210,9 @@ function generateWorkbook(project) {
 
           c: 5 + rooms.length,
 
-          f: `${totalQtyCol}${exRSum}*${priceCol}${exRSum}`
+          f: `${totalQtyCol}${exRSum}*${priceCol}${exRSum}`,
+
+          v: item.total
 
         });
 
@@ -8265,6 +8296,9 @@ function generateWorkbook(project) {
 
         if (itemRowInRoom) {
 
+          const tf = (+rSheet.room.D || 0) / 1000 * (+rSheet.room.R || 0) / 1000;
+          const roomQty = tmpl.autoQty ? +(tf.toFixed(2)) : +(saved.qty != null ? saved.qty : tmpl.defaultQty);
+
           row.push(null);
 
           formulaMapSum.push({
@@ -8273,7 +8307,9 @@ function generateWorkbook(project) {
 
             c: 3 + rIdx,
 
-            f: `'${rSheet.finalSheetName}'!G${itemRowInRoom}`
+            f: `'${rSheet.finalSheetName}'!G${itemRowInRoom}`,
+
+            v: roomQty
 
           });
 
@@ -8295,7 +8331,9 @@ function generateWorkbook(project) {
 
         c: 3 + rooms.length,
 
-        f: totalFormula
+        f: totalFormula,
+
+        v: qty
 
       });
 
@@ -8313,7 +8351,9 @@ function generateWorkbook(project) {
 
         c: 5 + rooms.length,
 
-        f: `${totalQtyCol}${exRSum}*${priceCol}${exRSum}`
+        f: `${totalQtyCol}${exRSum}*${priceCol}${exRSum}`,
+
+        v: total
 
       });
 
@@ -8351,7 +8391,9 @@ function generateWorkbook(project) {
 
     c: 5 + rooms.length,
 
-    f: `SUM(${totalAmtCol}11:${totalAmtCol}${curRowSum})`
+    f: `SUM(${totalAmtCol}11:${totalAmtCol}${curRowSum})`,
+
+    v: grandTotalSum
 
   });
 
@@ -8373,7 +8415,9 @@ function generateWorkbook(project) {
 
     c: 5 + rooms.length,
 
-    f: `ROUND(${totalAmtCol}${subRowExR}*${vatRateExcel},0)`
+    f: `ROUND(${totalAmtCol}${subRowExR}*${vatRateExcel},0)`,
+
+    v: vatAmtExcel
 
   });
 
@@ -8395,7 +8439,9 @@ function generateWorkbook(project) {
 
     c: 5 + rooms.length,
 
-    f: `${totalAmtCol}${subRowExR}+${totalAmtCol}${vatRowExR}`
+    f: `${totalAmtCol}${subRowExR}+${totalAmtCol}${vatRowExR}`,
+
+    v: grandWithVat
 
   });
 
@@ -8493,11 +8539,19 @@ function generateWorkbook(project) {
 
   // Apply formulas to wsSum
 
-  formulaMapSum.forEach(({r, c, f}) => {
+  formulaMapSum.forEach(({r, c, f, v}) => {
 
     const cellRef = XLSX.utils.encode_cell({r, c});
 
     wsSum[cellRef] = { t: 'n', f };
+
+    if (v !== undefined && v !== null) {
+
+      wsSum[cellRef].v = v;
+
+      wsSum[cellRef].w = fmt(v, (c >= 3 && c <= 3 + rooms.length) ? 2 : 0);
+
+    }
 
   });
 
@@ -8657,6 +8711,10 @@ function generateWorkbook(project) {
 
     let groupTotalRows = [];
 
+    let vtGrandTotal = 0;
+
+    let groupTotalVal = 0;
+
     const pushGroupTotal = (group) => {
 
       if (prevGroup === null) return;
@@ -8669,7 +8727,9 @@ function generateWorkbook(project) {
 
       gRow[6] = ''; // placeholder for group total
 
-      formulaMapVT.push({ r: curRowVT, c: 6, f: `SUM(${sumRange})` });
+      formulaMapVT.push({ r: curRowVT, c: 6, f: `SUM(${sumRange})`, v: groupTotalVal });
+
+      groupTotalVal = 0;
 
       groupTotalRows.push(curRowVT + 1); // 1-based row index
 
@@ -8757,11 +8817,15 @@ function generateWorkbook(project) {
 
       ]);
 
-      formulaMapVT.push({ r: curRowVT, c: 3, f: qtyFormula });
+      formulaMapVT.push({ r: curRowVT, c: 3, f: qtyFormula, v: m.qty });
 
-      formulaMapVT.push({ r: curRowVT, c: 4, f: `D${exRVT}*1.05` });
+      formulaMapVT.push({ r: curRowVT, c: 4, f: `D${exRVT}*1.05`, v: m.qty * 1.05 });
 
-      formulaMapVT.push({ r: curRowVT, c: 6, f: `E${exRVT}*F${exRVT}` });
+      formulaMapVT.push({ r: curRowVT, c: 6, f: `E${exRVT}*F${exRVT}`, v: m.total });
+
+      groupTotalVal += (m.total || 0);
+
+      vtGrandTotal += (m.total || 0);
 
       curRowVT++;
 
