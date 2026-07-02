@@ -10417,7 +10417,7 @@ function fmtBytes(b) {
 
 }
 
-const IMAGE_PLACEHOLDER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23f1f5f9" rx="8"/><path d="M35 85 L50 65 L65 80 L85 55 L95 85 Z" fill="%23cbd5e1"/><circle cx="45" cy="45" r="8" fill="%23cbd5e1"/><text x="60" y="105" font-family="system-ui" font-size="10" fill="%2394a3b8" text-anchor="middle" font-weight="bold">Ảnh lỗi/thiếu</text></svg>';
+const IMAGE_PLACEHOLDER = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmMWY1ZjkiIHJ4PSI4Ii8+PHBhdGggZD0iTTM1IDg1IEw1MCA2NSBMNjUgODAgTDg1IDU1IEw5NSA4NSBaIiBmaWxsPSIjY2JkNWUxIi8+PGNpcmNsZSBjeD0iNDUiIGN5PSI0NSIgcj0iOCIgZmlsbD0iI2NiZDVlMSIvPjx0ZXh0IHg9IjYwIiB5PSIxMDUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM5NGEzYjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj7huqJuaCBs4buXaS90aGnhur91PC90ZXh0Pjwvc3ZnPg==';
 
 // Render ảnh hiện trạng
 
