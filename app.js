@@ -1978,81 +1978,68 @@ let state = {
 // =============================================
 
 function renderProjectList() {
-
   const allProjects = DB.all();
-
   const list = document.getElementById('project-list');
-
   const badge = document.getElementById('header-project-count');
-
-  badge.textContent = `${allProjects.length} dự án`;
-
-  if (allProjects.length === 0) {
-
-    list.innerHTML = `<p style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Chưa có dự án nào</p>`;
-
-    return;
-
+  
+  if (badge) {
+    badge.textContent = `${allProjects.length} dự án`;
   }
 
-  // Sort: AZ theo tên, ZA, hoặc theo ngày tạo mới nhất (mặc định)
+  if (allProjects.length === 0) {
+    list.innerHTML = `<p style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Chưa có dự án nào</p>`;
+    return;
+  }
 
-  const sortMode = window._projSortMode || 'date';
+  // 1. Lấy thông tin tìm kiếm và sắp xếp từ UI
+  const searchInput = document.getElementById('sidebar-project-search');
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-  const projects = [...allProjects].sort((a, b) => {
+  const sortSelect = document.getElementById('sidebar-project-sort');
+  const sortMode = sortSelect ? sortSelect.value : 'newest';
 
-    if (sortMode === 'az')   return a.name.localeCompare(b.name, 'vi');
-
-    if (sortMode === 'za')   return b.name.localeCompare(a.name, 'vi');
-
-    return 0; // date: giữ thứ tự gốc
-
+  // 2. Lọc danh sách dự án
+  let filtered = allProjects.filter(p => {
+    const matchQuery = !query || 
+      p.name.toLowerCase().includes(query) || 
+      (p.client && p.client.toLowerCase().includes(query));
+    return matchQuery;
   });
 
-  // Nút sort ở đầu danh sách
+  // 3. Sắp xếp danh sách dự án
+  filtered.sort((a, b) => {
+    if (sortMode === 'az') return a.name.localeCompare(b.name, 'vi');
+    if (sortMode === 'za') return b.name.localeCompare(a.name, 'vi');
+    // newest: mặc định theo ngày tạo mới nhất
+    const timeA = a.date ? new Date(a.date).getTime() : 0;
+    const timeB = b.date ? new Date(b.date).getTime() : 0;
+    return timeB - timeA;
+  });
 
-  const sortBtnHtml = `
-
-    <div style="display:flex;gap:4px;padding:8px 12px 4px;border-bottom:1px solid var(--border-color);">
-
-      <span style="font-size:11px;color:var(--text-muted);align-self:center;margin-right:4px;">Sắp xếp:</span>
-
-      <button onclick="_projSortMode='date';renderProjectList()" style="font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--border-color);background:${sortMode==='date'?'var(--brand-gold)':'var(--bg-elevated)'};color:${sortMode==='date'?'#000':'var(--text-secondary)'};cursor:pointer;">Mới nhất</button>
-
-      <button onclick="_projSortMode='az';renderProjectList()" style="font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--border-color);background:${sortMode==='az'?'var(--brand-gold)':'var(--bg-elevated)'};color:${sortMode==='az'?'#000':'var(--text-secondary)'};cursor:pointer;">A → Z</button>
-
-      <button onclick="_projSortMode='za';renderProjectList()" style="font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--border-color);background:${sortMode==='za'?'var(--brand-gold)':'var(--bg-elevated)'};color:${sortMode==='za'?'#000':'var(--text-secondary)'};cursor:pointer;">Z → A</button>
-
-    </div>`;
-
-  list.innerHTML = sortBtnHtml + projects.map(p => {
-
+  // 4. Render danh sách dự án
+  list.innerHTML = filtered.map(p => {
     const s = CALC.project(p);
-
     const active = p.id === state.currentProjectId;
+    const folderIconSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="project-folder-icon">
+        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"></path>
+      </svg>
+    `;
 
     return `
-
-      <div class="project-item ${active ? 'active' : ''}" data-id="${p.id}">
-
-        <div class="project-item-name">${p.name}</div>
-
-        <div class="project-item-meta">
-
-          <span>${s.rooms} phòng</span>
-
-          <span>${s.items} hạng mục</span>
-
+      <div class="project-item ${active ? 'active' : ''}" data-id="${p.id}" onclick="openProject('${p.id}')">
+        <div class="project-item-title-row">
+          ${folderIconSvg}
+          <span class="project-item-name" title="${p.name}">${p.name}</span>
         </div>
-
-      </div>`;
-
+        <div class="project-item-client">KH: ${p.client || 'Chưa nhập'}</div>
+        <div class="project-item-footer">
+          <span class="project-item-date">${p.date || ''}</span>
+          <span class="project-item-rooms-badge">${s.rooms} phòng</span>
+        </div>
+      </div>
+    `;
   }).join('');
-
-  list.querySelectorAll('.project-item').forEach(el => {
-
-  });
-
 }
 
 function updateDashboardStats() {
