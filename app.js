@@ -2484,14 +2484,6 @@ function renderRooms(project) {
 
           <span style="color: var(--text-secondary);">📷 Ảnh hiện trạng: <strong style="color: var(--brand-blue-light);">${getRoomPhotosCount(room)}</strong> tấm</span>
 
-          <div>
-
-            <input type="file" accept="image/*" multiple id="room-card-file-${room.id}" style="display: none;" onchange="handleRoomCardPhotoSelect(event, '${room.id}')">
-
-            <button class="btn-primary" style="padding: 2px 8px; font-size: 11px; height: auto;" onclick="document.getElementById('room-card-file-${room.id}').click()">+ Thêm ảnh</button>
-
-          </div>
-
         </div>
 
       </div>`;
