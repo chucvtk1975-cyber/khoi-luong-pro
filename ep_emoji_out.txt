@@ -1,0 +1,12 @@
+﻿Γ£ô Fixed 1x: '≡ƒ¢ï∩╕Å <b>THIß║╛T Bß╗è Nß╗ÿI THß║ñT' ΓåÆ '<b>THIß║╛T Bß╗è Nß╗ÿI THß║ñT'
+Γ£ô Fixed 1x: '≡ƒÜ┐ <b>PHß║ªN N╞»ß╗ÜC' ΓåÆ '<b>PHß║ªN N╞»ß╗ÜC'
+Γ£ô Fixed 1x: '≡ƒ¢í∩╕Å <b>CHß╗ÉNG THß║ñM' ΓåÆ '<b>CHß╗ÉNG THß║ñM'
+
+=== Remaining CONTENT emoji ===
+  '≡ƒ¢ï∩╕Å': Γ£ô CLEAN
+  '≡ƒÜ┐': Γ£ô CLEAN
+  '≡ƒ¢í∩╕Å': Γ£ô CLEAN
+  'ΓÜí THIß║╛T': Γ£ô CLEAN
+  '≡ƒô¥ CHI': Γ£ô CLEAN
+
+Γ£à 3 additional fixes applied

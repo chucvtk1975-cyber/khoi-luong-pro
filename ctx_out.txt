@@ -1,0 +1,42 @@
+﻿  project.rooms.forEach((room, idx) => {
+    const calc = CALC.room(room);
+    stt = 1;   // Reset STT moi phong
+    const D = (+room.D || 0) / 1000;
+    const R = (+room.R || 0) / 1000;
+    const H = (+room.H || 0) / 1000;
+    const perim = (2 * (D + R)).toFixed(2).replace('.',',');
+    const roman = romanNums[idx] || (idx + 1);
+    // Header: chß╗ë t├¬n ph├▓ng
+    html += `
+      <tr class="boq-room-header" data-kr="${room.id}">
+        <td colspan="10">${roman}. ${room.name.toUpperCase()}</td>
+      </tr>`;
+    if (calc.items.length === 0) {
+      html += `<tr data-kr="${room.id}"><td colspan="10" style="color:var(--text-muted);font-style:italic;padding:6px 14px;font-size:12px;">Ch╞░a chß╗ìn vß║¡t liß╗çu</td></tr>`;
+    } else {
+      const allItems = calc.items;
+      allItems.forEach((item, itemIdx) => {
+        const key = item._key || item.surface;
+        const isFirst = itemIdx === 0;
+        const isLast  = itemIdx === allItems.length - 1;
+        // --- Section headers (no move buttons) ---
+        if (item.surface === 'elecHeader') {
+          stt = 1; // Reset STT khi v├áo phß║ºn ─Éiß╗çn
+          html += `<tr class="boq-elec-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN</td></tr>`;
+          return;
+        }
+        if (item.surface === 'noteHeader') {
+          stt = 1; // Reset STT khi v├áo phß║ºn Ghi ch├║
+          html += `<tr class="boq-note-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">≡ƒô¥ CHI TIß║╛T Tß╗¬ GHI CH├Ü</td></tr>`;
+          return;
+        }
+        // --- Custom items (IN HOA = sub-header + reset STT) ---
+        if (item.surface === 'custom') {
+          const ci = (room.customItems||[]).find(c => c.id === item.itemId);
+          if (!ci) return;
+          const labelTrim = (ci.label||'').trim();
+          const isSubHdr  = labelTrim.length > 1 && labelTrim === labelTrim.toUpperCase();
+          if (isSubHdr) {
+            stt = 1; // reset STT
+            html += `
+              <tr class="boq-sub-header" data-key="ci:${ci.id}" data-kr="${room.id}" data-ci="${ci.id}">

@@ -1,0 +1,31 @@
+﻿boq-room-header" data-kr="${room.id}">
+        <td colspan="10">${roman}. ${room.name.toUpperCase()}</td>
+      html += `<tr data-kr="${room.id}"><td colspan="10" style="color:var(--text-muted);font-style:italic;padding:6px 14px;font-size:12px;">Ch╞░a chß╗ìn vß║¡t liß╗çu</td></tr>`;
+        const key = item._key || item.surface;
+        // --- Section headers (no move buttons) ---
+        if (item.surface === 'elecHeader') {
+          stt = 1; // Reset STT khi v├áo phß║ºn ─Éiß╗çn
+          html += `<tr class="boq-elec-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN</td></tr>`;
+        if (item.surface === 'noteHeader') {
+          stt = 1; // Reset STT khi v├áo phß║ºn Ghi ch├║
+          html += `<tr class="boq-note-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">≡ƒô¥ CHI TIß║╛T Tß╗¬ GHI CH├Ü</td></tr>`;
+        // --- Custom items (IN HOA = sub-header + reset STT) ---
+        if (item.surface === 'custom') {
+            stt = 1; // reset STT
+            html += `
+              <tr class="boq-sub-header" data-key="ci:${ci.id}" data-kr="${room.id}" data-ci="${ci.id}">
+                <td colspan="8" class="boq-sub-header-cell" style="font-weight:700;color:var(--brand-purple-light);">${ci.label}
+                    <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+                    <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+          html += `
+            <tr class="boq-custom-item" data-key="ci:${ci.id}" data-kr="${room.id}" data-ci="${ci.id}">
+              <td class="boq-dim"></td><td class="boq-dim"></td><td class="boq-dim"></td>
+              <td class="boq-qty">${fmt(qty, 2)}</td>
+              <td class="boq-price">${price ? fmt(price, 0) : ''}</td>
+              <td class="boq-total">${(qty * price) ? fmt(qty * price, 0) : ''}</td>
+              <td class="boq-note" style="white-space:nowrap;">
+                  <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+                  <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+        const noStt     = ['perimeter','window','ceilPerim','elec','elecManual','elecHeader','noteHeader'].includes(item.surface);
+        const isManual  = item.surface === 'elecManual';
+        const isNoteItem= item.surface === 'noteItem';

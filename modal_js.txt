@@ -1,0 +1,13 @@
+﻿[383835] modal-room: if (!document.getElementById('modal-room').classList.contains('open')) return false;
+[385484] modal-room: document.getElementById('modal-room-title').textContent     = (isEdit ? 'Sß╗¡a Ph├▓ng' : 'Th├¬m Ph├▓ng / Khu Vß╗▒c') + projSuff
+[398787] modal-room: document.getElementById('modal-room').classList.add('open');
+[400900] modal-room: document.getElementById('modal-room').classList.remove('open');
+[682210] modal-room: ['modal-project', 'modal-room'].forEach(id => {
+[682747] modal-room: if (id === 'modal-room') {
+[685185] modal-room: const roomModal = document.getElementById('modal-room');
+[385737] btn-save-room: document.getElementById('btn-save-room-label').textContent  = isEdit ? 'L╞░u Thay ─Éß╗òi' : 'Th├¬m Ph├▓ng';
+[673242] btn-save-room: document.getElementById('btn-save-room').addEventListener('click', saveRoom);
+[673027] btn-cancel-room: document.getElementById('btn-cancel-room').addEventListener('click', closeRoomModal);
+[384483] openRoomModal: function openRoomModal(room = null) {
+[407458] openRoomModal: if (room) openRoomModal(room);
+[672635] openRoomModal: document.getElementById('btn-add-room').addEventListener('click', () => openRoomModal());

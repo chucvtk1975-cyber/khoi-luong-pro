@@ -1,0 +1,22 @@
+﻿=== Roman numeral code (pos 201200ΓÇô205000) ===
+let html = '';
+let stt = 1;
+const romanNums = ['I','II','III','IV','V','VI','VII','VIII','IX','X',
+'XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'];
+project.rooms.forEach((room, idx) => {
+const calc = CALC.room(room);
+stt = 1;   // Reset STT moi phong
+const D = (+room.D || 0) / 1000;
+const R = (+room.R || 0) / 1000;
+const H = (+room.H || 0) / 1000;
+const perim = (2 * (D + R)).toFixed(2).replace('.',',');
+const roman = romanNums[idx] || (idx + 1);
+let subRomIdx = 1; // sub-section Roman counter
+// Header: chß╗ë t├¬n ph├▓ng
+html += `
+<tr class="boq-room-header" data-kr="${room.id}">
+<td colspan="10">${roman}. ${room.name.toUpperCase()}</td>
+</tr>`;
+if (calc.items.length === 0) {
+html += `<tr data-kr="${room.id}"><td colspan="10" style="color:var(--text-muted);font-style:italic;padding:6px 14px;fon
+} else {

@@ -1,0 +1,6 @@
+﻿Header closes at: pos=6244, depth=2
+modal-body opens at: pos=6274, depth=3
+
+=== Between header-close and modal-body ===
+  j=3: pos=6244, d=2, CLOSE: </div>
+  j=4: pos=6274, d=3, OPEN: <div class="modal-body">

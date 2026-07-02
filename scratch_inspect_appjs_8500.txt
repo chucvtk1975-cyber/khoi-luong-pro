@@ -1,0 +1,151 @@
+8500:         const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+8501: 
+8502:         html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">${rom}</td><td style="font-weight:700;text-align:left;">THIẾT BỊ ĐIỆN</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+8503: 
+8504:         return;
+8505: 
+8506:       }
+8507: 
+8508:       if (item.surface === 'noteHeader') {
+8509: 
+8510:         stt = 1;
+8511: 
+8512:         const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+8513: 
+8514:         html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">${rom}</td><td style="font-weight:700;text-align:left;">CHI TIẾT TỪ GHI CHÚ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+8515: 
+8516:         return;
+8517: 
+8518:       }
+8519: 
+8520:       if (item.surface === 'custom') {
+8521: 
+8522:         const ci = (room.customItems||[]).find(c => c.id === item.itemId);
+8523: 
+8524:         if (ci) {
+8525: 
+8526:           const labelTrim = (ci.label||'').trim();
+8527: 
+8528:           const isSubHdr  = labelTrim.length > 1 && labelTrim === labelTrim.toUpperCase();
+8529: 
+8530:           if (isSubHdr) {
+8531: 
+8532:             stt = 1; // reset STT
+8533: 
+8534:             const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+8535: 
+8536:             html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">${rom}</td><td style="font-weight:700;text-align:left;">${ci.label}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+8537: 
+8538:             return;
+8539: 
+8540:           }
+8541: 
+8542:         }
+8543: 
+8544:       }
+8545: 
+8546:       const noStt = false;
+8547: 
+8548:       const isManual = item.surface === 'elecManual';
+8549: 
+8550:       const rowClass = item.surface === 'perimeter' ? 'pv-perim' : 'pv-item';
+8551: 
+8552:       const qtyDisplay = isManual && item.qty === 0 ? '<em style="color:var(--brand-gold)">tự điền</em>' : (item.formula || fmt(item.qty));
+8553: 
+8554:       html += `<tr class="${rowClass}">
+8555: 
+8556:         <td class="pv-stt">${noStt ? '' : stt++}</td>
+8557: 
+8558:         <td style="${isManual ? 'color:var(--brand-gold);font-style:italic;' : ''} padding-left:15px !important;">${item.label}</td>
+8559: 
+8560:         <td class="pv-num">${item.dai  ? fmtMM(item.dai)  : ''}</td>
+8561: 
+8562:         <td class="pv-num">${item.rong ? fmtMM(item.rong) : ''}</td>
+8563: 
+8564:         <td class="pv-num">${item.cao  ? fmtMM(item.cao)  : ''}</td>
+8565: 
+8566:         <td class="pv-center">${item.unit}</td>
+8567: 
+8568:         <td class="pv-num" style="white-space:normal;font-size:10.5px;">${qtyDisplay}</td>
+8569: 
+8570:         <td class="pv-num">${item.price ? fmt(item.price, 0) : ''}</td>
+8571: 
+8572:         <td class="pv-num">${item.total ? fmt(item.total, 0) : ''}</td>
+8573: 
+8574:         <td class="pv-note">${item.note || ''}</td>
+8575: 
+8576:       </tr>`;
+8577: 
+8578:     });
+8579: 
+8580:     // ── Ghi chú Mộc / Nước / Chống thấm vào preview chi tiết phòng ──
+8581: 
+8582:     [
+8583: 
+8584:       { text: room.noteWoodwork,   label: 'THIẾT BỊ NỘI THẤT' },
+8585: 
+8586:       { text: room.notePlumbing,   label: 'PHẦN NƯỚC' },
+8587: 
+8588:       { text: room.noteWaterproof, label: 'CHỐNG THẤM' },
+8589: 
+8590:     ].forEach(({ text, label }) => {
+8591: 
+8592:       if (!text || !text.trim()) return;
+8593: 
+8594:       const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+8595: 
+8596:       html += `<tr class="pv-room-hdr">
+8597: 
+8598:         <td class="pv-stt" style="text-align:center;font-weight:700;">${rom}</td>
+8599: 
+8600:         <td style="font-weight:700;text-align:left;">${label}</td>
+8601: 
+8602:         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+8603: 
+8604:       </tr>`;
+8605: 
+8606:       stt = 1;
+8607: 
+8608:       const noteLines = text.split('\n').map(l => l.trim()).filter(l => l);
+8609: 
+8610:       noteLines.forEach((line, li) => {
+8611: 
+8612:         html += `<tr class="pv-item">
+8613: 
+8614:           <td class="pv-stt">${stt++}</td>
+8615: 
+8616:           <td colspan="4" style="padding-left:15px !important;">${line}</td>
+8617: 
+8618:           <td class="pv-center">cái</td>
+8619: 
+8620:           <td class="pv-num">1</td>
+8621: 
+8622:           <td class="pv-num"></td>
+8623: 
+8624:           <td class="pv-num"></td>
+8625: 
+8626:           <td class="pv-note"></td>
+8627: 
+8628:         </tr>`;
+8629: 
+8630:       });
+8631: 
+8632:     });
+8633: 
+8634:     if (roomTotal > 0) {
+8635: 
+8636:       html += `<tr class="pv-subtotal">
+8637: 
+8638:         <td colspan="8" style="text-align:right;padding-right:10px;">Cộng ${room.name}:</td>
+8639: 
+8640:         <td class="pv-num">${fmt(roomTotal, 0)}</td>
+8641: 
+8642:         <td></td>
+8643: 
+8644:       </tr>`;
+8645: 
+8646:     }
+8647: 
+8648:   });
+8649: 
+8650:   // Chi phí khác (chỉ khi xem tất cả phòng — dùng tham số showOtherCosts)

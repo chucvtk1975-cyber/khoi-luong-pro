@@ -1,0 +1,41 @@
+8610:       noteLines.forEach((line, li) => {
+8611: 
+8612:         html += `<tr class="pv-item">
+8613: 
+8614:           <td class="pv-stt">${stt++}</td>
+8615: 
+8616:           <td colspan="4" style="padding-left:15px !important;">${line}</td>
+8617: 
+8618:           <td class="pv-center">cái</td>
+8619: 
+8620:           <td class="pv-num">1</td>
+8621: 
+8622:           <td class="pv-num"></td>
+8623: 
+8624:           <td class="pv-num"></td>
+8625: 
+8626:           <td class="pv-note"></td>
+8627: 
+8628:         </tr>`;
+8629: 
+8630:       });
+8631: 
+8632:     });
+8633: 
+8634:     if (roomTotal > 0) {
+8635: 
+8636:       html += `<tr class="pv-subtotal">
+8637: 
+8638:         <td colspan="8" style="text-align:right;padding-right:10px;">Cộng ${room.name}:</td>
+8639: 
+8640:         <td class="pv-num">${fmt(roomTotal, 0)}</td>
+8641: 
+8642:         <td></td>
+8643: 
+8644:       </tr>`;
+8645: 
+8646:     }
+8647: 
+8648:   });
+8649: 
+8650:   // Chi phí khác (chỉ khi xem tất cả phòng — dùng tham số showOtherCosts)

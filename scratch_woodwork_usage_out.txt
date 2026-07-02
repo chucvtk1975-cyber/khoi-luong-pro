@@ -1,0 +1,96 @@
+--- Range 6720 to 6770 ---
+6720:           formulaMap.push({ r: aoaRow, c: 6, f: qtyFormula });
+6721: 
+6722:         }
+6723: 
+6724:         roomTotal += item.total || 0;
+6725: 
+6726:         curRow++;
+6727: 
+6728:       });
+6729: 
+6730:     }
+6731: 
+6732:     // Notes sections
+6733: 
+6734:     [
+6735: 
+6736:       { text: room.noteWoodwork,   label: 'THIẾT BỊ NỘI THẤT' },
+6737: 
+6738:       { text: room.notePlumbing,   label: 'PHẦN NƯỚC' },
+6739: 
+6740:       { text: room.noteWaterproof, label: 'CHỐNG THẤM' },
+6741: 
+6742:     ].forEach(({ text, label }) => {
+6743: 
+6744:       if (!text || !text.trim()) return;
+6745: 
+6746:       const hdrN = blkDetail();
+6747: 
+6748:       hdrN[0] = romanNums[excelSubRomIdx] || excelSubRomIdx;
+6749: 
+6750:       hdrN[1] = label;
+6751: 
+6752:       excelSubRomIdx++;
+6753: 
+6754:       aoa.push(hdrN);
+6755: 
+6756:       curRow++;
+6757: 
+6758:       itemStt = 1;
+6759: 
+6760:       const noteLines = text.split('\n').map(l => l.trim()).filter(l => l);
+6761: 
+6762:       noteLines.forEach((line, li) => {
+6763: 
+6764:         const lr = blkDetail();
+6765: 
+6766:         lr[0] = li + 1;
+6767: 
+6768:         lr[1] = line;
+6769: 
+6770:         lr[5] = 'cái';
+
+
+--- Range 8570 to 8610 ---
+8570:         <td class="pv-num">${item.price ? fmt(item.price, 0) : ''}</td>
+8571: 
+8572:         <td class="pv-num">${item.total ? fmt(item.total, 0) : ''}</td>
+8573: 
+8574:         <td class="pv-note">${item.note || ''}</td>
+8575: 
+8576:       </tr>`;
+8577: 
+8578:     });
+8579: 
+8580:     // ── Ghi chú Mộc / Nước / Chống thấm vào preview chi tiết phòng ──
+8581: 
+8582:     [
+8583: 
+8584:       { text: room.noteWoodwork,   label: 'THIẾT BỊ NỘI THẤT' },
+8585: 
+8586:       { text: room.notePlumbing,   label: 'PHẦN NƯỚC' },
+8587: 
+8588:       { text: room.noteWaterproof, label: 'CHỐNG THẤM' },
+8589: 
+8590:     ].forEach(({ text, label }) => {
+8591: 
+8592:       if (!text || !text.trim()) return;
+8593: 
+8594:       const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+8595: 
+8596:       html += `<tr class="pv-room-hdr">
+8597: 
+8598:         <td class="pv-stt" style="text-align:center;font-weight:700;">${rom}</td>
+8599: 
+8600:         <td style="font-weight:700;text-align:left;">${label}</td>
+8601: 
+8602:         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+8603: 
+8604:       </tr>`;
+8605: 
+8606:       stt = 1;
+8607: 
+8608:       const noteLines = text.split('\n').map(l => l.trim()).filter(l => l);
+8609: 
+8610:       noteLines.forEach((line, li) => {

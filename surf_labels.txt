@@ -1,0 +1,48 @@
+﻿=== Surface labels area (excel +27000 to +35000) ===
+Map();
+// Nh├│m surface ΓåÆ t├¬n nh├│m tiß║┐ng Viß╗çt
+const GROUP_LABEL = {
+floor:      '≡ƒƒ½ S├ÇN',
+wall:       '≡ƒƒª T╞»ß╗£NG S╞áN N╞»ß╗ÜC',
+ceiling:    'Γ¼£ TRß║ªN S╞áN N╞»ß╗ÜC',
+perimeter:  '≡ƒôÉ CHU VI / ─Éß╗èA ─Éß║▓NG',
+ceilPerim:  '≡ƒôÉ CHU VI TRß║ªN',
+window:     '≡ƒ¬ƒ Cß╗¼A',
+ceilMat:    '≡ƒö│ ß╗ÉP TRß║ªN Vß║¼T LIß╗åU',
+floorMat:   '≡ƒö▓ ß╗ÉP S├ÇN Vß║¼T LIß╗åU',
+wallMat:    '≡ƒö╡ ß╗ÉP T╞»ß╗£NG Vß║¼T LIß╗åU',
+elec:       'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN',
+elecManual: 'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN',
+noteItem:   '≡ƒô¥ Vß║¼T T╞» KH├üC',
+};
+(project.rooms || []).forEach(room => {
+const calc = CALC.room(room);
+calc.items.forEach(item => {
+if (['elecHeader','noteHeader','perimeter','ceilPerim'].includes(item.surface)) return;
+if (!item.qty || item.qty <= 0) return;
+const key = `${item.surface}||${item.label}||${item.unit}`;
+if (!matMap.has(key)) {
+matMap.set(key, {
+surface:  item.surface,
+group:    GROUP_LABEL[item.surface] || '≡ƒôï KH├üC',
+label:    item.label,
+unit:     item.unit,
+price:    item.price || 0,
+note:     item.note  || '',
+rooms:    [],
+totalQty: 0,
+totalAmt: 0,
+});
+}
+const m = matMap.get(key);
+m.totalQty += item.qty || 0;
+m.totalAmt += item.total || 0;
+m.rooms.push(room.name);
+// Giß╗» gi├í mß╗¢i nhß║Ñt nß║┐u tr├╣ng
+if (item.price) m.price = item.price;
+});
+});
+// ΓöÇΓöÇ Sß║»p xß║┐p: theo nh├│m surface rß╗ôi theo t├¬n ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+const surfaceOrder = ['floor','wall','ceiling','ceilMat','floorMat','wallMat','window','elec','elecManual','noteItem'];
+const matList = [...matMap.values()].sort((a,b) => {
+const ga = surfaceOrder.indexOf

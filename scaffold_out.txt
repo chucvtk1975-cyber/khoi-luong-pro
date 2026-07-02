@@ -1,0 +1,12 @@
+﻿Total "scaffold" occurrences: 10
+
+  [194271] { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío',                                       unit:'m┬▓',     autoQty:true  },
+  [226611] { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío',                                           unit:'m┬▓',     autoQty:true },
+  [234194] { key: 'scaffold',    label: 'Ph├¡ thu├¬ gi├án gi├ío',                                             unit: 'm┬▓',       autoQty: true },
+  [246010] { key:'scaffold',    autoQty:true },
+  [303580] { key: 'scaffold',  autoQty: true },
+  [421440] { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío', unit:'m┬▓', autoQty:true },
+  [522192] { key: 'scaffold',    label: 'Ph├¡ thu├¬ gi├án gi├ío',                                             unit: 'm┬▓',       autoQty: true },
+  [602072] {key:'debris',autoQty:true},{key:'scaffold',autoQty:true},
+  [644651] { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío', unit:'m┬▓',  autoQty:true },
+  [663768] { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío', unit:'m┬▓',  autoQty:true },

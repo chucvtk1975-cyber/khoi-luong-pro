@@ -1,0 +1,26 @@
+﻿=== Current .modal-card ===
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: var(--shadow);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalIn 0.2s ease;
+}
+=== Current .modal-room-card ===
+.modal-room-card { max-width: 640px; }
+
+=== Mobile media query at 27280 ===
+@media (max-width: 768px) {
+  .project-sidebar { width: 220px; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .dim-grid { grid-template-columns: repeat(2, 1fr); }
+  .opening-grid { grid-template-columns: repeat(2, 1fr); }
+  .workspace { padding: 16px; }
+}
+@media (max-width: 600px) {
+  .

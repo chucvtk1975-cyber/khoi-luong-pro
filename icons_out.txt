@@ -1,0 +1,12 @@
+﻿[210878] "&#8593;": <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+[211174] "&#8595;": <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+NOT FOUND: "Γåæ"
+NOT FOUND: "Γåô"
+NOT FOUND: "btn-move"
+[210764] "moveBoqRow": <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+[210828] "boq-move-up": <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+[211123] "boq-move-dn": <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+NOT FOUND: ""U""
+NOT FOUND: ""D""
+NOT FOUND: "'U'"
+NOT FOUND: "'D'"

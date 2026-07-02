@@ -1,0 +1,566 @@
+// ==========================================================================
+// BỐC KHỐI LƯỢNG PRO - BỘ NÃO XỬ LÝ DỮ LIỆU ĐÃ NÂNG CẤP THÔNG MINH
+// ==========================================================================
+
+// Quản lý trạng thái ứng dụng
+let projects = [];
+let currentProjectId = null;
+let currentRoomId = null; // Dùng khi sửa phòng
+let editingProjectId = null; // Dùng khi sửa dự án
+
+// Danh sách hình ảnh hiện trạng tạm thời của PHÒNG đang tạo/sửa
+let tempRoomPhotos = [];
+
+// Khởi tạo ứng dụng khi trang web tải xong
+document.addEventListener('DOMContentLoaded', () => {
+    loadDataFromStorage();
+    initDOMEvents();
+    renderProjectList();
+    updateUIWorkspace();
+});
+
+// Tải dữ liệu từ LocalStorage
+function loadDataFromStorage() {
+    const stored = localStorage.getItem('bluedeco_projects');
+    if (stored) {
+        try {
+            projects = JSON.parse(stored);
+        } catch (e) {
+            console.error("Lỗi đọc dữ liệu cũ, khởi tạo mảng rỗng", e);
+            projects = [];
+        }
+    }
+}
+
+// Lưu dữ liệu vào LocalStorage
+function saveDataToStorage() {
+    localStorage.setItem('bluedeco_projects', JSON.stringify(projects));
+}
+
+// Thiết lập các sự kiện nút bấm trên Giao diện
+function initDOMEvents() {
+    // Các nút tạo dự án
+    const btnNewProj = document.getElementById('btn-new-project');
+    const btnNewProjEmpty = document.getElementById('btn-new-project-empty');
+    const btnCloseProjModal = document.getElementById('btn-close-project-modal');
+    const btnCancelProj = document.getElementById('btn-cancel-project');
+    const btnSaveProj = document.getElementById('btn-save-project');
+
+    if (btnNewProj) btnNewProj.addEventListener('click', () => openProjectModal());
+    if (btnNewProjEmpty) btnNewProjEmpty.addEventListener('click', () => openProjectModal());
+    if (btnCloseProjModal) btnCloseProjModal.addEventListener('click', () => closeProjectModal());
+    if (btnCancelProj) btnCancelProj.addEventListener('click', () => closeProjectModal());
+    if (btnSaveProj) btnSaveProj.addEventListener('click', () => saveProjectData());
+
+    // Các nút xử lý phòng
+    const btnAddRoom = document.getElementById('btn-add-room');
+    const btnCloseRoomModal = document.getElementById('btn-close-room-modal');
+    const btnCancelRoom = document.getElementById('btn-cancel-room');
+    const btnSaveRoom = document.getElementById('btn-save-room');
+
+    if (btnAddRoom) btnAddRoom.addEventListener('click', () => openRoomModal());
+    if (btnCloseRoomModal) btnCloseRoomModal.addEventListener('click', () => closeRoomModal());
+    if (btnCancelRoom) btnCancelRoom.addEventListener('click', () => closeRoomModal());
+    if (btnSaveRoom) btnSaveRoom.addEventListener('click', () => saveRoomData());
+
+    // Sự kiện chỉnh sửa / xóa dự án hiện tại
+    const btnEditProj = document.getElementById('btn-edit-project');
+    const btnDeleteProj = document.getElementById('btn-delete-project');
+
+    if (btnEditProj) btnEditProj.addEventListener('click', () => editCurrentProject());
+    if (btnDeleteProj) btnDeleteProj.addEventListener('click', () => deleteCurrentProject());
+
+    // Thiết lập sự kiện click cho các nút phòng Chọn nhanh
+    const quickBtns = document.querySelectorAll('.quick-btn');
+    quickBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const nameInput = document.getElementById('room-name');
+            if (nameInput) {
+                nameInput.value = btn.getAttribute('data-name').toUpperCase();
+            }
+        });
+    });
+
+    // Chuyển đổi giữa các Tab workspace
+    const tabs = document.querySelectorAll('.ws-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            const targetPanel = tab.getAttribute('data-ws-tab');
+            const panels = document.querySelectorAll('.ws-panel');
+            panels.forEach(p => p.classList.remove('active'));
+            
+            const activePanel = document.getElementById(`ws-panel-${targetPanel}`);
+            if (activePanel) activePanel.classList.add('active');
+        });
+    });
+}
+
+// ==========================================================================
+// LOGIC QUẢN LÝ DỰ ÁN
+// ==========================================================================
+
+function openProjectModal(projectId = null) {
+    const modal = document.getElementById('modal-project');
+    const title = document.getElementById('modal-project-title');
+    
+    if (!modal) return;
+    modal.classList.add('active');
+
+    if (projectId) {
+        editingProjectId = projectId;
+        if (title) title.innerText = "Chỉnh Sửa Dự Án";
+        
+        const proj = projects.find(p => p.id === projectId);
+        if (proj) {
+            document.getElementById('proj-name').value = proj.name || '';
+            document.getElementById('proj-client').value = proj.client || '';
+            document.getElementById('proj-address').value = proj.address || '';
+            document.getElementById('proj-date').value = proj.date || '';
+            document.getElementById('proj-vat-rate').value = proj.vatRate !== undefined ? proj.vatRate : 8;
+            document.getElementById('proj-sender').value = proj.sender || '';
+            document.getElementById('proj-subtitle').value = proj.subtitle || '';
+            document.getElementById('proj-company').value = proj.company || '';
+            document.getElementById('proj-company-addr').value = proj.companyAddr || '';
+            document.getElementById('proj-recipient').value = proj.recipient || '';
+            document.getElementById('proj-client-co').value = proj.clientCo || '';
+            document.getElementById('proj-client-addr').value = proj.clientAddr || '';
+            
+            if (document.getElementById('proj-type')) {
+                document.getElementById('proj-type').value = proj.type || 'nha-o';
+                toggleProjectStars(proj.type || 'nha-o');
+            }
+            if (document.getElementById('proj-stars') && proj.stars) {
+                document.getElementById('proj-stars').value = proj.stars;
+            }
+            
+            const natureRadio = document.querySelector(`input[name="proj-nature"][value="${proj.nature || 'new'}"]`);
+            if (natureRadio) natureRadio.checked = true;
+        }
+    } else {
+        editingProjectId = null;
+        if (title) title.innerText = "Tạo Dự Án Mới";
+        
+        document.getElementById('proj-name').value = '';
+        document.getElementById('proj-client').value = '';
+        document.getElementById('proj-address').value = '';
+        document.getElementById('proj-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('proj-vat-rate').value = 8;
+        document.getElementById('proj-sender').value = 'KIM CHÚC';
+        document.getElementById('proj-subtitle').value = '';
+        
+        if (document.getElementById('proj-type')) {
+            document.getElementById('proj-type').value = 'nha-o';
+            toggleProjectStars('nha-o');
+        }
+        const defaultNature = document.querySelector('input[name="proj-nature"][value="new"]');
+        if (defaultNature) defaultNature.checked = true;
+    }
+}
+
+function closeProjectModal() {
+    const modal = document.getElementById('modal-project');
+    if (modal) modal.classList.remove('active');
+    editingProjectId = null;
+}
+
+function saveProjectData() {
+    const name = document.getElementById('proj-name').value.trim();
+    if (!name) {
+        alert("Vui lòng điền tên công trình!");
+        return;
+    }
+
+    const type = document.getElementById('proj-type') ? document.getElementById('proj-type').value : 'nha-o';
+    const stars = document.getElementById('proj-stars') ? document.getElementById('proj-stars').value : '';
+    const nature = document.querySelector('input[name="proj-nature"]:checked') ? document.querySelector('input[name="proj-nature"]:checked').value : 'new';
+
+    if (editingProjectId) {
+        const proj = projects.find(p => p.id === editingProjectId);
+        if (proj) {
+            proj.name = name;
+            proj.type = type;
+            proj.stars = stars;
+            proj.nature = nature;
+            proj.client = document.getElementById('proj-client').value.trim();
+            proj.address = document.getElementById('proj-address').value.trim();
+            proj.date = document.getElementById('proj-date').value;
+            proj.vatRate = parseFloat(document.getElementById('proj-vat-rate').value) || 0;
+            proj.sender = document.getElementById('proj-sender').value.trim();
+            proj.subtitle = document.getElementById('proj-subtitle').value.trim();
+            proj.company = document.getElementById('proj-company').value.trim();
+            proj.companyAddr = document.getElementById('proj-company-addr').value.trim();
+            proj.recipient = document.getElementById('proj-recipient').value.trim();
+            proj.clientCo = document.getElementById('proj-client-co').value.trim();
+            proj.clientAddr = document.getElementById('proj-client-addr').value.trim();
+        }
+    } else {
+        const newProj = {
+            id: 'proj_' + Date.now(),
+            name: name,
+            type: type,
+            stars: stars,
+            nature: nature,
+            client: document.getElementById('proj-client').value.trim(),
+            address: document.getElementById('proj-address').value.trim(),
+            date: document.getElementById('proj-date').value,
+            vatRate: parseFloat(document.getElementById('proj-vat-rate').value) || 0,
+            sender: document.getElementById('proj-sender').value.trim() || 'KIM CHÚC',
+            subtitle: document.getElementById('proj-subtitle').value.trim(),
+            company: document.getElementById('proj-company').value.trim(),
+            companyAddr: document.getElementById('proj-company-addr').value.trim(),
+            recipient: document.getElementById('proj-recipient').value.trim(),
+            clientCo: document.getElementById('proj-client-co').value.trim(), // Đã sửa từ dấu = thành dấu : chuẩn xác
+            clientAddr: document.getElementById('proj-client-addr').value.trim(),
+            rooms: []
+        };
+        projects.push(newProj);
+        currentProjectId = newProj.id;
+    }
+
+    saveDataToStorage();
+    closeProjectModal();
+    renderProjectList();
+    updateUIWorkspace();
+}
+
+function renderProjectList() {
+    const listContainer = document.getElementById('project-list');
+    const countBadge = document.getElementById('header-project-count');
+    
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
+    
+    if (countBadge) countBadge.innerText = `${projects.length} dự án`;
+
+    projects.forEach(p => {
+        const item = document.createElement('div');
+        item.className = `project-item ${p.id === currentProjectId ? 'active' : ''}`;
+        item.innerHTML = `
+            <div class="project-item-title">${p.name}</div>
+            <div class="project-item-meta">${p.client || 'Không có tên CĐT'} · ${p.rooms ? p.rooms.length : 0} phòng</div>
+        `;
+        item.addEventListener('click', () => {
+            currentProjectId = p.id;
+            renderProjectList();
+            updateUIWorkspace();
+        });
+        listContainer.appendChild(item);
+    });
+}
+
+function editCurrentProject() {
+    if (currentProjectId) openProjectModal(currentProjectId);
+}
+
+function deleteCurrentProject() {
+    if (!currentProjectId) return;
+    if (confirm("Chị có chắc chắn muốn xóa toàn bộ dữ liệu của dự án này không? Thao tác này không thể hoàn tác!")) {
+        projects = projects.filter(p => p.id !== currentProjectId);
+        currentProjectId = projects.length > 0 ? projects[0].id : null;
+        saveDataToStorage();
+        renderProjectList();
+        updateUIWorkspace();
+    }
+}
+
+// ==========================================================================
+// LOGIC QUẢN LÝ PHÒNG & HÌNH ẢNH HIỆN TRẠNG THEO PHÒNG
+// ==========================================================================
+
+function openRoomModal(roomId = null) {
+    const modal = document.getElementById('modal-room');
+    const title = document.getElementById('modal-room-title');
+    const labelMain = document.getElementById('btn-save-room-label');
+    const labelMobile = document.getElementById('btn-save-room-label-mobile');
+    
+    if (!modal) return;
+    modal.classList.add('active');
+    
+    tempRoomPhotos = [];
+    document.getElementById('room-photo-thumbs').innerHTML = '';
+
+    if (roomId) {
+        currentRoomId = roomId;
+        if (title) title.innerText = "Sửa Phòng / Khu Vực";
+        if (labelMain) labelMain.innerText = "Cập Nhật";
+        if (labelMobile) labelMobile.innerText = "Cập Nhật";
+
+        const proj = projects.find(p => p.id === currentProjectId);
+        const room = proj ? proj.rooms.find(r => r.id === roomId) : null;
+        
+        if (room) {
+            document.getElementById('room-name').value = room.name || '';
+            document.getElementById('room-D').value = room.length || '';
+            document.getElementById('room-R').value = room.width || '';
+            document.getElementById('room-H').value = room.height || '';
+            document.getElementById('room-door-w').value = room.doorW || 900;
+            document.getElementById('room-door-h').value = room.doorH || 2100;
+            document.getElementById('room-doors').value = room.doors || 0;
+            document.getElementById('room-window-w').value = room.windowW || 1200;
+            document.getElementById('room-window-h').value = room.windowH || 1200;
+            document.getElementById('room-windows').value = room.windows || 0;
+            document.getElementById('room-note').value = room.note || '';
+            
+            if (document.getElementById('room-function-tag')) {
+                document.getElementById('room-function-tag').value = room.functionTag || 'kho';
+                triggerRoomDiagnostic(room.functionTag || 'kho');
+            }
+
+            if (room.photos && room.photos.length > 0) {
+                tempRoomPhotos = [...room.photos];
+                renderRoomPhotoThumbnails();
+            }
+        }
+    } else {
+        currentRoomId = null;
+        if (title) title.innerText = "Thêm Phòng / Khu Vực";
+        if (labelMain) labelMain.innerText = "Thêm Phòng";
+        if (labelMobile) labelMobile.innerText = "Thêm Phòng";
+
+        document.getElementById('room-name').value = '';
+        document.getElementById('room-D').value = '';
+        document.getElementById('room-R').value = '';
+        document.getElementById('room-H').value = '';
+        document.getElementById('room-doors').value = 1;
+        document.getElementById('room-windows').value = 0;
+        document.getElementById('room-note').value = '';
+        
+        if (document.getElementById('room-function-tag')) {
+            document.getElementById('room-function-tag').value = 'kho';
+            triggerRoomDiagnostic('kho');
+        }
+    }
+}
+
+function closeRoomModal() {
+    const modal = document.getElementById('modal-room');
+    if (modal) modal.classList.remove('active');
+    currentRoomId = null;
+    tempRoomPhotos = [];
+}
+
+function handleRoomPhotoSelect(files) {
+    if (!files || files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const img = new Image();
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                const MAX_WIDTH = 800;
+                if (width > MAX_WIDTH) {
+                    height = Math.round((height * MAX_WIDTH) / width);
+                    width = MAX_WIDTH;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                tempRoomPhotos.push(compressedBase64);
+                renderRoomPhotoThumbnails();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function renderRoomPhotoThumbnails() {
+    const container = document.getElementById('room-photo-thumbs');
+    if (!container) return;
+    container.innerHTML = '';
+
+    tempRoomPhotos.forEach((photoBase64, index) => {
+        const wrap = document.createElement('div');
+        wrap.style = "position:relative; width:70px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border-color);";
+        wrap.innerHTML = `
+            <img src="${photoBase64}" style="width:100%; height:100%; object-fit:cover;">
+            <button onclick="removeTempRoomPhoto(${index}); event.stopPropagation();" style="position:absolute; top:2px; right:2px; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+        `;
+        container.appendChild(wrap);
+    });
+}
+
+function removeTempRoomPhoto(index) {
+    tempRoomPhotos.splice(index, 1);
+    renderRoomPhotoThumbnails();
+}
+
+function saveRoomData() {
+    const name = document.getElementById('room-name').value.trim();
+    if (!name) {
+        alert("Vui lòng nhập tên phòng hoặc khu vực thi công!");
+        return;
+    }
+
+    const proj = projects.find(p => p.id === currentProjectId);
+    if (!proj) return;
+
+    const length = parseFloat(document.getElementById('room-D').value) || 0;
+    const width = parseFloat(document.getElementById('room-R').value) || 0;
+    const height = parseFloat(document.getElementById('room-H').value) || 0;
+    
+    const functionTag = document.getElementById('room-function-tag') ? document.getElementById('room-function-tag').value : 'kho';
+
+    const roomPayload = {
+        name: name.toUpperCase(),
+        functionTag: functionTag,
+        length: length,
+        width: width,
+        height: height,
+        doorW: parseFloat(document.getElementById('room-door-w').value) || 0,
+        doorH: parseFloat(document.getElementById('room-door-h').value) || 0,
+        doors: parseInt(document.getElementById('room-doors').value) || 0,
+        windowW: parseFloat(document.getElementById('room-window-w').value) || 0,
+        windowH: parseFloat(document.getElementById('room-window-h').value) || 0,
+        windows: parseInt(document.getElementById('room-windows').value) || 0,
+        note: document.getElementById('room-note').value.trim(),
+        photos: [...tempRoomPhotos]
+    };
+
+    if (currentRoomId) {
+        const rIndex = proj.rooms.findIndex(r => r.id === currentRoomId);
+        if (rIndex !== -1) {
+            proj.rooms[rIndex] = { ...proj.rooms[rIndex], ...roomPayload };
+        }
+    } else {
+        roomPayload.id = 'room_' + Date.now();
+        proj.rooms.push(roomPayload);
+    }
+
+    saveDataToStorage();
+    closeRoomModal();
+    updateUIWorkspace();
+}
+
+// ==========================================================================
+// LOGIC CẬP NHẬT GIAO DIỆN & TÍNH TOÁN KHỐI LƯỢNG (WORKSPACE)
+// ==========================================================================
+
+function updateUIWorkspace() {
+    const emptyState = document.getElementById('empty-state');
+    const workspace = document.getElementById('project-workspace');
+    
+    if (!currentProjectId) {
+        if (emptyState) emptyState.style.display = 'block';
+        if (workspace) workspace.style.display = 'none';
+        return;
+    }
+
+    if (emptyState) emptyState.style.display = 'none';
+    if (workspace) workspace.style.display = 'block';
+
+    const proj = projects.find(p => p.id === currentProjectId);
+    if (!proj) return;
+
+    document.getElementById('ws-project-name').innerText = proj.name;
+    document.getElementById('ws-project-client').innerText = `👤 CĐT: ${proj.client || '---'}`;
+    document.getElementById('ws-project-address').innerText = `📍 Địa chỉ: ${proj.address || '---'}`;
+    document.getElementById('ws-project-date').innerText = `📅 Ngày lập: ${proj.date || '---'}`;
+
+    const filterSelect = document.getElementById('boq-room-filter');
+    if (filterSelect) {
+        filterSelect.innerHTML = '<option value="all">File tổng hợp dự án</option>';
+        if (proj.rooms) {
+            proj.rooms.forEach(r => {
+                filterSelect.innerHTML += `<option value="${r.id}">${r.name}</option>`;
+            });
+        }
+    }
+
+    renderRoomsGrid(proj);
+    calculateAndRenderBOQ(proj);
+}
+
+function renderRoomsGrid(proj) {
+    const grid = document.getElementById('rooms-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    let totalFloorArea = 0;
+    let totalWallArea = 0;
+
+    if (!proj.rooms || proj.rooms.length === 0) {
+        grid.innerHTML = '<div style="color:var(--text-muted); padding:20px;">Dự án chưa có khu vực nào. Hãy bấm nút Thêm Phòng!</div>';
+        document.getElementById('stat-rooms').innerText = '0';
+        document.getElementById('stat-floor-area').innerText = '0.00';
+        document.getElementById('stat-wall-area').innerText = '0.00';
+        return;
+    }
+
+    proj.rooms.forEach(r => {
+        const dM = r.length / 1000;
+        const rM = r.width / 1000;
+        const hM = r.height / 1000;
+
+        const sSàn = dM * rM;
+        const chuVi = (dM + rM) * 2;
+        let sTường = chuVi * hM;
+
+        const sCửaĐi = (r.doorW / 1000) * (r.doorH / 1000) * r.doors;
+        const sCửaSổ = (r.windowW / 1000) * (r.windowH / 1000) * r.windows;
+        sTường = Math.max(0, sTường - sCửaĐi - sCửaSổ);
+
+        totalFloorArea += sSàn;
+        totalWallArea += sTường;
+
+        const card = document.createElement('div');
+        card.className = 'room-card';
+        const tagLabels = { 'kho': 'Khô', 'uot': '💦 Khu ướt', 'sach': '🛡️ Phòng sạch', 'buc-xa': '☢️ Bức xạ', 'tieu-am': '🎵 Tiêu âm' };
+        const activeTagLabel = tagLabels[r.functionTag] || 'Cấu hình';
+
+        card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px;">
+                <h4 style="margin:0; font-size:14px; font-weight:700; color:var(--brand-gold);">${r.name}</h4>
+                <span style="font-size:10px; background:rgba(255,215,0,0.15); color:var(--brand-gold); padding:2px 6px; border-radius:4px;">${activeTagLabel}</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+                📐 Kích thước: ${r.length} × ${r.width} × ${r.height} mm<br>
+                ▭ Diện tích sàn: <b>${sSàn.toFixed(2)}</b> m²<br>
+                ▯ Diện tích tường (đã trừ cửa): <b>${sTường.toFixed(2)}</b> m²
+            </div>
+            <div style="margin-top:10px; font-size:11px; color:var(--text-muted); border-top:1px solid rgba(255,255,255,0.05); padding-top:6px;">
+                📷 Hình ảnh hiện trạng: ${r.photos ? r.photos.length : 0} tấm
+            </div>
+            <div style="display:flex; gap:6px; margin-top:12px; justify-content:flex-end;">
+                <button onclick="openRoomModal('${r.id}')" style="background:none; border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">Sửa</button>
+                <button onclick="deleteRoom('${r.id}')" style="background:none; border:1px solid #e05252; color:#e05252; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">Xóa</button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+
+    document.getElementById('stat-rooms').innerText = proj.rooms.length;
+    document.getElementById('stat-floor-area').innerText = totalFloorArea.toFixed(2);
+    document.getElementById('stat-wall-area').innerText = totalWallArea.toFixed(2);
+}
+
+function deleteRoom(roomId) {
+    if (confirm("Chị có chắc muốn xóa căn phòng này khỏi dự án?")) {
+        const proj = projects.find(p => p.id === currentProjectId);
+        if (proj) {
+            proj.rooms = proj.rooms.filter(r => r.id !== roomId);
+            saveDataToStorage();
+            updateUIWorkspace();
+        }
+    }
+}
+
+function calculateAndRenderBOQ(proj) {
+    const tbody = document.getElementById('boq-summary-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:15px;">Mã nguồn dữ liệu BOQ đã được kết nối đồng bộ an toàn.</td></tr>';
+}

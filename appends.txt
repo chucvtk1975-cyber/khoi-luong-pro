@@ -1,0 +1,65 @@
+﻿=== All book_append_sheet calls ===
+  +26122: XLSX.utils.book_append_sheet(wb, wsSum, "Tß╗òng hß╗úp");
+  +53860: XLSX.utils.book_append_sheet(wb, wsVT, "Vß║¡t T╞░ Cß║ºn Mua");
+
+=== End of exportExcel (excel +47000 to +60000) ===
+// D├▓ng trß╗æng
+aoaVT.push(Array(VT_COLS).fill('')); curRowVT++;
+// Tß╗òng cß╗Öng vß║¡t t╞░
+const sumRow = Array(VT_COLS).fill('');
+sumRow[1] = 'Tß╗öNG Cß╗ÿNG Vß║¼T T╞» (THEO Dß╗░ TO├üN)';
+sumRow[6] = fmtNum(grandTotal, 0);
+aoaVT.push(sumRow);
+mergesVT.push({s:{r:curRowVT,c:1}, e:{r:curRowVT,c:5}});
+curRowVT++;
+// Ghi ch├║ cuß╗æi
+const noteVT1 = Array(VT_COLS).fill('');
+noteVT1[1] = '* Cß╗Öt "KL Cß║ºn Mua" ─æ├ú cß╗Öng th├¬m 5% dß╗▒ ph├▓ng hao hß╗Ñt vß║¡n chuyß╗ân';
+aoaVT.push(noteVT1); mergesVT.push({s:{r:curRowVT,c:1}, e:{r:curRowVT,c:VT_COLS-1}}); curRowVT++;
+const noteVT2 = Array(VT_COLS).fill('');
+noteVT2[1] = '* Cß╗Öt "Nh├á Cung Cß║Ñp" ─æß╗â trß╗æng cho nh├ón vi├¬n ─æiß╗ün khi ─æß║╖t h├áng';
+aoaVT.push(noteVT2); mergesVT.push({s:{r:curRowVT,c:1}, e:{r:curRowVT,c:VT_COLS-1}}); curRowVT++;
+const noteVT3 = Array(VT_COLS).fill('');
+noteVT3[1] = `* Ng├áy lß║¡p: ${project.date ? new Date(project.date).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-
+aoaVT.push(noteVT3); mergesVT.push({s:{r:curRowVT,c:1}, e:{r:curRowVT,c:VT_COLS-1}}); curRowVT++;
+// ΓöÇΓöÇ Tß║ío sheet ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+const wsVT = XLSX.utils.aoa_to_sheet(aoaVT);
+wsVT['!merges'] = mergesVT;
+wsVT['!cols'] = [
+{ wch: 6.33 },  // STT (A) - theo file mß║½u
+{ wch: 32 },  // T├¬n vß║¡t t╞░
+{ wch: 6  },  // ─ÉVT
+{ wch: 11 },  // KL t├¡nh to├ín
+{ wch: 13 },  // KL cß║ºn mua (+5%)
+{ wch: 12 },  // ─É╞ín gi├í
+{ wch: 13 },  // Th├ánh tiß╗ün
+{ wch: 20 },  // Ph├▓ng sß╗¡ dß╗Ñng
+{ wch: 16 },  // Nh├á cung cß║Ñp
+{ wch: 20 },  // Ghi ch├║
+];  // Tß╗òng Γëê 148 k├╜ tß╗▒ ΓåÆ vß╗½a A4 ngang
+applyPageSetup(wsVT, 9);
+applySheetStyles(wsVT, 8);
+XLSX.utils.book_append_sheet(wb, wsVT, "Vß║¡t T╞░ Cß║ºn Mua");
+})();
+project.rooms.forEach((room, idx) => {
+const aoa = [];
+const merges = [];
+buildHeader(aoa, merges, `Bß║óNG CHI TIß║╛T KHß╗ÉI L╞»ß╗óNG ΓÇö ${room.name.toUpperCase()}`, 10);
+// Row 8 & 9: Table Header
+aoa.push(['STT', 'Hß║áNG Mß╗ñC', 'K├ìCH TH╞»ß╗ÜC', '', '', '─É. Vß╗è', 'Sß╗É L╞»ß╗óNG', '─É╞áN GI├ü', 'TH├ÇNH TIß╗ÇN', 'GHI CH├Ü']);
+aoa.push(['', '', 'D├ÇI', 'Rß╗ÿNG', 'CAO', '', '', '', '', '']);
+// Table header merges
+merges.push({s:{r:8,c:0},  e:{r:9,c:0}});  // STT
+merges.push({s:{r:8,c:1},  e:{r:9,c:1}});  // Hß║áNG Mß╗ñC
+merges.push({s:{r:8,c:2},  e:{r:8,c:4}});  // K├ìCH TH╞»ß╗ÜC
+merges.push({s:{r:8,c:5},  e:{r:9,c:5}});  // ─É. Vß╗è
+merges.push({s:{r:8,c:6},  e:{r:9,c:6}});  // Sß╗É L╞»ß╗óNG
+merges.push({s:{r:8,c:7},  e:{r:9,c:7}});  // ─É╞áN GI├ü
+merges.push({s:{r:8,c:8},  e:{r:9,c:8}});  // TH├ÇNH TIß╗ÇN
+merges.push({s:{r:8,c:9},  e:{r:9,c:9}});  // GHI CH├Ü
+let curRow = 10;
+let itemStt = 1;
+const blkDetail = () => Array(10).fill('');
+const calc = CALC.room(room);
+// D├▓ng t├¬n ph├▓ng
+const secRow = blkDetail();

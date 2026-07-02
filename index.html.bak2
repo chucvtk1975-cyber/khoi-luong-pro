@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bốc Khối Lượng Pro</title>
+
+  <meta name="description" content="Công cụ bốc khối lượng thông minh cho thiết kế nội thất và thi công xây dựng">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+
+</head>
+
+<body>
+
+  <!-- DIV ẨN: chỉ hiện khi xuất PDF dạng Excel -->
+
+  <div id="excel-pdf-content" style="display:none;"></div>
+
+  <!-- ========== MODAL: TẠO / SỬA DỰ ÁN ========== -->
+
+  <div class="modal-overlay" id="modal-project">
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h3 id="modal-project-title">Tạo Dự Án Mới</h3>
+
+        <button class="modal-close" id="btn-close-project-modal"><i data-lucide="x"></i></button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-group">
+
+          <label>Tên công trình <span class="required">*</span></label>
+
+          <input type="text" id="proj-name" placeholder="VD: Biệt thự Quận 9 — Anh Minh">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Chủ đầu tư</label>
+
+          <input type="text" id="proj-client" placeholder="VD: Anh Nguyễn Văn Minh">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Địa chỉ công trình</label>
+
+          <input type="text" id="proj-address" placeholder="VD: 123 Đường ABC, Quận 9, TP.HCM">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Ngày lập dự toán</label>
+
+          <input type="date" id="proj-date">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Thuế VAT (%)
+
+            <span style="font-size:11px;color:var(--text-muted);font-weight:400;">&nbsp;— áp dụng cho tổng giá trị hợp đồng</span>
+
+          </label>
+
+          <div style="display:flex;align-items:center;gap:8px;">
+
+            <input type="number" id="proj-vat-rate" min="0" max="30" step="0.5" value="8" style="width:90px;">
+
+            <span style="font-size:13px;color:var(--text-secondary);">%</span>
+
+            <span style="font-size:11px;color:var(--text-muted);">0 = không tính VAT · thường dùng 8% hoặc 10%</span>
+
+          </div>
+
+        </div>
+
+        <div class="section-title">🏢 Thông tin bên lập</div>
+
+        <div class="form-row-2">
+
+          <div class="form-group">
+
+            <label>Người lập (Từ:)</label>
+
+            <input type="text" id="proj-sender" placeholder="VD: KIM CHÚC">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Tiêu đề bảng</label>
+
+            <input type="text" id="proj-subtitle" placeholder="VD: CẢI TẠO PHÒNG XÔNG TẦNG 5 - NHÀ B">
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Tên công ty (bên lập)</label>
+
+          <input type="text" id="proj-company" placeholder="VD: TNHH TRANG TRÍ NỘI THẤT XANH">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Địa chỉ công ty</label>
+
+          <input type="text" id="proj-company-addr" placeholder="VD: 127/13 Nguyễn Tư Giản, P. An Hội Tây, Tp. HCM">
+
+        </div>
+
+        <div class="section-title">👤 Thông tin bên nhận</div>
+
+        <div class="form-row-2">
+
+          <div class="form-group">
+
+            <label>Kính gởi</label>
+
+            <input type="text" id="proj-recipient" placeholder="VD: BAN LÃNH ĐẠO">
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Tên công ty (khách hàng)</label>
+
+          <input type="text" id="proj-client-co" placeholder="VD: TNHH BỆNH VIỆN ĐA KHOA THIỆN HẠNH">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Địa chỉ khách hàng</label>
+
+          <input type="text" id="proj-client-addr" placeholder="VD: 17 Nguyễn Chí Thanh, Đắk Lắk">
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button class="btn-secondary" id="btn-cancel-project">Hủy</button>
+
+        <button class="btn-primary" id="btn-save-project">
+
+          <i data-lucide="save"></i> Lưu Dự Án
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========== MODAL: THÊM / SỬA PHÒNG ========== -->
+
+  <div class="modal-overlay" id="modal-room">
+
+    <div class="modal-card modal-room-card">
+
+      <div class="modal-header">
+
+        <h3 id="modal-room-title">Thêm Phòng / Khu Vực</h3>
+
+        <button class="modal-close" id="btn-close-room-modal"><i data-lucide="x"></i></button>
+
+      </div>
+
+      <div class="modal-body">
+        <!-- MOBILE ONLY: Nút hành động hiện ở đầu form khi màn hình nhỏ -->
+        <div class="modal-footer-mobile-top">
+          <button class="btn-secondary" onclick="closeRoomModal()">Hủy</button>
+          <button class="btn-primary" onclick="saveRoom()">
+            <i data-lucide="plus-circle"></i>
+            <span id="btn-save-room-label-mobile">Thêm Phòng</span>
+          </button>
+        </div>
+
+        <!-- Tên phòng -->
+
+        <div class="form-group">
+
+          <label>Tên phòng / khu vực <span class="required">*</span></label>
+
+          <input type="text" id="room-name" placeholder="VD: Phòng khách, Phòng ngủ master, Bếp..." style="text-transform:uppercase;">
+
+        </div>
+
+        <!-- Quick select -->
+
+        <div class="quick-select-group">
+
+          <span class="quick-label">Chọn nhanh:</span>
+
+          <div class="quick-btns">
+
+            <button class="quick-btn" data-name="Phòng khách">Phòng khách</button>
+
+            <button class="quick-btn" data-name="Phòng ngủ master">PNgủ master</button>
+
+            <button class="quick-btn" data-name="Phòng ngủ 2">PNgủ 2</button>
+
+            <button class="quick-btn" data-name="Phòng ngủ 3">PNgủ 3</button>
+
+            <button class="quick-btn" data-name="Phòng bếp">Bếp</button>
+
+            <button class="quick-btn" data-name="Phòng ăn">Phòng ăn</button>
+
+            <button class="quick-btn" data-name="WC master">WC master</button>
+
+            <button class="quick-btn" data-name="WC chung">WC chung</button>
+
+            <button class="quick-btn" data-name="Hành lang">Hành lang</button>
+
+            <button class="quick-btn" data-name="Sảnh">Sảnh</button>
+
+            <button class="quick-btn" data-name="Ban công">Ban công</button>
+
+            <button class="quick-btn" data-name="Kho">Kho</button>
+
+          </div>
+
+        </div>
+
+        <!-- Kích thước -->
+
+        <div class="section-title">📐 Kích thước (mm — nhập thẳng từ AutoCAD)</div>
+
+        <div class="dim-grid">
+
+          <div class="form-group">
+
+            <label>Dài — D (mm)</label>
+
+            <input type="number" id="room-D" placeholder="5200" step="1" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Rộng — R (mm)</label>
+
+            <input type="number" id="room-R" placeholder="4000" step="1" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Cao — H (mm)</label>
+
+            <input type="number" id="room-H" placeholder="3200" step="1" min="0"
+
+              oninput="autoFillZ1Height(this.value)">
+
+          </div>
+
+        </div>
+
+        <!-- Cửa -->
+
+        <div class="section-title">🚪 Khai báo lỗ cửa (để trừ tường)</div>
+
+        <div class="door-section-label">Cửa đi</div>
+
+        <div class="opening-grid-3">
+
+          <div class="form-group">
+
+            <label>Rộng (mm)</label>
+
+            <input type="number" id="room-door-w" value="900" step="1" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Cao (mm)</label>
+
+            <input type="number" id="room-door-h" value="2100" step="1" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Số lượng (cái)</label>
+
+            <input type="number" id="room-doors" value="1" min="0">
+
+          </div>
+
+        </div>
+
+        <div class="door-section-label">Cửa sổ</div>
+
+        <div class="opening-grid-3">
+
+          <div class="form-group">
+
+            <label>Rộng (mm)</label>
+
+            <input type="number" id="room-window-w" value="1200" step="1" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Cao (mm)</label>
+
+            <input type="number" id="room-window-h" value="1200" step="1" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Số lượng (cái)</label>
+
+            <input type="number" id="room-windows" value="1" min="0">
+
+          </div>
+
+        </div>
+
+        <!-- Vật liệu -->
+
+        <div class="section-title">🎨 Vật liệu bề mặt</div>
+
+        <div class="material-section">
+
+          <div class="material-group">
+
+            <div class="material-label">
+
+              <span class="mat-icon floor-icon">▭</span> SÀN
+
+            </div>
+
+            <div class="material-options" id="mat-floor"></div>
+
+          </div>
+
+          <!-- TƯỜNG — có thể tách 2 vùng -->
+
+          <div class="material-group">
+
+            <div class="material-label" style="justify-content:space-between;">
+
+              <span><span class="mat-icon wall-icon">▯</span> TƯỜNG</span>
+
+              <label class="zone-toggle" title="Tách 2 vùng: ốp gạch phía dưới + sơn phía trên">
+
+                <input type="checkbox" id="wall-zone-toggle">
+
+                <span class="zone-toggle-track"></span>
+
+                <span class="zone-toggle-label">Tách 2 vùng</span>
+
+              </label>
+
+            </div>
+
+            <!-- Chế độ 1 vùng (mặc định) -->
+
+            <div id="wall-single-mode">
+
+              <div class="material-options" id="mat-wall"></div>
+
+            </div>
+
+            <!-- Chế độ 2 vùng -->
+
+            <div id="wall-zone-mode" style="display:none;">
+
+              <div class="zone-block">
+
+                <div class="zone-header">
+
+                  <span class="zone-badge zone-1">Vùng 1 — Phía dưới</span>
+
+                  <div class="zone-h-input">
+
+                    <input type="number" id="wall-z1-h" placeholder="e.g. 2000" min="100" max="4500" step="50"
+
+                      title="Nhập chiều cao Vùng 1 (phín dưới). Tự fill = H phòng khi bật 2 vùng.">
+
+                    <span>mm</span>
+
+                  </div>
+
+                </div>
+
+                <div class="material-options zone-options" id="mat-wall-z1"></div>
+
+                <div class="zone-price-row">
+
+                  <label>Đơn giá</label>
+
+                  <input type="number" id="room-wall-price-z1" placeholder="120.000" step="1000" min="0">
+
+                  <span>đ/m²</span>
+
+                </div>
+
+              </div>
+
+              <div class="zone-block">
+
+                <div class="zone-header">
+
+                  <span class="zone-badge zone-2">Vùng 2 — Phía trên (còn lại)</span>
+
+                  <div style="display:flex;align-items:center;gap:6px;">
+
+                    <span class="zone-h-auto" id="wall-z2-h-display"
+
+                      title="Tự tính = Chiều cao phòng (H) − Chiều cao Vùng 1"
+
+                      style="cursor:help;">— mm</span>
+
+                    <span style="font-size:10px;color:var(--text-muted);font-style:italic;">(≈ H − Vùng 1)</span>
+
+                  </div>
+
+                </div>
+
+                <div class="material-options zone-options" id="mat-wall-z2"></div>
+
+                <div class="zone-price-row">
+
+                  <label>Đơn giá</label>
+
+                  <input type="number" id="room-wall-price-z2" placeholder="60.000" step="1000" min="0">
+
+                  <span>đ/m²</span>
+
+                </div>
+
+              </div>
+
+              <div class="zone-sill-row">
+
+                <label>📐 Cao bậu cửa sổ</label>
+
+                <input type="number" id="room-window-sill" placeholder="900" min="0" max="2000" step="50" value="900">
+
+                <span>mm (tính từ sàn)</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="material-group">
+
+            <div class="material-label">
+
+              <span class="mat-icon ceil-icon">▭</span> TRẦN
+
+            </div>
+
+            <div class="material-options" id="mat-ceiling"></div>
+
+          </div>
+
+        </div>
+
+        <!-- Đơn giá -->
+
+        <div class="section-title">💰 Đơn giá (tùy chọn — dùng cho báo giá)</div>
+
+        <div class="dim-grid">
+
+          <div class="form-group">
+
+            <label>Đơn giá sàn (đ/m²)</label>
+
+            <input type="number" id="room-floor-price" placeholder="748.550" step="1000" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Đơn giá tường (đ/m²)</label>
+
+            <input type="number" id="room-wall-price" placeholder="120.000" step="1000" min="0">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Đơn giá trần (đ/m²)</label>
+
+            <input type="number" id="room-ceil-price" placeholder="150.000" step="1000" min="0">
+
+          </div>
+
+        </div>
+
+        <!-- Ghi chú phòng -->
+
+        <div class="section-title">📝 Ghi chú phòng (tùy chọn)</div>
+
+        <div class="form-group">
+
+          <textarea id="room-note" rows="4"
+
+            placeholder="VD: Trần cao 3.000, ốp gạch 1.800, nội 1.200, sơn nước 600 mm&#10;VD: Thêm máy lạnh 2 cái, quạt hút 1 cái, ổ cắm 3 bộ...&#10;(Ghi chú sẽ tự động phân tích các thiết bị)"
+
+            style="width:100%;resize:vertical;"></textarea>
+
+        </div>
+
+        <!-- THIẾT BỊ ĐIỆN -->
+
+        <div class="section-title" style="margin-top:14px;">⚡ Thiết Bị Điện (nhập số lượng — 0 = bỏ qua)</div>
+
+        <div class="elec-grid">
+
+          <!-- ─ ĐÈN ─ -->
+
+          <div class="elec-item">
+
+            <label>💡 Đèn downlight</label>
+
+            <input type="number" id="elec-light-dl" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>💡 Đèn spotlight</label>
+
+            <input type="number" id="elec-light-sl" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>💡 Đèn panel</label>
+
+            <input type="number" id="elec-light-panel" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>💡 Đèn tuýp 1200mm</label>
+
+            <input type="number" id="elec-light-tuyp1200" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>💡 Đèn tuýp 600mm</label>
+
+            <input type="number" id="elec-light-tuyp600" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>💡 Đèn LED dây</label>
+
+            <input type="number" id="elec-light-led" value="0" min="0" step="1">
+
+            <span>m</span>
+
+          </div>
+
+          <!-- ─ CÔNG TẮC / Ổ CẮM ─ -->
+
+          <div class="elec-item">
+
+            <label>🔘 CT 2 mặt</label>
+
+            <input type="number" id="elec-sw2" value="0" min="0" step="1">
+
+            <span>mặt</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>🔘 CT 1 mặt</label>
+
+            <input type="number" id="elec-sw1" value="0" min="0" step="1">
+
+            <span>mặt</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>🔌 Ổ cắm đôi</label>
+
+            <input type="number" id="elec-outlet" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <!-- ─ CB ─ -->
+
+          <div class="elec-item">
+
+            <label>⚡ CB 1 pha</label>
+
+            <input type="number" id="elec-cb1" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>⚡ CB 2 pha</label>
+
+            <input type="number" id="elec-cb2" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>⚡ CB 3 pha</label>
+
+            <input type="number" id="elec-cb3" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>⚡ Tủ điện</label>
+
+            <input type="number" id="elec-panel-box" value="0" min="0" step="1">
+
+            <span>bộ</span>
+
+          </div>
+
+          <!-- ─ MÁY LẠNH ─ -->
+
+          <div class="elec-item">
+
+            <label>❄️ ML treo tường</label>
+
+            <input type="number" id="elec-ac-wall" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>❄️ ML âm trần</label>
+
+            <input type="number" id="elec-ac-ceil" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <div class="elec-item">
+
+            <label>❄️ ML trung tâm</label>
+
+            <input type="number" id="elec-ac-central" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <!-- ─ QUẠT HÚT ─ -->
+
+          <div class="elec-item">
+
+            <label>🌀 Quạt hút</label>
+
+            <input type="number" id="elec-fan" value="0" min="0" step="1">
+
+            <span>cái</span>
+
+          </div>
+
+          <!-- ─ NẸP / ỐNG: ẩn UI, chỉ lưu để tính toán ─ -->
+
+          <div style="display:none;">
+
+            <input type="number" id="elec-nep" value="0" min="0" step="1">
+
+            <input type="number" id="elec-ong-ruot" value="0" min="0" step="1">
+
+            <input type="number" id="elec-ong-cung" value="0" min="0" step="1">
+
+          </div>
+
+        </div>
+
+        <div class="elec-hint">
+
+          💡 Tự động tính: dây 1,5mm² (đèn/CT) · dây 2,5mm² (ổ cắm) · dây 4,0mm² (máy lạnh/CB) — theo cuộn 100m<br>
+
+          
+
+        </div>
+
+        <!-- Ghi chú thiết bị điện tự do -->
+
+        <div class="section-title" style="margin-top:14px;">
+
+          📝 Ghi chú thiết bị khác <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(tùy chọn — nhập bất kỳ thiết bị không có trong danh sách)</span>
+
+        </div>
+
+        <div class="form-group">
+
+          <textarea id="elec-note" rows="3"
+
+            placeholder="VD: Điện ăng-ten 2 điểm, điện nước nóng 1 điểm, hub mang 1 cái, điện phòng tắm 3 điểm...&#10;VD: Panasonic 16A 2 bộ, đèn dây LED 5m, điều khiển tập trung 1 cục"
+
+            style="width:100%;resize:vertical;"></textarea>
+
+        </div>
+
+        <!-- Ảnh hiện trạng điện -->
+
+        <div class="section-title" style="margin-top:14px;">
+
+          📸 Ảnh hiện trạng điện <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(đính kèm ảnh chụp hiện trường)</span>
+
+        </div>
+
+        <div class="elec-photo-zone" id="elec-photo-zone"
+
+          onclick="document.getElementById('elec-photo-input').click()"
+
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+
+          ondragleave="this.classList.remove('drag-over')"
+
+          ondrop="handleElecPhotoDrop(event)">
+
+          <input type="file" id="elec-photo-input" accept="image/*" multiple
+
+            style="display:none" onchange="handleElecPhotoSelect(this.files)">
+
+          <div class="elec-photo-prompt" id="elec-photo-prompt">
+
+            <span style="font-size:28px;">📷</span>
+
+            <span>Nhấp hoặc kéo thả ảnh vào đây</span>
+
+            <span style="font-size:11px;color:var(--text-muted);">Hỗ trợ JPG, PNG, HEIC — nhiều ảnh</span>
+
+          </div>
+
+          <div class="elec-photo-thumbs" id="elec-photo-thumbs"></div>
+
+        </div>
+
+      <!-- THIẾT BỊ NỘI THẤT -->
+
+        <div class="section-title" style="margin-top:16px;">
+
+          🛋️ Thiết Bị Nội Thất <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(tủ bếp, tủ quần áo, cửa nội thất, kệ, cầu thang...)</span>
+
+        </div>
+
+        <div class="form-group">
+
+          <textarea id="note-woodwork" rows="3"
+
+            placeholder="VD: Tủ bếp trên 2,4m dài, tủ bếp dưới 2,4m dài, mặt đá granite&#10;Tủ quần áo 3 cánh 1,8×2,4m, cửa gỗ HDF 2 cái&#10;Kệ TV treo tường 1,6m, kệ sách 0,8m"
+
+            style="width:100%;resize:vertical;"></textarea>
+
+        </div>
+
+        <!-- PHẦN NƯỚC -->
+
+        <div class="section-title" style="margin-top:4px;">
+
+          🚿 Phần Nước <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(thiết bị vệ sinh, ống cấp/thoát, bình nóng lạnh...)</span>
+
+        </div>
+
+        <div class="form-group">
+
+          <textarea id="note-plumbing" rows="3"
+
+            placeholder="VD: Bồn cầu TOTO 1 cái, chậu rửa inox 1 cái, vòi sen 1 bộ&#10;Ống cấp nước PPR 20mm 8m, ống thoát PVC 60mm 5m&#10;Bình nóng lạnh Ariston 20L 1 cái"
+
+            style="width:100%;resize:vertical;"></textarea>
+
+        </div>
+
+        <!-- CHỐNG THẤM -->
+
+        <div class="section-title" style="margin-top:4px;">
+
+          🛡️ Chống Thấm <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(sàn WC, tường WC, ban công, mái...)</span>
+
+        </div>
+
+        <div class="form-group">
+
+          <textarea id="note-waterproof" rows="3"
+
+            placeholder="VD: Chống thấm sàn WC Sika 2 lớp 4m², chống thấm tường WC cao 1,8m&#10;Chống thấm ban công màng khò 6m², mái Bestmix 2 lớp 25m²"
+
+            style="width:100%;resize:vertical;"></textarea>
+
+        </div>
+      </div><!-- end modal-body -->
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-room">Hủy</button>
+        <button class="btn-primary" id="btn-save-room">
+          <i data-lucide="plus-circle"></i> <span id="btn-save-room-label">Thêm Phòng</span>
+        </button>
+      </div>
+    </div><!-- end modal-card -->
+  </div><!-- end modal-room -->
+
+<!-- ========== APP CHÍNH ========== -->
+
+  <div class="app-wrapper">
+
+    <!-- Header -->
+
+    <header class="app-header">
+
+      <div class="header-brand">
+
+        <img src="logo-bluedecor.png" alt="Blue Decor" style="height:42px;object-fit:contain;display:block;" onerror="this.style.display='none'">
+
+      </div>
+
+      <div class="header-actions">
+
+        <span class="header-badge" id="header-project-count">0 dự án</span>
+
+        <a href="../index.html" class="btn-ghost">
+
+          <i data-lucide="arrow-left"></i> Trợ Lý Thuế
+
+        </a>
+
+      </div>
+
+    </header>
+
+    <!-- Layout chính -->
+
+    <div class="main-layout">
+
+      <!-- Sidebar dự án -->
+
+      <aside class="project-sidebar">
+
+        <div class="sidebar-header">
+
+          <span>Dự Án</span>
+
+          <button class="btn-icon-sm" id="btn-new-project" title="Tạo dự án mới">
+
+            <i data-lucide="plus"></i>
+
+          </button>
+
+        </div>
+
+        <div class="project-list" id="project-list"></div>
+
+      </aside>
+
+      <!-- Workspace chính -->
+
+      <main class="workspace">
+
+        <!-- Empty state -->
+
+        <div class="empty-state" id="empty-state">
+
+          <div class="empty-icon">📐</div>
+
+          <h2>Chưa có dự án nào</h2>
+
+          <p>Tạo dự án đầu tiên để bắt đầu bốc khối lượng</p>
+
+          <button class="btn-primary btn-lg" id="btn-new-project-empty">
+
+            <i data-lucide="folder-plus"></i> Tạo Dự Án Mới
+
+          </button>
+
+        </div>
+
+        <!-- Project workspace -->
+
+        <div class="project-workspace" id="project-workspace">
+
+          <!-- Header chỉ hiện khi in PDF -->
+
+          <div class="pdf-print-header" id="pdf-print-header">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+
+              <img src="logo-bluedecor.png" alt="Blue Decor" style="height:60px;object-fit:contain;">
+
+              <div style="text-align:right;">
+
+                <h1 id="pdf-title" style="margin:0;font-size:15pt;font-weight:800;">BẢNG DỰ TOÁN CÔNG TRÌNH</h1>
+
+                <p id="pdf-meta" style="margin:4px 0 0 0;font-size:9pt;"></p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Project header -->
+
+          <div class="project-header">
+
+            <div class="project-info">
+
+              <h2 id="ws-project-name">Tên dự án</h2>
+
+              <div class="project-meta">
+
+                <span id="ws-project-client"></span>
+
+                <span id="ws-project-address"></span>
+
+                <span id="ws-project-date"></span>
+
+              </div>
+
+            </div>
+
+            <div class="project-actions" style="flex-wrap:wrap;gap:8px;">
+
+              <button class="btn-secondary btn-sm" id="btn-edit-project">
+
+                <i data-lucide="edit-2"></i> Sửa
+
+              </button>
+
+              <button class="btn-danger btn-sm" id="btn-delete-project">
+
+                <i data-lucide="trash-2"></i> Xóa
+
+              </button>
+
+              <div style="display:flex;align-items:center;gap:6px;border-left:1px solid var(--border-color);padding-left:8px;margin-left:2px;">
+
+                <label style="font-size:12px;color:var(--text-secondary);white-space:nowrap;">Lọc phòng:</label>
+
+                <select id="boq-room-filter" onchange="filterBOQByRoom(this.value)"
+
+                  style="background:var(--bg-card);color:var(--text-main);border:1px solid var(--border-color);padding:5px 10px;border-radius:4px;font-size:12px;outline:none;cursor:pointer;">
+
+                  <option value="all">File tổng</option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Stats bar -->
+
+          <div class="stats-bar">
+
+            <div class="stat-item">
+
+              <span class="stat-value" id="stat-rooms">0</span>
+
+              <span class="stat-label">Phòng</span>
+
+            </div>
+
+            <div class="stat-item">
+
+              <span class="stat-value" id="stat-items">0</span>
+
+              <span class="stat-label">Hạng mục</span>
+
+            </div>
+
+            <div class="stat-item">
+
+              <span class="stat-value" id="stat-floor-area">0.00</span>
+
+              <span class="stat-label">m² sàn</span>
+
+            </div>
+
+            <div class="stat-item">
+
+              <span class="stat-value" id="stat-wall-area">0.00</span>
+
+              <span class="stat-label">m² tường</span>
+
+            </div>
+
+          </div>
+
+          <!-- Workspace tabs -->
+
+          <div class="ws-tabs">
+
+            <button class="ws-tab active" data-ws-tab="rooms">
+
+              <i data-lucide="layout-grid"></i> Danh Sách Phòng
+
+            </button>
+
+            <button class="ws-tab" data-ws-tab="boq">
+
+              <i data-lucide="table-2"></i> Bảng Dự Toán
+
+            </button>
+
+            <button class="ws-tab" data-ws-tab="vattu">
+
+              <i data-lucide="package"></i> Thư Viện Vật Tư
+
+            </button>
+
+            <button class="ws-tab" data-ws-tab="media">
+
+              <i data-lucide="image"></i> Tài Liệu
+
+            </button>
+
+          </div>
+
+          <!-- Panel: Rooms -->
+
+          <div class="ws-panel active" id="ws-panel-rooms">
+
+            <div class="rooms-toolbar">
+
+              <button class="btn-primary" id="btn-add-room">
+
+                <i data-lucide="plus"></i> Thêm Phòng
+
+              </button>
+
+              <span class="rooms-hint">Nhập kích thước từng phòng — khối lượng tự động tính</span>
+
+            </div>
+
+            <div class="rooms-grid" id="rooms-grid"></div>
+
+          </div>
+
+          <!-- Panel: BOQ -->
+
+          <div class="ws-panel" id="ws-panel-boq">
+
+            <div class="boq-toolbar">
+
+              <span class="boq-info">
+
+                <i data-lucide="zap" style="width:13px;height:13px;vertical-align:middle;color:var(--brand-gold)"></i>
+
+                Bảng khối lượng cập nhật tức thì
+
+              </span>
+
+              <div style="display:flex;gap:8px;">
+
+                <button class="btn-outline" id="btn-preview-excel-2">
+
+                  <i data-lucide="eye"></i> Xem Trước
+
+                </button>
+
+                <button class="btn-outline" id="btn-export-pdf-excel" onclick="exportPDFExcel()" style="border-color:#e05252;color:#e05252;background:rgba(224,82,82,0.08);">
+
+                  <i data-lucide="file-spreadsheet"></i> PDF (Excel)
+
+                </button>
+
+                <button class="btn-success" id="btn-export-excel-2">
+
+                  <i data-lucide="download"></i> Xuất Excel (.xlsx)
+
+                </button>
+
+              </div>
+
+            </div>
+
+            <!-- Bảng Tổng Hợp -->
+
+            <div id="boq-summary-section">
+
+              <div class="boq-section-title" style="font-size:14px;font-weight:700;color:var(--brand-gold);margin:18px 0 10px 0;display:flex;align-items:center;gap:6px;border-left:3px solid var(--brand-gold);padding-left:8px;">
+
+                📊 1. BẢNG TỔNG HỢP KHỐI LƯỢNG TOÀN DỰ ÁN
+
+              </div>
+
+              <div class="boq-table-wrapper" style="margin-bottom: 24px; max-height: 400px; overflow-y: auto;">
+
+                <table class="boq-table">
+
+                  <thead id="boq-summary-thead">
+
+                    <tr>
+
+                      <th style="width:40px;text-align:center;">STT</th>
+
+                      <th>Hạng Mục</th>
+
+                      <th style="width:58px;text-align:center;">Đ.Vị</th>
+
+                      <th style="width:100px;text-align:right;">Tổng SL</th>
+
+                      <th style="width:110px;text-align:right;">Đơn Giá</th>
+
+                      <th style="width:120px;text-align:right;">Thành Tiền</th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody id="boq-summary-tbody"></tbody>
+
+                </table>
+
+              </div>
+
+            </div>
+
+            <!-- Tiêu đề bảng (tự cập nhật khi lọc phòng) -->
+
+            <div id="boq-section-label" style="font-size:13px;font-weight:700;color:var(--brand-gold);margin:14px 0 8px 0;display:flex;align-items:center;gap:6px;border-left:3px solid var(--brand-gold);padding-left:8px;">
+
+              📊 1. BẢNG TỔNG HỢP KHỐI LƯỢNG TOÀN DỰ ÁN
+
+            </div>
+
+            <!-- Bảng Chi Tiết (ẩn khi xem File tổng) -->
+
+            <div id="boq-detail-section" style="display:none;">
+
+              <div class="boq-table-wrapper">
+
+                <table class="boq-table">
+
+                  <thead>
+
+                    <tr>
+
+                      <th style="width:40px;text-align:center;">STT</th>
+
+                      <th>Hạng Mục</th>
+
+                      <th style="width:68px;text-align:right;">Dài</th>
+
+                      <th style="width:68px;text-align:right;">Rộng</th>
+
+                      <th style="width:68px;text-align:right;">Cao</th>
+
+                      <th style="width:48px;text-align:center;">Đ.Vị</th>
+
+                      <th style="width:86px;text-align:right;">Số Lượng</th>
+
+                      <th style="width:110px;text-align:right;">Đơn Giá</th>
+
+                      <th style="width:118px;text-align:right;">Thành Tiền</th>
+
+                      <th style="min-width:260px;">Ghi Chú / Công thức</th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody id="boq-tbody"></tbody>
+
+                </table>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Panel: Tài Liệu -->
+
+          <div class="ws-panel" id="ws-panel-media">
+
+            <div class="media-panel">
+
+              <!-- Khu vực 1: Hình hiện trạng -->
+
+              <div class="media-section">
+
+                <div class="media-section-header">
+
+                  <div class="media-section-title">
+
+                    <i data-lucide="camera" style="width:16px;height:16px;"></i>
+
+                    Hình Hiện Trạng
+
+                  </div>
+
+                  <label class="btn-upload" for="upload-site-photos">
+
+                    <i data-lucide="upload" style="width:14px;height:14px;"></i>
+
+                    Up hình
+
+                  </label>
+
+                  <input type="file" id="upload-site-photos" accept="image/*" multiple hidden>
+
+                </div>
+
+                <div id="site-photos-dropzone" class="upload-dropzone" onclick="document.getElementById('upload-site-photos').click()">
+
+                  <i data-lucide="image-plus" style="width:32px;height:32px;color:var(--text-muted)"></i>
+
+                  <p>Click hoặc kéo thả ảnh hiện trạng vào đây</p>
+
+                  <span style="font-size:11px;color:var(--text-muted)">JPG, PNG, HEIC — tự động nén trước khi lưu</span>
+
+                </div>
+
+                <div class="photo-grid" id="site-photos-grid"></div>
+
+              </div>
+
+              <!-- Khu vực 2: File thiết kế -->
+
+              <div class="media-section">
+
+                <div class="media-section-header">
+
+                  <div class="media-section-title">
+
+                    <i data-lucide="file-image" style="width:16px;height:16px;"></i>
+
+                    File Thiết Kế 2D / 3D
+
+                  </div>
+
+                  <label class="btn-upload" for="upload-design-files">
+
+                    <i data-lucide="upload" style="width:14px;height:14px;"></i>
+
+                    Thêm file
+
+                  </label>
+
+                  <input type="file" id="upload-design-files" accept=".pdf,.dwg,.dxf,.skp,.png,.jpg,.jpeg,.3ds,.fbx" multiple hidden>
+
+                </div>
+
+                <div id="design-files-dropzone" class="upload-dropzone" onclick="document.getElementById('upload-design-files').click()">
+
+                  <i data-lucide="file-plus" style="width:32px;height:32px;color:var(--text-muted)"></i>
+
+                  <p>Click hoặc kéo thả file thiết kế vào đây</p>
+
+                  <span style="font-size:11px;color:var(--text-muted)">PDF, DWG, DXF, SKP, PNG, JPG, 3DS, FBX</span>
+
+                </div>
+
+                <div class="file-list" id="design-files-list"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Panel: VẬ TƯ -->
+
+          <div class="ws-panel" id="ws-panel-vattu">
+
+            <div class="vattu-wrap">
+
+              <!-- Toolbar -->
+
+              <div class="vattu-toolbar">
+
+                <div class="vattu-search-box">
+
+                  <i data-lucide="search" style="width:14px;height:14px;color:var(--text-muted)"></i>
+
+                  <input type="text" id="vattu-search" placeholder="Tìm theo tên, mã vật tư..." oninput="renderVatTuTable()">
+
+                </div>
+
+                <select id="vattu-filter-cat" onchange="renderVatTuTable()" style="height:34px;padding:0 10px;border-radius:8px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-primary);font-size:13px;">
+
+                  <option value="">Tất cả danh mục</option>
+
+                </select>
+
+                <div style="display:flex;gap:8px;margin-left:auto;">
+
+                  <label class="btn-outline" style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 14px;font-size:13px;" for="vattu-file-input">
+
+                    <i data-lucide="upload" style="width:14px;height:14px;"></i> Import Excel
+
+                  </label>
+
+                  <input type="file" id="vattu-file-input" accept=".xlsx,.xls,.csv" hidden onchange="onVatTuFileSelect(event)">
+
+                  <button class="btn-outline" onclick="exportVatTuTemplate()" style="font-size:13px;padding:6px 14px;">
+
+                    <i data-lucide="file-down"></i> Tải mẫu Excel
+
+                  </button>
+
+                  <button class="btn-outline" onclick="clearVatTuDB()" style="font-size:13px;padding:6px 14px;color:#e05252;border-color:#e05252;" title="Xóa toàn bộ vật tư">
+
+                    <i data-lucide="trash-2"></i>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+              <!-- Stats bar -->
+
+              <div id="vattu-stats" style="font-size:12px;color:var(--text-muted);padding:6px 0 10px 2px;"></div>
+
+              <!-- Empty state -->
+
+              <div id="vattu-empty" style="text-align:center;padding:60px 20px;display:none;">
+
+                <div style="font-size:48px;margin-bottom:12px;">📦</div>
+
+                <h3 style="color:var(--text-secondary);margin:0 0 8px 0;">Chưa có vật tư nào</h3>
+
+                <p style="color:var(--text-muted);font-size:13px;">Import file Excel hoặc tải file mẫu để bắt đầu</p>
+
+              </div>
+
+              <!-- Table -->
+
+              <div class="vattu-table-wrap" id="vattu-table-wrap">
+
+                <table class="vattu-table" id="vattu-table">
+
+                  <thead>
+
+                    <tr>
+
+                      <th style="width:40px">STT</th>
+
+                      <th style="width:80px">Mã</th>
+
+                      <th>Tên Vật Tư</th>
+
+                      <th style="width:55px">ĐVT</th>
+
+                      <th style="width:100px">ĐƠN GIÁ</th>
+
+                      <th style="width:130px">NHÀ CUNG CẤP</th>
+
+                      <th style="width:100px">DANH MỤC</th>
+
+                      <th style="width:200px">GHI CHÚ</th>
+
+                      <th style="width:60px"></th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody id="vattu-tbody"></tbody>
+
+                </table>
+
+              </div>
+
+              <!-- Pagination -->
+
+              <div id="vattu-pagination" style="display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:12px;"></div>
+
+            </div>
+
+          </div>
+
+        </div><!-- /project-workspace -->
+
+      </main>
+
+    </div><!-- /main-layout -->
+
+  </div><!-- /app-wrapper -->
+
+  <!-- ========== MODAL: MAP CỘT EXCEL VẬ TƯ ========== -->
+
+  <div class="modal-overlay" id="modal-vattu-map" style="z-index:4000;">
+
+    <div class="modal-card" style="max-width:620px;width:96%;">
+
+      <div class="modal-header">
+
+        <h3>📊 Ánh Xạ Cột Excel → Vật Tư</h3>
+
+        <button class="modal-close" onclick="document.getElementById('modal-vattu-map').classList.remove('active')"><i data-lucide="x"></i></button>
+
+      </div>
+
+      <div class="modal-body" style="padding:20px;">
+
+        <p style="font-size:13px;color:var(--text-secondary);margin:0 0 16px 0;">
+
+          Chọn cột trong file Excel tương ứng với từng trường. Cột <b>Tên vật tư</b> là bắt buộc.
+
+        </p>
+
+        <div id="vattu-map-fields" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+
+        <div style="margin-top:16px;padding:12px;background:var(--bg-elevated);border-radius:8px;">
+
+          <p style="font-size:12px;font-weight:600;color:var(--text-secondary);margin:0 0 8px 0">👁️ Xem trước (5 dòng đầu):</p>
+
+          <div id="vattu-preview-table" style="overflow-x:auto;font-size:11px;"></div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button class="btn-secondary" onclick="document.getElementById('modal-vattu-map').classList.remove('active')">Hủy</button>
+
+        <button class="btn-primary" onclick="confirmImportVatTu()" id="btn-confirm-import-vattu">
+
+          <i data-lucide="check"></i> Xác nhận Import
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========== MODAL: PREVIEW EXCEL ========== -->
+
+  <div class="modal-overlay" id="modal-preview" style="z-index:3000;">
+
+    <div class="preview-modal-card">
+
+      <div class="preview-modal-header">
+
+        <div class="preview-modal-title">
+
+          <i data-lucide="eye" style="width:18px;height:18px;"></i>
+
+          Xem Trước Bảng Khối Lượng
+
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;">
+
+          <button class="btn-success btn-sm" id="btn-export-from-preview">
+
+            <i data-lucide="download"></i> Xuất Excel
+
+          </button>
+
+          <button class="btn-secondary btn-sm" id="btn-print-preview" title="In bảng dự toán" onclick="printPreview()" style="display:flex;align-items:center;gap:5px;">
+
+            <i data-lucide="printer"></i> In
+
+          </button>
+
+          <button class="modal-close" id="btn-close-preview">
+
+            <i data-lucide="x"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Tab switcher -->
+
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border-color);background:var(--bg-card);">
+
+        <button id="pv-tab-summary" onclick="switchPreviewTab('summary')"
+
+          style="padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:var(--brand-gold);color:#000;">
+
+          📊 Bảng Tổng Hợp
+
+        </button>
+
+        <button id="pv-tab-detail" onclick="switchPreviewTab('detail')"
+
+          style="padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:var(--bg-elevated);color:var(--text-secondary);">
+
+          📋 Chi Tiết Phòng
+
+        </button>
+
+        <!-- Dropdown phòng (chỉ hiện ở tab Chi Tiết) -->
+
+        <select id="pv-room-select" onchange="openPreview()"
+
+          style="display:none;background:var(--bg-elevated);color:var(--text-main);border:1px solid var(--border-color);padding:5px 10px;border-radius:6px;font-size:13px;outline:none;cursor:pointer;">
+
+          <option value="all">File tổng</option>
+
+        </select>
+
+      </div>
+
+      <div class="preview-modal-body">
+
+        <!-- Header area matching FILE MẪU -->
+
+        <div style="display: grid; grid-template-columns: 2fr 3fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+
+          <!-- Left side: logo -->
+
+          <div>
+
+            <img src="logo-bluedecor.png" alt="Blue Decor" style="height: 50px; object-fit: contain;" onerror="this.style.display='none'">
+
+          </div>
+
+          <!-- Right side: Title blocks -->
+
+          <div style="text-align: center; font-family: 'Times New Roman', Times, serif;">
+
+            <div style="font-size: 20pt; font-weight: bold; text-transform: uppercase;" id="pv-doc-title">BẢNG TỔNG HỢP KHỐI LƯỢNG</div>
+
+            <div style="font-size: 11pt; font-weight: bold; margin-top: 2px;" id="pv-subtitle"></div>
+
+            <div style="font-size: 11pt; font-weight: bold; margin-top: 2px;" id="pv-project-name"></div>
+
+          </div>
+
+        </div>
+
+        <!-- Metadata block -->
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 30px; font-family: 'Times New Roman', Times, serif; font-size: 11pt; margin-bottom: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+
+          <div>
+
+            <div style="font-weight: bold;">Từ : <span id="pv-sender-name" style="font-weight: bold;"></span></div>
+
+            <div style="font-weight: bold; margin-top: 4px;">Công Ty: <span id="pv-sender-company" style="font-weight: bold;"></span></div>
+
+            <div style="margin-top: 4px;">Địa chỉ : <span id="pv-sender-addr"></span></div>
+
+          </div>
+
+          <div>
+
+            <div style="font-weight: bold;">Kính gởi: <span id="pv-client-name" style="font-weight: bold;"></span></div>
+
+            <div style="font-weight: bold; margin-top: 4px;">Công Ty: <span id="pv-client-company" style="font-weight: bold;"></span></div>
+
+            <div style="margin-top: 4px;">Địa chỉ : <span id="pv-client-addr"></span></div>
+
+          </div>
+
+        </div>
+
+        <!-- Tab Tổng Hợp -->
+
+        <div id="pv-panel-summary">
+
+          <div class="pv-table-wrap">
+
+            <table class="pv-table" id="pv-sum-table">
+
+              <thead>
+
+                <tr class="pv-head-row-1">
+
+                  <th style="width:36px;">STT</th>
+
+                  <th>HẠNG MỤC</th>
+
+                  <th style="width:48px;">Đ.VỊ</th>
+
+                  <th id="pv-sum-room-cols"></th><!-- cột phòng động -->
+
+                  <th style="width:100px;">TỔNG SL</th>
+
+                  <th style="width:110px;">ĐƠN GIÁ (đ)</th>
+
+                  <th style="width:130px;">THÀNH TIỀN (đ)</th>
+
+                  <th style="width:150px;">GHI CHÚ</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="pv-sum-tbody"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        <!-- Tab Chi Tiết -->
+
+        <div id="pv-panel-detail" style="display:none;">
+
+          <div class="pv-table-wrap">
+
+            <table class="pv-table" id="pv-table">
+
+              <thead>
+
+                <tr class="pv-head-row-1">
+
+                  <th rowspan="2" style="width:36px;">STT</th>
+
+                  <th rowspan="2">HẠNG MỤC</th>
+
+                  <th colspan="3">KÍCH THƯỚC (mm)</th>
+
+                  <th rowspan="2" style="width:44px;">Đ.VỊ</th>
+
+                  <th rowspan="2" style="width:90px;">SỐ LƯỢNG</th>
+
+                  <th rowspan="2" style="width:110px;">ĐƠN GIÁ (đ)</th>
+
+                  <th rowspan="2" style="width:120px;">THÀNH TIỀN (đ)</th>
+
+                  <th rowspan="2" style="min-width:220px;">GHI CHÚ / CÔNG THỨC</th>
+
+                </tr>
+
+                <tr class="pv-head-row-2">
+
+                  <th style="width:70px;">DÀI</th>
+
+                  <th style="width:70px;">RỘNG</th>
+
+                  <th style="width:70px;">CAO</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="pv-tbody"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        <div class="pv-footer">
+
+          <div id="pv-grand-total-label">TỔNG CỘNG</div>
+
+          <div id="pv-grand-total-value"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal Tùy Chọn Xuất PDF -->
+  <div class="modal-overlay" id="modal-export-pdf-options" style="z-index:5000;">
+    <div class="modal-card" style="max-width:480px;">
+      <div class="modal-header">
+        <h3>Tùy Chọn Xuất PDF</h3>
+        <button class="modal-close" onclick="closeExportPdfModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" style="padding:20px;">
+        <div style="margin-bottom:15px;">
+          <label style="font-weight:bold;display:block;margin-bottom:10px;color:var(--text-secondary);font-size:13px;">Chọn các trang muốn xuất PDF:</label>
+          <div style="display:flex;flex-direction:column;gap:4px;max-height:250px;overflow-y:auto;padding:8px;border:1px solid var(--border-subtle);border-radius:8px;background:var(--bg-elevated);" id="pdf-sheets-list">
+            <!-- Checkboxes will be injected dynamically -->
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:15px;">
+          <button class="btn-outline btn-sm" onclick="toggleSelectAllPdfSheets(true)" style="font-size:12px;padding:4px 10px;">Chọn tất cả</button>
+          <button class="btn-outline btn-sm" onclick="toggleSelectAllPdfSheets(false)" style="font-size:12px;padding:4px 10px;">Bỏ chọn tất cả</button>
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex;gap:8px;justify-content:flex-end;padding:12px 20px;border-top:1px solid var(--border-subtle);">
+        <button class="btn-secondary" onclick="closeExportPdfModal()">Hủy</button>
+        <button class="btn-primary" onclick="confirmExportPDFExcel()">
+          <i data-lucide="printer"></i> Xác nhận Xuất
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+      if (window.lucide) window.lucide.createIcons();
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+

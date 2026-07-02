@@ -1,0 +1,27 @@
+﻿modal-body closes at 24105
+Context before: 'v>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      </div>'
+Context after:  '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n        <!-- THIß║╛T Bß╗è Nß╗ÿI THß║ñT -->\n\n\n\n\n\n\n\n\n\n'
+
+=== New structure (first 20 structural lines) ===
+id="modal-room">
+    <div class="modal-card modal-room-card">
+      <div class="modal-header">
+        <h3 id="modal-room-title">Th├¬m Ph├▓ng / Khu Vß╗▒c</h3>
+        <button class="modal-close" id="btn-close-room-modal"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-footer-mobile-top">
+          <button class="btn-secondary" onclick="closeRoomModal()">Hß╗ºy</button>
+          <button class="btn-primary" onclick="saveRoom()">
+            <span id="btn-save-room-label-mobile">Th├¬m Ph├▓ng</span>
+        </div>
+        <div class="form-group">
+        </div>
+        <div class="quick-select-group">
+          <div class="quick-btns">
+          </div>
+        </div>
+        <div class="section-title">≡ƒôÉ K├¡ch th╞░ß╗¢c (mm ΓÇö nhß║¡p thß║│ng tß╗½ AutoCAD)</div>
+        <div class="dim-grid">
+
+Γ£à Footer moved to BOTTOM (after modal-body)

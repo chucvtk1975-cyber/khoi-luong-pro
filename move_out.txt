@@ -1,0 +1,24 @@
+﻿Total moveBoqRow occurrences: 7
+
+  [210764] <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+  [211059] <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+  [215656] <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+  [215949] <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+  [222573] <button onclick="moveBoqRow('${room.id}','${key}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+  [222859] <button onclick="moveBoqRow('${room.id}','${key}',1)"  class="btn-ci-action boq-move-dn" title="Xuß╗æng" ${isLast?'disabled':''}>&#8595;</button>
+  [314966] function moveBoqRow(roomId, key, dir) {
+
+
+=== Looking for non-custom move buttons ===
+
+--- at 210828 ---
+                    <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+                    <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-m
+
+--- at 215720 ---
+                  <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+                  <button onclick="moveBoqRow('${room.id}','ci:${ci.id}',1)"  class="btn-ci-action boq-mov
+
+--- at 222632 ---
+                <button onclick="moveBoqRow('${room.id}','${key}',-1)" class="btn-ci-action boq-move-up" title="L├¬n" ${isFirst?'disabled':''}>&#8593;</button>
+                <button onclick="moveBoqRow('${room.id}','${key}',1)"  class="btn-ci-action boq-move-dn" t

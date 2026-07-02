@@ -1,0 +1,16 @@
+﻿[8]         const key = item._key || item.surface;
+[12]         if (item.surface === 'elecHeader') {
+[17]         if (item.surface === 'noteHeader') {
+[23]         if (item.surface === 'custom') {
+[26]           const labelTrim = (ci.label||'').trim();
+[27]           const isSubHdr  = labelTrim.length > 1 && labelTrim === labelTrim.toUpperCase();
+[28]           if (isSubHdr) {
+[33]                 <td colspan="8" class="boq-sub-header-cell" style="font-weight:700;color:var(--brand-purple-light);">${ci.label}
+[34]                   <span class="ci-action-group">
+[49]               <td style="color:#a78bfa;font-weight:600;">${ci.label}</td>
+[57]                 <span class="ci-action-group">
+[68]         const noStt     = ['perimeter','window','ceilPerim','elec','elecManual','elecHeader','noteHeader'].includes(item.surface);
+[69]         const isManual  = item.surface === 'elecManual';
+[70]         const isNoteItem= item.surface === 'noteItem';
+[81]             <td${isManual?' style="color:var(--brand-gold);font-style:italic;"':''}${isNoteItem?' style="color:var(--text-secondary);font-style:italic;"':''}>${item.label}</td>
+[91]               <span class="ci-action-group">

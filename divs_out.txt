@@ -1,0 +1,165 @@
+﻿+1 |  <div class="modal-overlay" id="modal-room">
++2 |      <div class="modal-card modal-room-card">
++3 |        <div class="modal-header">
++2 |        </div>
++3 |        <div class="modal-footer">
++2 |        </div>
++3 |        <div class="modal-body">
++4 |          <div class="modal-footer-mobile-top">
++3 |          </div>
++4 |          <div class="form-group">
++3 |          </div>
++4 |          <div class="quick-select-group">
++5 |            <div class="quick-btns">
++4 |            </div>
++3 |          </div>
++3 |          <div class="section-title">≡ƒôÉ K├¡ch th╞░ß╗¢c (mm ΓÇö nhß║¡p thß║│ng tß╗½ AutoCAD)</div>
++4 |          <div class="dim-grid">
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++3 |          </div>
++3 |          <div class="section-title">≡ƒÜ¬ Khai b├ío lß╗ù cß╗¡a (─æß╗â trß╗½ t╞░ß╗¥ng)</div>
++3 |          <div class="door-section-label">Cß╗¡a ─æi</div>
++4 |          <div class="opening-grid-3">
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++3 |          </div>
++3 |          <div class="door-section-label">Cß╗¡a sß╗ò</div>
++4 |          <div class="opening-grid-3">
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++3 |          </div>
++3 |          <div class="section-title">≡ƒÄ¿ Vß║¡t liß╗çu bß╗ü mß║╖t</div>
++4 |          <div class="material-section">
++5 |            <div class="material-group">
++6 |              <div class="material-label">
++5 |              </div>
++5 |              <div class="material-options" id="mat-floor"></div>
++4 |            </div>
++5 |            <div class="material-group">
++6 |              <div class="material-label" style="justify-content:space-between;">
++5 |              </div>
++6 |              <div id="wall-single-mode">
++6 |                <div class="material-options" id="mat-wall"></div>
++5 |              </div>
++6 |              <div id="wall-zone-mode" style="display:none;">
++7 |                <div class="zone-block">
++8 |                  <div class="zone-header">
++9 |                    <div class="zone-h-input">
++8 |                    </div>
++7 |                  </div>
++7 |                  <div class="material-options zone-options" id="mat-wall-z1"></div>
++8 |                  <div class="zone-price-row">
++7 |                  </div>
++6 |                </div>
++7 |                <div class="zone-block">
++8 |                  <div class="zone-header">
++9 |                    <div style="display:flex;align-items:center;gap:6px;">
++8 |                    </div>
++7 |                  </div>
++7 |                  <div class="material-options zone-options" id="mat-wall-z2"></div>
++8 |                  <div class="zone-price-row">
++7 |                  </div>
++6 |                </div>
++7 |                <div class="zone-sill-row">
++6 |                </div>
++5 |              </div>
++4 |            </div>
++5 |            <div class="material-group">
++6 |              <div class="material-label">
++5 |              </div>
++5 |              <div class="material-options" id="mat-ceiling"></div>
++4 |            </div>
++3 |          </div>
++3 |          <div class="section-title">≡ƒÆ░ ─É╞ín gi├í (t├╣y chß╗ìn ΓÇö d├╣ng cho b├ío gi├í)</div>
++4 |          <div class="dim-grid">
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++5 |            <div class="form-group">
++4 |            </div>
++3 |          </div>
++3 |          <div class="section-title">≡ƒô¥ Ghi ch├║ ph├▓ng (t├╣y chß╗ìn)</div>
++4 |          <div class="form-group">
++3 |          </div>
++3 |          <div class="section-title" style="margin-top:14px;">ΓÜí Thiß║┐t Bß╗ï ─Éiß╗çn (nhß║¡p sß╗æ l╞░ß╗úng ΓÇö 0 = bß╗Å 
++4 |          <div class="elec-grid">
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div class="elec-item">
++4 |            </div>
++5 |            <div style="display:none;">
++4 |            </div>
++3 |          </div>
++4 |          <div class="elec-hint">
++3 |          </div>
++4 |          <div class="section-title" style="margin-top:14px;">
++3 |          </div>
++4 |          <div class="form-group">
++3 |          </div>
++4 |          <div class="section-title" style="margin-top:14px;">
++3 |          </div>
++4 |          <div class="elec-photo-zone" id="elec-photo-zone"
++5 |            <div class="elec-photo-prompt" id="elec-photo-prompt">
++4 |            </div>
++4 |            <div class="elec-photo-thumbs" id="elec-photo-thumbs"></div>
++3 |          </div>
++2 |        </div>
++3 |          <div class="section-title" style="margin-top:16px;">
++2 |          </div>
++3 |          <div class="form-group">
++2 |          </div>
++3 |          <div class="section-title" style="margin-top:4px;">
++2 |          </div>
++3 |          <div class="form-group">
++2 |          </div>
++3 |          <div class="section-title" style="margin-top:4px;">
++2 |          </div>
++3 |          <div class="form-group">
++2 |          </div>
++1 |        </div><!-- end modal-body -->
++0 |      </div>
+-1 | ΓÜá∩╕Å   </div>

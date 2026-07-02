@@ -1,0 +1,16 @@
+﻿Γ£ô A1: Removed ΓÜí from renderBOQ elecHeader
+Γ£ô A2: Removed ≡ƒô¥ from renderBOQ noteHeader
+Γ£ô A3: Removed ΓÜí from ep-elec-hdr
+
+B1 anchor at: 569471
+Γ£ô B1: SURF_GRP_EXCEL variables declared before forEach in Excel CHI TIß║╛T
+Γ£ô B2: Added Roman numeral to elecHeader in Excel CHI TIß║╛T
+Γ£ô B3: Added Roman numeral to noteHeader in Excel CHI TIß║╛T
+Γ£ô B4: SURF_GRP section headers added to Excel CHI TIß║╛T forEach
+
+Γ£à Total 7 changes applied
+
+Verification - searching for remaining emoji in Excel/BOQ code:
+  STILL HAS 'ΓÜí THIß║╛T': items.push({ surface: 'elecHeader', label: 'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN', unit: '', qty: 0, dai: '', rong: '', c
+  STILL HAS '≡ƒô¥ CHI TIß║╛T': if (item.surface === 'noteHeader') return `<tr class="ep-note-hdr"><td colspan="10">≡ƒô¥ CHI TIß║╛T Tß╗¬ GH
+  STILL HAS '≡ƒôï ': sectionLabel.innerHTML = `≡ƒôï 2. Bß║óNG CHI TIß║╛T ΓÇö ${roomName}`;

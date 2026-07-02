@@ -1,0 +1,17 @@
+﻿Wrong close found at: 24099 ΓåÆ 24105
+Context: '\n\n\n\n\n\n\n\n\n\n\n\n\n\n      </div>\n      <div class="m'
+
+Verification: opens=89, closes=90, final_depth=-1
+Γ¥î Still unbalanced (depth=-1), NOT saving
+
+Last 10 div operations in new modal:
+  19715: d=4 OPEN: <div class="section-title" style="margin-top:4px;">
+  19943: d=3 CLOSE: </div>
+  19973: d=4 OPEN: <div class="form-group">
+  20330: d=3 CLOSE: </div>
+  20358: d=2 CLOSE: </div>
+  20371: d=1 CLOSE: </div>
+  20407: d=2 OPEN: <div class="modal-footer">
+  20679: d=1 CLOSE: </div>
+  20690: d=0 CLOSE: </div>
+  20722: d=-1 CLOSE: </div>

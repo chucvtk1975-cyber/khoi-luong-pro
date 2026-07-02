@@ -1,0 +1,55 @@
+﻿applySheetStyles at: 495967
+function applySheetStyles(ws, headerDataRow) {
+if (!ws['!ref']) return;
+const range = XLSX.utils.decode_range(ws['!ref']);
+// M├áu nß╗ün header bß║úng = theme:8 tint:0.8 Γëê #BDD7EE (xanh nhß║ít Excel)
+const HDR_BG  = 'BDD7EE';
+const WHITE   = 'FFFFFF';
+// Font mß║╖c ─æß╗ïnh to├án sheet: Times New Roman 12
+const baseFont = { name: 'Times New Roman', sz: 12, bold: false, color: { rgb: '000000' } };
+const boldFont = { name: 'Times New Roman', sz: 12, bold: true,  color: { rgb: '000000' } };
+// Borders
+const solidBlack  = { style: 'thin',   color: { rgb: '000000' } };
+const solidMedium = { style: 'medium', color: { rgb: '000000' } };
+const dashedBlack = { style: 'dashed', color: { rgb: '000000' } };
+const hdrRow = (headerDataRow !== undefined) ? headerDataRow : 8; // row index 8,9 = Excel row 9,10
+for (let R = range.s.r; R <= range.e.r; R++) {
+for (let C = range.s.c; C <= range.e.c; C++) {
+const ref = XLSX.utils.encode_cell({ r: R, c: C });
+if (!ws[ref]) ws[ref] = { t: 's', v: '' };
+ws[ref].s = ws[ref].s || {};
+const isHeaderRow  = (R === hdrRow || R === hdrRow + 1); // 2 d├▓ng header bß║úng
+const isTitleRow   = (R < 8); // C├íc d├▓ng ti├¬u ─æß╗ü ph├¡a tr├¬n
+const isBigTitle   = (R === 0); // D├▓ng ti├¬u ─æß╗ü lß╗¢n nhß║Ñt (Times 24 bold)
+const isMedTitle   = (R === 1 || R === 2); // Times 14 bold
+// Font
+let font;
+if (isBigTitle) {
+font = { name: 'Times New Roman', sz: 20, bold: true, color: { rgb: '000000' } };
+} else if (isMedTitle) {
+font = { name: 'Times New Roman', sz: 14, bold: true, color: { rgb: '000000' } };
+} else if (isHeaderRow) {
+font = { ...boldFont };
+} else if (isTitleRow && (R === 4 || R === 5)) {
+font = { ...boldFont };
+} else {
+font = { ...baseFont };
+}
+ws[ref].s.font = font;
+// Fill
+if (isHeaderRow) {
+ws[ref].s.fill = { patternType: 'solid', fgColor: { rgb: HDR_BG }, bgColor: { rgb: HDR_BG } };
+}
+// Alignment
+if (R === 0 || R === 1 || R === 2) {
+ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: false };
+} else if (isHeaderRow) {
+ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
+} else if (C === 0) {
+ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
+} else if (C === 1) {
+ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+
+
+applySheetStyles call in CHI TIß║╛T at: 595232
+applySheetStyles(wsDetail, 8);

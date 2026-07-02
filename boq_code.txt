@@ -1,0 +1,28 @@
+﻿=== Code 205000-210000 ===
+const allItems = calc.items;
+allItems.forEach((item, itemIdx) => {
+const key = item._key || item.surface;
+const isFirst = itemIdx === 0;
+const isLast  = itemIdx === allItems.length - 1;
+// --- Section headers (no move buttons) ---
+if (item.surface === 'elecHeader') {
+stt = 1; // Reset STT khi v├áo phß║ºn ─Éiß╗çn
+html += `<tr class="boq-elec-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">${romanNums[subRomIdx++] || subRomIdx
+return;
+}
+if (item.surface === 'noteHeader') {
+stt = 1; // Reset STT khi v├áo phß║ºn Ghi ch├║
+html += `<tr class="boq-note-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">${romanNums[subRomIdx++] || subRomIdx
+return;
+}
+// --- Custom items (IN HOA = sub-header + reset STT) ---
+if (item.surface === 'custom') {
+const ci = (room.customItems||[]).find(c => c.id === item.itemId);
+if (!ci) return;
+const labelTrim = (ci.label||'').trim();
+const isSubHdr  = labelTrim.length > 1 && labelTrim === labelTrim.toUpperCase();
+if (isSubHdr) {
+stt = 1; // reset STT
+const subRom = romanNums[subRomIdx++] || subRomIdx;
+html += `
+<tr class="boq-sub-header" data-key="ci:${ci.id}" data-kr="${room.id}" data-ci="${ci.id

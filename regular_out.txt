@@ -1,0 +1,15 @@
+﻿Regular items at: 217323
+// --- Regular items ---
+const noStt     = ['perimeter','window','ceilPerim','elec','elecManual','elecHeader','noteHeader'].includes(item.surface);
+const isManual  = item.surface === 'elecManual';
+const isNoteItem= item.surface === 'noteItem';
+const qtyDisplay = (isManual && item.qty === 0)
+? `<span style="color:var(--brand-gold);font-style:italic;">-- tß╗▒ ─æiß╗ün</span>`
+: (isNoteItem && item.qty === 0)
+? `<span style="color:var(--text-muted);font-style:italic;">--</span>`
+: (item.formula
+? `<span data-formula="${item.formula.replace(/"/g,'&quot;')}" onclick="toggleFormula(this)" class="boq-qty has-formula" title="Cl
+
+
+subRomIdx at: 203251
+'let subRomIdx = 1; // sub-section Roman counter\n\n\n\n\n\n\n\n\n\n\n\n\n'

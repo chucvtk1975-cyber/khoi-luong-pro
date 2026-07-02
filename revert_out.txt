@@ -1,0 +1,32 @@
+﻿Γ£ô Fix 1: subRomIdx 0 ΓåÆ 1 (elecHeader will show II.)
+Γ£ô Fix 2: SURF_GRP block removed (553 chars)
+Γ£ô Fix 3: Surface section header detection removed (542 chars)
+
+Excel SURF block (563 chars): "// ΓöÇΓöÇ Roman numeral section headers (─æß╗ông bß╗Ö web preview)\n  let excelSubRomIdx = 0;\n  const seenSurfExcel = new Set();\n  const SURF_GRP_EXCEL = {\n    floor:    { gid:'san',   label:'S├ÇN' },\n    wall: "
+Γ£ô Fix 4: SURF_GRP_EXCEL replaced with excelSubRomIdx = 1
+Γ£ô Fix 5: Excel SURF_GRP detection removed (447 chars)
+
+Γ£à 5 changes applied
+
+Verify: elecHeader in Excel:
+  romanNums[excelSubRomIdx++] || excelSubRomIdx}. THIß║╛T Bß╗è ─ÉIß╗åN`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Verify: subRomIdx in renderBOQ:
+  let subRomIdx = 1; // sub-section Roman counter (1-indexed, I=construction, II=e

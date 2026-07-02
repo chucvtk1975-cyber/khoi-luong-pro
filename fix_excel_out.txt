@@ -1,0 +1,13 @@
+﻿Γ£ô Fixed: hdr[1] = 'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN'; ΓåÆ hdr[1] = 'THIß║╛T Bß╗è ─ÉIß╗åN';
+Γ£ô Fixed: hdr[1] = '≡ƒô¥ CHI TIß║╛T Tß╗¬ GHI CH├Ü'; ΓåÆ hdr[1] = 'CHI TIß║╛T Tß╗¬ GHI CH├Ü';
+
+Found GROUP_LABEL at 538743:540856 (2113 chars)
+First 200: "const GROUP_LABEL = {\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      floor:      '≡ƒƒ½ S├ÇN',\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+Γ£ô GROUP_LABEL emojis removed
+
+Found note section at 585994:588406
+Old section: '// ΓöÇΓöÇ Ghi ch├║ Mß╗Öc / N╞░ß╗¢c / Chß╗æng thß║Ñm\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    if (room.noteWoodwork) {\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+Γ£ô Note sections restructured (each line = 1 row)
+Γ£ô Removed ≡ƒôï KH├üC ΓåÆ KH├üC
+
+Γ£à Done! 5 changes applied to app.js

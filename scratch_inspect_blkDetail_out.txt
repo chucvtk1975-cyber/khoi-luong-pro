@@ -1,0 +1,40 @@
+6751: 
+6752:       excelSubRomIdx++;
+6753: 
+6754:       aoa.push(hdrN);
+6755: 
+6756:       curRow++;
+6757: 
+6758:       itemStt = 1;
+6759: 
+6760:       const noteLines = text.split('\n').map(l => l.trim()).filter(l => l);
+6761: 
+6762:       noteLines.forEach((line, li) => {
+6763: 
+6764:         const lr = blkDetail();
+6765: 
+6766:         lr[0] = li + 1;
+6767: 
+6768:         lr[1] = line;
+6769: 
+6770:         lr[5] = 'cái';
+6771: 
+6772:         lr[6] = 1;
+6773: 
+6774:         aoa.push(lr);
+6775: 
+6776:         merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 4 } });
+6777: 
+6778:         curRow++;
+6779: 
+6780:       });
+6781: 
+6782:     });
+6783: 
+6784:     // CHI PHÍ KHÁC per room
+6785: 
+6786:     {
+6787: 
+6788:       const oc = project.otherCosts || {};
+6789: 
+6790:       const tf = (+room.D||0)/1000 * (+room.R||0)/1000;

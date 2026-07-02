@@ -1,0 +1,23 @@
+﻿Total occurrences: 3
+
+  [297489] // openAddItemDialog legacy ΓÇô gß╗ìi startInsertRow
+  [297671] function openAddItemDialog(roomId, editId, insertIdx) {
+  [314171] // (C├íc h├ám openAddItemDialog/saveAddItem/closeAddItem ─æ├ú ─æ╞░ß╗úc
+
+
+=== FUNCTION BODY (first 3000 chars) at 297662 ===
+function openAddItemDialog(roomId, editId, insertIdx) {
+  if (editId) startEditRow(roomId, editId);
+  else startInsertRow(roomId, insertIdx ?? null);
+}
+function saveAddItem()   { saveInlineRow(); }
+function closeAddItem()  { cancelInlineRow(); }
+// =============================================
+// CHI PH├ì KH├üC ΓÇö Cß║¡p nhß║¡t gi├í trß╗ï
+// =============================================
+function updateOtherCost(key, field, rawVal) {
+  const project = DB.get(state.currentProjectId);
+  if (!project) return;
+  const oc = project.otherCosts ? { ...project.otherCosts } : {};
+  if (!oc[key]) oc[key] = {};
+  if (field === 'price' || field === 'qty') {

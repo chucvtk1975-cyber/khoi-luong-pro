@@ -1,0 +1,83 @@
+﻿Total divs: 179, Final depth: -1
+
+=== Structure ===
+     0 | d= 1 | OPEN  |   <div class="modal-overlay" id="modal-room"> ΓåÉ modal-card
+    63 | d= 2 | OPEN  |     <div class="modal-card modal-room-card"> ΓåÉ modal-header
+   125 | d= 3 | OPEN  |       <div class="modal-header"> ΓåÉ modal-header
+   358 | d= 2 | CLOSE |     </div> ΓåÉ modal-body
+   388 | d= 3 | OPEN  |       <div class="modal-body"> ΓåÉ modal-body
+   498 | d= 4 | OPEN  |         <div class="modal-footer-mobile-top"> ΓåÉ modal-footer
+   818 | d= 3 | CLOSE |       </div>
+   890 | d= 4 | OPEN  |         <div class="form-group">
+  1180 | d= 3 | CLOSE |       </div>
+  1255 | d= 4 | OPEN  |         <div class="quick-select-group">
+  1383 | d= 5 | OPEN  |           <div class="quick-btns">
+  2538 | d= 4 | CLOSE |         </div>
+  2568 | d= 3 | CLOSE |       </div>
+  2641 | d= 4 | OPEN  |         <div class="section-title">
+  2709 | d= 3 | CLOSE |       </div>
+  2739 | d= 4 | OPEN  |         <div class="dim-grid">
+  2787 | d= 5 | OPEN  |           <div class="form-group">
+  2989 | d= 4 | CLOSE |         </div>
+  3021 | d= 5 | OPEN  |           <div class="form-group">
+  3224 | d= 4 | CLOSE |         </div>
+  3256 | d= 5 | OPEN  |           <div class="form-group">
+  3526 | d= 4 | CLOSE |         </div>
+  3556 | d= 3 | CLOSE |       </div>
+  3622 | d= 4 | OPEN  |         <div class="section-title">
+  3681 | d= 3 | CLOSE |       </div>
+  3711 | d= 4 | OPEN  |         <div class="door-section-label">
+  3749 | d= 3 | CLOSE |       </div>
+  3779 | d= 4 | OPEN  |         <div class="opening-grid-3">
+  3833 | d= 5 | OPEN  |           <div class="form-group">
+  4030 | d= 4 | CLOSE |         </div>
+  4062 | d= 5 | OPEN  |           <div class="form-group">
+  4259 | d= 4 | CLOSE |         </div>
+  4291 | d= 5 | OPEN  |           <div class="form-group">
+  4481 | d= 4 | CLOSE |         </div>
+  4511 | d= 3 | CLOSE |       </div>
+  4541 | d= 4 | OPEN  |         <div class="door-section-label">
+  4579 | d= 3 | CLOSE |       </div>
+  4609 | d= 4 | OPEN  |         <div class="opening-grid-3">
+  4663 | d= 5 | OPEN  |           <div class="form-group">
+  4863 | d= 4 | CLOSE |         </div>
+  4895 | d= 5 | OPEN  |           <div class="form-group">
+  5094 | d= 4 | CLOSE |         </div>
+  5126 | d= 5 | OPEN  |           <div class="form-group">
+  5318 | d= 4 | CLOSE |         </div>
+  5348 | d= 3 | CLOSE |       </div>
+  5419 | d= 4 | OPEN  |         <div class="section-title">
+  5463 | d= 3 | CLOSE |       </div>
+  5493 | d= 4 | OPEN  |         <div class="material-section">
+  5549 | d= 5 | OPEN  |           <div class="material-group">
+  5605 | d= 6 | OPEN  |             <div class="material-label">
+  5737 | d= 5 | CLOSE |           </div>
+  5771 | d= 6 | OPEN  |             <div class="material-options" id="mat-floor">
+  5816 | d= 5 | CLOSE |           </div>
+  5848 | d= 4 | CLOSE |         </div>
+  5941 | d= 5 | OPEN  |           <div class="material-group">
+  5997 | d= 6 | OPEN  |             <div class="material-label" style="justify-content
+  6562 | d= 5 | CLOSE |           </div>
+  6657 | d= 6 | OPEN  |             <div id="wall-single-mode">
+  6714 | d= 7 | OPEN  |               <div class="material-options" id="mat-wall">
+  6758 | d= 6 | CLOSE |             </div>
+  6792 | d= 5 | CLOSE |           </div>
+  6876 | d= 6 | OPEN  |             <div id="wall-zone-mode" style="display:none;">
+  6953 | d= 7 | OPEN  |               <div class="zone-block">
+  7009 | d= 8 | OPEN  |                 <div class="zone-header">
+  7159 | d= 9 | OPEN  |                   <div class="zone-h-input">
+  7511 | d= 8 | CLOSE |                 </div>
+  7549 | d= 7 | CLOSE |               </div>
+  7587 | d= 8 | OPEN  |                 <div class="material-options zone-options" id="mat
+  7647 | d= 7 | CLOSE |               </div>
+  7685 | d= 8 | OPEN  |                 <div class="zone-price-row">
+  7973 | d= 7 | CLOSE |               </div>
+  8009 | d= 6 | CLOSE |             </div>
+  8045 | d= 7 | OPEN  |               <div class="zone-block">
+  8101 | d= 8 | OPEN  |                 <div class="zone-header">
+  8261 | d= 9 | OPEN  |                   <div style="display:flex;align-items:center;gap:6p
+  8726 | d= 8 | CLOSE |                 </div>
+  8764 | d= 7 | CLOSE |               </div>
+  8802 | d= 8 | OPEN  |                 <div class="material-options zone-options" id="mat
+  8862 | d= 7 | CLOSE |               </div>
+  8900 | d= 8 | OPEN  |                 <div class="zone-price-row">

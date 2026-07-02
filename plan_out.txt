@@ -1,0 +1,14 @@
+﻿Found end-modal-body marker, content ends at 26640
+Section content length: 2151
+First 200: '<!-- THIß║╛T Bß╗è Nß╗ÿI THß║ñT -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n        <div class="section-title" style="margin-top:16px;">\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n          ≡ƒ¢ï∩╕Å Thiß║┐t Bß╗ï Nß╗Öi Thß║Ñt <span style="font-size:11px;color:var(--text-muted)'
+Last 200: ' 1,8m&#10;Chß╗æng thß║Ñm ban c├┤ng m├áng kh├▓ 6m┬▓, m├íi Bestmix 2 lß╗¢p 25m┬▓"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n            style="width:100%;resize:vertical;"></textarea>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n        </div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      </div>'
+
+Footer HTML (353 chars):
+<div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-room">Hß╗ºy</button>
+        <button class="btn-primary" id="btn-save-room">
+          <i data-lucide="plus-circle"></i> <span id="btn-save-room-label">Th├¬m Ph├▓ng</span>
+        </button>
+      </div>
+
+mobile-top at: 6384

@@ -1,0 +1,83 @@
+﻿=== exportExcel function ===
+function exportExcel() {
+const project = DB.get(state.currentProjectId);
+if (!project) return;
+if (!project.rooms || project.rooms.length === 0) {
+alert('Ch╞░a c├│ dß╗» liß╗çu ─æß╗â xuß║Ñt. H├úy th├¬m ph├▓ng tr╞░ß╗¢c!');
+return;
+}
+if (!window.XLSX) {
+alert('Th╞░ viß╗çn xuß║Ñt Excel ch╞░a tß║úi xong. Vui l├▓ng thß╗¡ lß║íi sau v├ái gi├óy!');
+return;
+}
+const wb   = XLSX.utils.book_new();
+// H├ám phß╗Ñ tß║ío khung Header cho mß╗ùi sheet
+const buildHeader = (aoaArray, mergesArray, title, maxCols) => {
+const blk = () => Array(maxCols).fill('');
+// Row 0 (Excel row 1): Ti├¬u ─æß╗ü ch├¡nh ΓÇö center tß╗½ C(idx 2) ─æß║┐n hß║┐t
+const r0 = blk(); r0[2] = title; aoaArray.push(r0);
+// Row 1 (Excel row 2): Subtitle / t├¬n dß╗▒ ├ín
+const r1 = blk(); r1[2] = project.subtitle || project.name || ''; aoaArray.push(r1);
+// Row 2 (Excel row 3): C├öNG TR├îNH: [t├¬n]
+const r2 = blk(); r2[2] = `C├öNG TR├îNH: ${project.name || ''}`.toUpperCase(); aoaArray.push(r2);
+// Row 3 (Excel row 4): Blank
+aoaArray.push(blk());
+// Row 4 (Excel row 5): Tß╗½ | K├¡nh gß╗ƒi
+const r4 = blk(); r4[0] = `Tß╗½ : ${project.sender || ''}`; r4[4] = `K├¡nh gß╗ƒi: ${project.recipient || project.client || ''}`; aoaArr
+// Row 5 (Excel row 6): C├┤ng Ty b├¬n A | C├┤ng Ty b├¬n B
+const r5 = blk(); r5[0] = `C├┤ng Ty: ${project.company || ''}`; r5[4] = `C├┤ng Ty: ${project.clientCo || ''}`; aoaArray.push(r5);
+// Row 6 (Excel row 7): ─Éß╗ïa chß╗ë b├¬n A | ─Éß╗ïa chß╗ë b├¬n B
+const r6 = blk(); r6[0] = `─Éß╗ïa chß╗ë : ${project.companyAddr || ''}`; r6[4] = `─Éß╗ïa chß╗ë : ${project.clientAddr || project.address || 
+// Row 7 (Excel row 8): Blank
+aoaArray.push(blk());
+// Merges phß║ºn header th├┤ng tin (rows 0-6, tß╗⌐c Excel rows 1-7)
+// Row 0,1,2: C(2) ΓåÆ cuß╗æi = merge [2..maxCols-1], A(0) chß╗ë 1 ├┤
+[0,1,2].forEach(r => mergesArray.push({s:{r,c:2}, e:{r,c:maxCols-1}}));
+// Row 4,5,6: Tß╗½ = A(0)..C(3), K├¡nh gß╗ƒi = E(4)..cuß╗æi
+[4,5,6].forEach(r => {
+mergesArray.push({s:{r,c:0}, e:{r,c:3}});
+mergesArray.push({s:{r,c:4}, e:{r,c:maxCols-1}});
+});
+};
+// ==========================================================
+// SHEET 1: Tß╗öNG Hß╗óP KHß╗ÉI L╞»ß╗óNG (c├│ cß╗Öt tß╗½ng ph├▓ng)
+// ==========================================================
+const rooms = project.rooms || [];
+const sumCols = 7 + rooms.length; // STT + Hß║íng mß╗Ñc + ─ÉV + [ph├▓ng├ùN] + Tß╗òng SL + ─ÉG + TT + Ghi ch├║
+const aoaSum = [];
+const mergesSum = [];
+buildHeader(aoaSum, mergesSum, 'Bß║óNG Tß╗öNG Hß╗óP KHß╗ÉI L╞»ß╗óNG', sumCols);
+// Row 8: Table Header ─æß╗Öng
+const sumHeaderRow = ['STT', 'Hß║áNG Mß╗ñC', '─É. Vß╗è'];
+rooms.forEach(r => sumHeaderRow.push(r.name.toUpperCase()));
+sumHeaderRow.push('Tß╗öNG Sß╗É L╞»ß╗óNG', '─É╞áN GI├ü', 'TH├ÇNH TIß╗ÇN', 'GHI CH├Ü');
+aoaSum.push(sumHeaderRow);
+const summaryItems = CALC.projectSummary(project);
+let curRowSum = 9;
+let grandTotalSum = 0;
+summaryItems.forEach((item, idx) => {
+const row = [idx + 1, item.label, item.unit];
+// Sß╗æ l╞░ß╗úng tß╗½ng ph├▓ng
+rooms.forEach(r => {
+const calc = CALC.room(r);
+const match = calc.items.find(it => it.label === item.label && it.unit === item.unit);
+row.push(match && match.qty > 0 ? fmtNum(match.qty, 2) : '');
+});
+row.push(fmtNum(item.qty, 2));
+row.push(item.price ? fmtNum(item.price, 0) : '');
+row.push(item.total ? fmtNum(item.total, 0) : '');
+row.push(item.note || '');
+aoaSum.push(row);
+grandTotalSum += item.total || 0;
+curRowSum++;
+});
+// ========== CHI PH├ì KH├üC (Sheet Tß╗òng Hß╗úp) ==========
+let ocStt = summaryItems.length + 1;
+const oc = project.otherCosts || {};
+const totalFloor = (project.rooms || []).reduce((s, r) => {
+const d = (+r.D||0)/1000, rv = (+r.R||0)/1000;
+return s + d * rv;
+}, 0);
+const OC_TEMPLATE = [
+{ key: 'transport',   label: 'Ph├¡ vß║¡n chuyß╗ân',   unit: 'g├│i',   autoQty: false, defaultQty: 1 },
+{ key: 'debris',      label: 'Ph├¡ th├ío gß╗í trß║ºn, vß║¡n chuyß╗ân + ─æß╗ò x├á bß║ºn, bao ─æß╗▒ng r├íc',       unit: 'm┬▓',       a

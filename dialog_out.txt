@@ -1,0 +1,5 @@
+﻿
+=== DECLARATION #1 at char 297671 ===
+function openAddItemDialog(roomId, editId, insertIdx) {
+
+Total declarations found: 1

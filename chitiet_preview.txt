@@ -1,0 +1,332 @@
+function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
+
+
+
+  const romanNums = ['I','II','III','IV','V','VI','VII','VIII','IX','X',
+
+
+
+                     'XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'];
+
+
+
+  const allRooms = project.rooms || [];
+
+
+
+  let html = '';
+
+
+
+  let stt = 1;
+
+
+
+  let grandTotal = 0;
+
+
+
+  filteredRooms.forEach((room) => {
+
+    const globalIdx = allRooms.indexOf(room);
+
+    const calc  = CALC.room(room);
+
+    const D = (+room.D || 0) / 1000;
+
+    const R = (+room.R || 0) / 1000;
+
+    const perimStr = (2*(D+R)).toFixed(2).replace('.',',');
+
+    const roman = 'I';
+
+    let roomTotal = 0;
+
+    stt = 1; // reset STT mỗi phòng
+
+    let pvSubRomIdx = 1;
+
+    html += `<tr class="pv-room-title-row" style="background:rgba(255,255,255,0.02);"><td colspan="10" style="text-align:center;font-weight:800;font-size:13px;color:var(--brand-blue-light);padding:6px 0;">BẢNG KHỐI LƯỢNG - ${room.name.toUpperCase()}</td></tr>`;
+
+    html += `<tr class="pv-room-hdr"><td colspan="10">${roman}. XÂY DỰNG CƠ BẢN — ${room.name.toUpperCase()}</td></tr>`;
+
+    html += `<tr class="pv-room-info"><td colspan="10">
+
+      📏 ${fmtMM(room.D)} × ${fmtMM(room.R)} × cao ${fmtMM(room.H)} mm
+
+      &nbsp;|&nbsp; <strong>Chu vi: ${perimStr} m</strong>
+
+      ${room.roomNote ? `&nbsp;|&nbsp; ${room.roomNote}` : ''}
+
+    </td></tr>`;
+
+    calc.items.forEach(item => {
+
+      roomTotal += item.total || 0;
+
+      grandTotal += item.total || 0;
+
+      if (item.surface === 'elecHeader') {
+
+        stt = 1;
+
+        const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+
+        html += `<tr class="pv-room-hdr"><td colspan="10">${rom}. THIẾT BỊ ĐIỆN</td></tr>`;
+
+        return;
+
+      }
+
+      if (item.surface === 'noteHeader') {
+
+        stt = 1;
+
+        const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+
+        html += `<tr class="pv-room-hdr"><td colspan="10">${rom}. CHI TIẾT TỪ GHI CHÚ</td></tr>`;
+
+        return;
+
+      }
+
+      if (item.surface === 'custom') {
+
+        const ci = (room.customItems||[]).find(c => c.id === item.itemId);
+
+        if (ci) {
+
+          const labelTrim = (ci.label||'').trim();
+
+          const isSubHdr  = labelTrim.length > 1 && labelTrim === labelTrim.toUpperCase();
+
+          if (isSubHdr) {
+
+            stt = 1; // reset STT
+
+            const rom = romanNums[pvSubRomIdx++] || pvSubRomIdx;
+
+            html += `<tr class="pv-room-hdr"><td colspan="10">${rom}. ${ci.label}</td></tr>`;
+
+            return;
+
+          }
+
+        }
+
+      }
+
+      const noStt = ['perimeter','window','ceilPerim','elec','elecManual','noteItem'].includes(item.surface);
+
+      const isManual = item.surface === 'elecManual';
+
+      const rowClass = item.surface === 'perimeter' ? 'pv-perim' : 'pv-item';
+
+      const qtyDisplay = isManual && item.qty === 0 ? '<em style="color:var(--brand-gold)">tự điền</em>' : (item.formula || fmt(item.qty));
+
+      html += `<tr class="${rowClass}">
+
+        <td class="pv-stt">${noStt ? '' : stt++}</td>
+
+        <td${isManual?' style="color:var(--brand-gold);font-style:italic;"':''}>${item.label}</td>
+
+        <td class="pv-num">${item.dai  ? fmtMM(item.dai)  : ''}</td>
+
+        <td class="pv-num">${item.rong ? fmtMM(item.rong) : ''}</td>
+
+        <td class="pv-num">${item.cao  ? fmtMM(item.cao)  : ''}</td>
+
+        <td class="pv-center">${item.unit}</td>
+
+        <td class="pv-num" style="white-space:normal;font-size:10.5px;">${qtyDisplay}</td>
+
+        <td class="pv-num">${item.price ? fmt(item.price, 0) : ''}</td>
+
+        <td class="pv-num">${item.total ? fmt(item.total, 0) : ''}</td>
+
+        <td class="pv-note">${item.note || ''}</td>
+
+      </tr>`;
+
+    });
+
+    if (roomTotal > 0) {
+
+      html += `<tr class="pv-subtotal">
+
+        <td colspan="9" style="text-align:right;padding-right:10px;">Cộng ${room.name}:</td>
+
+        <td class="pv-num">${fmt(roomTotal, 0)}</td>
+
+      </tr>`;
+
+    }
+
+  });
+
+
+
+  // Chi phí khác (chỉ khi xem tất cả phòng — dùng tham số showOtherCosts)
+
+
+
+  if (showOtherCosts) {
+
+
+
+    const totalFloor = allRooms.reduce((s, r) => s + (+r.D||0)/1000 * (+r.R||0)/1000, 0);
+
+
+
+    const OC_TEMPLATE = [
+
+
+
+      { key:'transport',   label:'Phí vận chuyển',   unit:'gói', autoQty:false, defaultQty:1 },
+
+
+
+      { key:'debris',      label:'Phí tháo gỡ trần, vận chuyển + đổ xà bần, bao đựng rác', unit:'m²', autoQty:true },
+
+
+
+      { key:'scaffold',    label:'Phí thuê giàn giáo', unit:'m²',  autoQty:true },
+
+
+
+      { key:'design',      label:'Phí thiết kế',      unit:'m²',   autoQty:true },
+
+
+
+      { key:'supervision', label:'Phí giám sát ngoại tỉnh', unit:'lần', autoQty:false, defaultQty:1 },
+
+
+
+    ];
+
+
+
+    const oc = project.otherCosts || {};
+
+
+
+    let hasOc = false, ocStt2 = 1;
+
+
+
+    OC_TEMPLATE.forEach(tmpl => {
+
+
+
+      const saved = oc[tmpl.key] || {};
+
+
+
+      const qty = tmpl.autoQty ? totalFloor : (saved.qty != null ? saved.qty : tmpl.defaultQty);
+
+
+
+      const price = saved.price || 0;
+
+
+
+      const total = qty * price;
+
+
+
+      if (price > 0 || qty > 0) {
+
+
+
+        if (!hasOc) { html += `<tr class="pv-room-hdr"><td colspan="10">💰 CHI PHÍ KHÁC</td></tr>`; hasOc = true; }
+
+
+
+        grandTotal += total;
+
+
+
+        html += `<tr class="pv-item">
+
+
+
+          <td class="pv-stt">${ocStt2++}</td>
+
+
+
+          <td>${tmpl.label}</td>
+
+
+
+          <td class="pv-num"></td><td class="pv-num"></td><td class="pv-num"></td>
+
+
+
+          <td class="pv-center">${tmpl.unit}</td>
+
+
+
+          <td class="pv-num">${fmt(qty)}</td>
+
+
+
+          <td class="pv-num">${price ? fmt(price, 0) : ''}</td>
+
+
+
+          <td class="pv-num">${total ? fmt(total, 0) : ''}</td>
+
+
+
+          <td class="pv-note">${saved.note || ''}</td>
+
+
+
+        </tr>`;
+
+
+
+      }
+
+
+
+    });
+
+
+
+  }
+
+
+
+  document.getElementById('pv-tbody').innerHTML = html;
+
+
+
+  document.getElementById('pv-grand-total-label').textContent = 'TỔNG CỘNG';
+
+
+
+  document.getElementById('pv-grand-total-value').textContent =
+
+
+
+    grandTotal > 0 ? fmt(grandTotal, 0) + ' đ' : '(Chưa nhập đơn giá)';
+
+
+
+}
+
+
+
+// =============================================
+
+
+
+// 16. KHỞI TẠO
+
+
+
+// =============================================
+
+
+

@@ -1,0 +1,56 @@
+﻿=== Note parsing code (24000-29500) ===
+// =============================================
+// PARSER GHI CH├Ü ΓåÆ Hß║áNG Mß╗ñC
+// Ph├ón t├¡ch v─ân bß║ún ghi ch├║ th├ánh tß╗½ng d├▓ng BOQ c├│ sß╗æ l╞░ß╗úng
+// =============================================
+function parseNoteItems(room) {
+const note = room.roomNote || '';
+if (!note.trim()) return [];
+const D = (+room.D || 0) / 1000;
+const R = (+room.R || 0) / 1000;
+const perim = 2 * (D + R);
+const perimMm = Math.round(perim * 1000);
+const items = [];
+const ni = (label, unit, qty, formula, note2) => ({
+surface: 'noteItem', label, unit,
+qty: +qty || 0, dai: '', rong: '', cao: '',
+price: 0, total: 0,
+formula: formula || (qty ? `${qty} ${unit}` : ''),
+note: note2 || '',
+});
+// Normalize: bß╗Å dß║Ñu tiß║┐ng Viß╗çt ─æß╗â match ASCII-safe
+const norm = note.toLowerCase()
+.normalize('NFD')
+.replace(/[\u0300-\u036f]/g, '')
+.replace(/\u0111/g, 'd').replace(/\u0110/g, 'd');
+// Helper: ─æß╗ìc sß╗æ c├│ dß║Ñu phß║⌐y ("1,8m" -> 1800)
+const parseM = (s) => {
+if (!s) return 0;
+// '1,8m' -> 1800, '1800' -> 1800, '1.8m' -> 1800
+const n = parseFloat(String(s).replace(',', '.'));
+return isNaN(n) ? 0 : (n < 20 ? Math.round(n * 1000)
+
+
+=== noteItem in CALC.room (134000-136000) ===
+note:    ci.note || '',
+});
+});
+// ΓöÇΓöÇ GHI CH├Ü ΓåÆ Hß║áNG Mß╗ñC (parser tß╗▒ ─æß╗Öng) ΓöÇΓöÇ
+const noteItems = parseNoteItems(room);
+if (noteItems.length > 0) {
+items.push({ surface: 'noteHeader', label: 'CHI TIET TU GHI CHU', unit:'',qty:0,dai:'',rong:'',cao:'',price:0,total:0,formula:'',n
+noteItems.forEach(ni => items.push(ni));
+}
+// Gan _key on dinh cho moi item
+const _kc = {};
+items.forEach(it => {
+if (it.surface === 'custom') {
+it._key = 'ci:' + (it.itemId || it.id || '?');
+} else if (it.surface === 'elec' || it.surface === 'elecManual') {
+const slug = (it.label||'').replace(/[^a-zA-Z0-9]/g,'').substr(0,12);
+it._key = it.surface + '_' + slug;
+} else if (it.surface === 'noteItem') {
+_kc.ni = (_kc.ni||0)+1;
+it._key = 'ni_' + _kc.ni;
+} else {
+it._key = it.surface || 'x';

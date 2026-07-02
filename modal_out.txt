@@ -1,0 +1,81 @@
+﻿Modal room structure (341 lines):
+<div class="modal-overlay" id="modal-room">
+    <div class="modal-card modal-room-card">
+      <div class="modal-header">
+        <h3 id="modal-room-title">Th├¬m Ph├▓ng / Khu Vß╗▒c</h3>
+        <button class="modal-close" id="btn-close-room-modal"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <!-- T├¬n ph├▓ng -->
+        <div class="form-group">
+          <label>T├¬n ph├▓ng / khu vß╗▒c <span class="required">*</span></label>
+          <input type="text" id="room-name" placeholder="VD: Ph├▓ng kh├ích, Ph├▓ng ngß╗º master, Bß║┐p..." style="text-transform:uppercase;">
+        </div>
+        <!-- Quick select -->
+        <div class="quick-select-group">
+          <span class="quick-label">Chß╗ìn nhanh:</span>
+          <div class="quick-btns">
+            <button class="quick-btn" data-name="Ph├▓ng kh├ích">Ph├▓ng kh├ích</button>
+            <button class="quick-btn" data-name="Ph├▓ng ngß╗º master">PNgß╗º master</button>
+            <button class="quick-btn" data-name="Ph├▓ng ngß╗º 2">PNgß╗º 2</button>
+            <button class="quick-btn" data-name="Ph├▓ng ngß╗º 3">PNgß╗º 3</button>
+            <button class="quick-btn" data-name="Ph├▓ng bß║┐p">Bß║┐p</button>
+            <button class="quick-btn" data-name="Ph├▓ng ─ân">Ph├▓ng ─ân</button>
+            <button class="quick-btn" data-name="WC master">WC master</button>
+            <button class="quick-btn" data-name="WC chung">WC chung</button>
+            <button class="quick-btn" data-name="H├ánh lang">H├ánh lang</button>
+            <button class="quick-btn" data-name="Sß║únh">Sß║únh</button>
+            <button class="quick-btn" data-name="Ban c├┤ng">Ban c├┤ng</button>
+            <button class="quick-btn" data-name="Kho">Kho</button>
+          </div>
+        </div>
+        <!-- K├¡ch th╞░ß╗¢c -->
+        <div class="section-title">≡ƒôÉ K├¡ch th╞░ß╗¢c (mm ΓÇö nhß║¡p thß║│ng tß╗½ AutoCAD)</div>
+        <div class="dim-grid">
+          <div class="form-group">
+            <label>D├ái ΓÇö D (mm)</label>
+            <input type="number" id="room-D" placeholder="5200" step="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Rß╗Öng ΓÇö R (mm)</label>
+            <input type="number" id="room-R" placeholder="4000" step="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Cao ΓÇö H (mm)</label>
+            <input type="number" id="room-H" placeholder="3200" step="1" min="0"
+              oninput="autoFillZ1Height(this.value)">
+          </div>
+        </div>
+        <!-- Cß╗¡a -->
+        <div class="section-title">≡ƒÜ¬ Khai b├ío lß╗ù cß╗¡a (─æß╗â trß╗½ t╞░ß╗¥ng)</div>
+        <div class="door-section-label">Cß╗¡a ─æi</div>
+        <div class="opening-grid-3">
+          <div class="form-group">
+            <label>Rß╗Öng (mm)</label>
+            <input type="number" id="room-door-w" value="900" step="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Cao (mm)</label>
+            <input type="number" id="room-door-h" value="2100" step="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Sß╗æ l╞░ß╗úng (c├íi)</label>
+            <input type="number" id="room-doors" value="1" min="0">
+          </div>
+        </div>
+        <div class="door-section-label">Cß╗¡a sß╗ò</div>
+        <div class="opening-grid-3">
+          <div class="form-group">
+            <label>Rß╗Öng (mm)</label>
+            <input type="number" id="room-window-w" value="1200" step="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Cao (mm)</label>
+            <input type="number" id="room-window-h" value="1200" step="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Sß╗æ l╞░ß╗úng (c├íi)</label>
+            <input type="number" id="room-windows" value="1" min="0">
+          </div>
+        </div>
+        <!-- Vß║¡t liß╗çu -->

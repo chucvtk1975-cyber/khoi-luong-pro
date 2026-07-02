@@ -1,0 +1,13 @@
+﻿[201495] roman: const romanNums = ['I','II','III','IV','V','VI','VII','VIII','IX','X',
+[203210] roman: const roman = romanNums[idx] || (idx + 1);
+[203218] roman: const roman = romanNums[idx] || (idx + 1);
+[204061] roman: <td colspan="10">${roman}. ${room.name.toUpperCase()}</td>
+[203285] Roman: let subRomIdx = 1; // sub-section Roman counter
+[413382] Roman: <div style="display: grid; grid-template-columns: 2fr 3fr; gap: 20px; align-items: start; margin-bottom: 12px; font-fami
+[415567] Roman: <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; font-family: 'Times New Roman', Times, serif; 
+[469170] Roman: // Default font family is Times New Roman, size 12
+[255973] boq-section: const sectionLabel   = document.getElementById('boq-section-label');
+[163956] renderBOQ: renderBOQ(project);
+[179408] renderBOQ: function renderBOQ(project) {
+[163805] renderRoom: renderRooms(project);
+[166998] renderRoom: function renderRooms(project) {

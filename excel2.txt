@@ -1,0 +1,8 @@
+﻿  + 8300 [label =        ]: const match = calc.items.find(it => it.label === item.label && it.unit === item.unit);
+  +25757 [SHEET 2        ]: // SHEET 2: DANH S├üCH Vß║¼T T╞» Cß║ªN MUA
+  +27605 [S├ÇN            ]: floor:      '≡ƒƒ½ S├ÇN',
+  +28742 [S├ÇN            ]: floorMat:   '≡ƒö▓ ß╗ÉP S├ÇN Vß║¼T LIß╗åU',
+  +29073 [THIß║╛T Bß╗è       ]: elec:       'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN',
+  +29237 [THIß║╛T Bß╗è       ]: elecManual: 'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN',
+  +40426 [Cß╗ÿNG           ]: gRow[1] = `Cß╗ÿNG ${prevGroup}`;
+  +47962 [Cß╗ÿNG           ]: sumRow[1] = 'Tß╗öNG Cß╗ÿNG Vß║¼T T╞» (THEO Dß╗░ TO├üN)';

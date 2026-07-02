@@ -1,0 +1,45 @@
+﻿=== updateOtherCost ===
+function updateOtherCost(key, field, rawVal) {
+  const project = DB.get(state.currentProjectId);
+  if (!project) return;
+  const oc = project.otherCosts ? { ...project.otherCosts } : {};
+  if (!oc[key]) oc[key] = {};
+  if (field === 'price' || field === 'qty') {
+    oc[key][field] = parseFloat(rawVal) || 0;
+  } else {
+    oc[key][field] = rawVal;
+  }
+  DB.update(state.currentProjectId, { otherCosts: oc });
+  // Cß║¡p nhß║¡t ├┤ th├ánh tiß╗ün cß╗ºa d├▓ng n├áy m├á kh├┤ng re-render to├án bß╗Ö
+  const saved = oc[key];
+  const project2 = DB.get(state.currentProjectId);
+  const totalFloor = (project2.rooms || []).reduce((s, r) => {
+
+
+=== All OC_TEMPLATE / OC_PR / OC_T definitions ===
+[233552] OC_TEMPLATE: const OC_TEMPLATE = [
+[236045] OC_TEMPLATE: OC_TEMPLATE.forEach(tmpl => {
+[303073] OC_TEMPLATE: const OC_TEMPLATE = [
+[304237] OC_TEMPLATE: const tmpl = OC_TEMPLATE.find(t => t.key === key);
+[307931] OC_TEMPLATE: const ocSub = OC_TEMPLATE.reduce((s, tmpl3) => {
+[521550] OC_TEMPLATE: const OC_TEMPLATE = [
+[523392] OC_TEMPLATE: OC_TEMPLATE.forEach(tmpl => {
+[644033] OC_TEMPLATE: const OC_TEMPLATE = [
+[645765] OC_TEMPLATE: OC_TEMPLATE.forEach(tmpl => {
+[663144] OC_TEMPLATE: const OC_TEMPLATE = [
+[664873] OC_TEMPLATE: OC_TEMPLATE.forEach(tmpl => {
+[225979] OC_PR: const OC_PR = [
+[228641] OC_PR: OC_PR.forEach(tmpl => {
+[233552] OC_T: const OC_TEMPLATE = [
+[236045] OC_T: OC_TEMPLATE.forEach(tmpl => {
+[303073] OC_T: const OC_TEMPLATE = [
+[304237] OC_T: const tmpl = OC_TEMPLATE.find(t => t.key === key);
+[307931] OC_T: const ocSub = OC_TEMPLATE.reduce((s, tmpl3) => {
+[521550] OC_T: const OC_TEMPLATE = [
+[523392] OC_T: OC_TEMPLATE.forEach(tmpl => {
+[601717] OC_T: const OC_T = [
+[602590] OC_T: const ocTotalSig = OC_T.reduce((s,t)=>{
+[644033] OC_T: const OC_TEMPLATE = [
+[645765] OC_T: OC_TEMPLATE.forEach(tmpl => {
+[663144] OC_T: const OC_TEMPLATE = [
+[664873] OC_T: OC_TEMPLATE.forEach(tmpl => {

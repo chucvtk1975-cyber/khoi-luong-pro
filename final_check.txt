@@ -1,0 +1,18 @@
+﻿=== Last 600 chars before APP CH├ìNH ===
+Sika 2 lß╗¢p 4m┬▓, chß╗æng thß║Ñm t╞░ß╗¥ng WC cao 1,8m&#10;Chß╗æng thß║Ñm ban c├┤ng m├áng kh├▓ 6m┬▓, m├íi Bestmix 2 lß╗¢p 25m┬▓"
+            style="width:100%;resize:vertical;"></textarea>
+        </div>
+      </div><!-- end modal-body -->
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-room">Hß╗ºy</button>
+        <button class="btn-primary" id="btn-save-room">
+          <i data-lucide="plus-circle"></i> <span id="btn-save-room-label">Th├¬m Ph├▓ng</span>
+        </button>
+      </div>
+    </div><!-- end modal-card -->
+  </div><!-- end modal-room -->
+
+Modal divs: opens=89, closes=89, net=0
+
+=== 200 chars before modal-footer ===
+' thß║Ñm ban c├┤ng m├áng kh├▓ 6m┬▓, m├íi Bestmix 2 lß╗¢p 25m┬▓"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n            style="width:100%;resize:vertical;"></textarea>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n        </div>\n      </div><!-- end modal-body -->\n      '

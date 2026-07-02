@@ -1,0 +1,45 @@
+﻿CHI TIß║╛T sheet starts at: 566100
+
+=== Per-room CHI TIß║╛T sheet code ===
+Bß║óNG CHI TIß║╛T KHß╗ÉI L╞»ß╗óNG ΓÇö ${room.name.toUpperCase()}`, 10);
+// Row 8 & 9: Table Header
+aoa.push(['STT', 'Hß║áNG Mß╗ñC', 'K├ìCH TH╞»ß╗ÜC', '', '', '─É. Vß╗è', 'Sß╗É L╞»ß╗óNG', '─É╞áN GI├ü', 'TH├ÇNH TIß╗ÇN', 'GHI CH├Ü']);
+aoa.push(['', '', 'D├ÇI', 'Rß╗ÿNG', 'CAO', '', '', '', '', '']);
+// Table header merges
+merges.push({s:{r:8,c:0},  e:{r:9,c:0}});  // STT
+merges.push({s:{r:8,c:1},  e:{r:9,c:1}});  // Hß║áNG Mß╗ñC
+merges.push({s:{r:8,c:2},  e:{r:8,c:4}});  // K├ìCH TH╞»ß╗ÜC
+merges.push({s:{r:8,c:5},  e:{r:9,c:5}});  // ─É. Vß╗è
+merges.push({s:{r:8,c:6},  e:{r:9,c:6}});  // Sß╗É L╞»ß╗óNG
+merges.push({s:{r:8,c:7},  e:{r:9,c:7}});  // ─É╞áN GI├ü
+merges.push({s:{r:8,c:8},  e:{r:9,c:8}});  // TH├ÇNH TIß╗ÇN
+merges.push({s:{r:8,c:9},  e:{r:9,c:9}});  // GHI CH├Ü
+let curRow = 10;
+let itemStt = 1;
+const blkDetail = () => Array(10).fill('');
+const calc = CALC.room(room);
+// D├▓ng t├¬n ph├▓ng
+const secRow = blkDetail();
+const romanNums = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'
+const roman = romanNums[idx] || (idx+1);
+secRow[0] = roman;
+secRow[1] = room.name.toUpperCase();
+aoa.push(secRow);
+merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}});
+curRow++;
+// Ghi ch├║ ph├▓ng (kh├┤ng render infoRow nß╗»a)
+if (room.roomNote) {
+const noteR = blkDetail();
+noteR[1] = `ΓÇó ${room.roomNote}`;
+aoa.push(noteR);
+merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}});
+curRow++;
+}
+let roomTotal = 0;
+const formulaMap = []; // {r: aoa_row, c: col, f: formula_string}
+if (calc.items.length === 0) {
+const er = blkDetail(); er[1] = '(Ch╞░a chß╗ìn vß║¡t liß╗çu)';
+aoa.push(er);
+curRow++;
+} else {
+calc.items.forEach(item => {

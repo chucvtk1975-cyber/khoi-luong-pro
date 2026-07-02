@@ -1,0 +1,44 @@
+﻿renderBOQ starts at: 179399
+function renderBOQ(project) {
+  const tbody = document.getElementById('boq-tbody');
+  const summaryTbody = document.getElementById('boq-summary-tbody');
+  // Populate the room filter dropdown
+  const filterSelect = document.getElementById('boq-room-filter');
+  if (filterSelect) {
+    const prevVal = filterSelect.value || 'all';
+    let filterHtml = '<option value="all">File tß╗òng</option>';
+    (project.rooms || []).forEach(r => {
+      filterHtml += `<option value="${r.id}">${r.name}</option>`;
+    });
+    filterSelect.innerHTML = filterHtml;
+    // Restore value if it still exists in the options
+    if (Array.from(filterSelect.options).some(opt => opt.value === prevVal)) {
+      filterSelect.value = prevVal;
+    } else {
+      filterSelect.value = 'all';
+    }
+  }
+  if (!project.rooms || project.rooms.length === 0) {
+    if (tbody) tbody.innerHTML = `
+      <tr><td colspan="10" style="text-align:center;padding:36px;color:var(--text-muted);">Ch╞░a c├│ dß╗» liß╗çu. H├úy th├¬m ph├▓ng tr╞░ß╗¢c.</td></tr>`;
+    if (summaryTbody) summaryTbody.innerHTML = `
+      <tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted);">Ch╞░a c├│ dß╗» liß╗çu. H├úy th├¬m ph├▓ng tr╞░ß╗¢c.</td></tr>`;
+    return;
+  }
+  // --- Render Bß║úng Tß╗òng Hß╗úp (c├│ cß╗Öt ri├¬ng cho tß╗½ng ph├▓ng) ---
+  const summaryItems = CALC.projectSummary(project);
+  const rooms = project.rooms || [];
+  // Cß║¡p nhß║¡t header bß║úng tß╗òng hß╗úp ─æß╗Öng theo sß╗æ ph├▓ng
+  const sumTable = summaryTbody ? summaryTbody.closest('table') : null;
+  if (sumTable) {
+    const existThead = sumTable.querySelector('thead');
+    if (existThead) {
+      const roomCols = rooms.map(r => `<th style="width:90px;text-align:right;color:var(--brand-blue-light);font-size:11px;">${r.name.length > 12 ? r.name.substring(0,12)+'ΓÇª' : r.name}</th>`).join('');
+      existThead.innerHTML = `<tr>
+        <th style="width:40px;text-align:center;">STT</th>
+        <th>Hß║íng Mß╗Ñc</th>
+        <th style="width:58px;text-align:center;">─É.Vß╗ï</th>
+        ${roomCols}
+        <th style="width:100px;text-align:right;">Tß╗òng SL</th>
+        <th style="width:110px;text-align:right;">─É╞ín Gi├í</th>
+        <th style="width:120px;text-align:right;">Th├ánh Tiß╗ün</th>

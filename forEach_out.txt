@@ -1,0 +1,53 @@
+﻿items.forEach at: 573979
+
+=== items.forEach code in CHI TIß║╛T ===
+calc.items.forEach(item => {
+// Skip c├íc header section (render ri├¬ng)
+if (item.surface === 'elecHeader') {
+const hdr = blkDetail();
+hdr[1] = 'ΓÜí THIß║╛T Bß╗è ─ÉIß╗åN';
+aoa.push(hdr);
+merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}});
+curRow++;
+return;
+}
+if (item.surface === 'noteHeader') {
+const hdr = blkDetail();
+hdr[1] = '≡ƒô¥ CHI TIß║╛T Tß╗¬ GHI CH├Ü';
+aoa.push(hdr);
+merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}});
+curRow++;
+return;
+}
+const noStt = ['perimeter','window','ceilPerim','elec','elecManual','noteItem'].includes(item.surface);
+const isManual = item.surface === 'elecManual';
+const sttVal = noStt ? '' : itemStt++;
+// ΓöÇ D├╣ng sß╗æ thß╗▒c (mm) cho D├ÇI/Rß╗ÿNG/CAO ─æß╗â formula tham chiß║┐u ─æ╞░ß╗úc
+const daiNum  = item.dai  ? +item.dai  : '';
+const rongNum = item.rong ? +item.rong : '';
+const caoNum  = item.cao  ? +item.cao  : '';
+// ΓöÇ Sß╗æ l╞░ß╗úng: ─æß║╖t sß╗æ t─⌐nh tr╞░ß╗¢c, sau sß║╜ ghi ─æ├¿ formula
+const qtyVal = (isManual && item.qty === 0) ? '' : fmtNum(item.qty, 2);
+const priceVal = item.price ? fmtNum(item.price, 0) : '';
+const totalVal = item.total ? fmtNum(item.total, 0) : '';
+// ΓöÇ ─Éß╗ïnh mß╗⌐c hao hß╗Ñt: chß╗ë lß║Ñy phß║ºn note (% hao hß╗Ñt)
+const wasteStr = item.note || '';
+const aoaRow = curRow; // l╞░u row index tr╞░ß╗¢c khi push
+aoa.push([
+sttVal,
+item.label,
+daiNum,
+rongNum,
+caoNum,
+item.unit,
+qtyVal,
+priceVal,
+totalVal,
+wasteStr,
+]);
+// ΓöÇ ─É─âng k├╜ formula cho cß╗Öt Sß╗É L╞»ß╗óNG (col G = idx 6)
+// Excel row = aoaRow + 1 (1-indexed), cols A=1 B=2 C=3 D=4 E=5 F=6 G=7 H=8 I=9 J=10
+const exR = aoaRow + 1;
+let qtyFormula = null;
+if (item.surface === 'floor' && daiNum && rongNum) {
+// Diß╗çn t├¡ch s├án: (D├ÇI/1000) ├ù (Rß╗ÿNG/1000) ├ù (1 + hao hß╗Ñt)

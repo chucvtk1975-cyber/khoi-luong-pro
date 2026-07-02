@@ -1,0 +1,7 @@
+﻿  +30327 [noteHeader]: if (['elecHeader','noteHeader','perimeter','ceilPerim'].includes(item.surface)) return;
+  +29386 [noteItem]: noteItem:   '≡ƒô¥ Vß║¼T T╞» KH├üC',
+  +34640 [noteItem]: const surfaceOrder = ['floor','wall','ceiling','ceilMat','floorMat','wallMat','window','elec','elecManual','noteItem'];
+  +21327 [Cß╗ÿNG]: const thRowSum = Array(sumCols).fill(''); thRowSum[1] = 'Tß╗öNG Cß╗ÿNG';
+  + 2828 [toUpperCase]: const r2 = blk(); r2[2] = `C├öNG TR├îNH: ${project.name || ''}`.toUpperCase(); aoaArray.push(r2);
+  + 6208 [toUpperCase]: rooms.forEach(r => sumHeaderRow.push(r.name.toUpperCase()));
+  +30314 [elecHeader]: if (['elecHeader','noteHeader','perimeter','ceilPerim'].includes(item.surface)) return;

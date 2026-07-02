@@ -1,0 +1,20 @@
+﻿
+=== "Nß╗ÿI THß║ñT" at 445092 ===
+Nß╗ÿI THß║ñT:</b> ${room.noteWoodwork}</td></tr>` : '',
+      room.notePlumbing   ? `<tr><td colspan="10" style="padding:4px 6px;font-style:italic;">≡ƒÜ┐ <b>PHß║ªN N╞»ß╗ÜC:</b> ${room.n
+
+=== "≡ƒÆ░ CHI PH├ì KH├üC ΓÇö" at 227801 ===
+≡ƒÆ░ CHI PH├ì KH├üC ΓÇö ${room.name}
+        </td>
+
+
+=== boq-room-oc-hdr rendering ===
+boq-room-oc-hdr" data-kr="${room.id}" style="display:none;">
+        <td colspan="10" style="padding:6px 12px;font-weight:700;color:var(--brand-gold);font-size:12px;background:rgba(255,160,0,0.08);">
+          ≡ƒÆ░ CHI PH├ì KH├üC ΓÇö ${room.name}
+        </td>
+      </tr>`;
+      let prStt = 1;
+      OC_PR.forEach(tmpl => {
+        const saved  = ocPR[tmpl.key] || {};
+        const qty    = tmpl.autoQty ? roomArea : +(saved.qty != null ? saved.qty : tmpl.defaultQty);

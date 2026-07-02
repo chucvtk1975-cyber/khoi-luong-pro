@@ -1,0 +1,12 @@
+﻿Γ£ô Fixed elecHeader label in CALC.room (1 occurrences): ΓÜí removed
+Γ£ô Fixed ep-note-hdr (2 occurrences): ≡ƒô¥ removed
+
+=== Remaining emoji (review) ===
+  '≡ƒôÉ' at 694513: pdf: '≡ƒôä', dwg: '≡ƒôÉ', dxf: '≡ƒôÉ', skp: '≡ƒÅá',
+  '≡ƒôÉ' at 694523: pdf: '≡ƒôä', dwg: '≡ƒôÉ', dxf: '≡ƒôÉ', skp: '≡ƒÅá',
+  '≡ƒôï' at 260925: sectionLabel.innerHTML = `≡ƒôï 2. Bß║óNG CHI TIß║╛T ΓÇö ${roomName}`;
+  '≡ƒ¢ï∩╕Å' at 447032: room.noteWoodwork   ? `<tr><td colspan="10" style="padding:4px 6px;font-style:italic;">≡ƒ¢ï∩╕Å <b>THIß║╛T B
+  '≡ƒÜ┐' at 447319: room.notePlumbing   ? `<tr><td colspan="10" style="padding:4px 6px;font-style:italic;">≡ƒÜ┐ <b>PHß║ªN N╞»ß╗Ü
+  '≡ƒ¢í∩╕Å' at 447597: room.noteWaterproof ? `<tr><td colspan="10" style="padding:4px 6px;font-style:italic;">≡ƒ¢í∩╕Å <b>CHß╗ÉNG T
+
+Γ£à 3 more fixes applied

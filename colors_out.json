@@ -1,0 +1,1049 @@
+{
+  "sheet": "BÁO GIÁ MẪU",
+  "merges": [
+    "C3:J3",
+    "H9:H10",
+    "J9:J10",
+    "A24:H24",
+    "C9:E9",
+    "E6:J6",
+    "B29:J29",
+    "A25:H25",
+    "C1:J1",
+    "B28:J28",
+    "F33:J33",
+    "F35:J35",
+    "F32:J32",
+    "B30:J30",
+    "E7:J7",
+    "B9:B10",
+    "F9:F10",
+    "C2:J2",
+    "B26:J26",
+    "A23:H23",
+    "G9:G10",
+    "I9:I10",
+    "A9:A10",
+    "E5:J5"
+  ],
+  "col_widths": {
+    "A": 6.33,
+    "B": 35.0,
+    "I": 13.41,
+    "J": 12.75
+  },
+  "header_bg": {
+    "1": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": null,
+        "bg": "00000000",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "3": {
+        "v": "BẢNG BÁO GIÁ",
+        "bg": "00000000",
+        "bold": true,
+        "size": 24.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "2": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "3": {
+        "v": "THIẾT KẾ KHU KHÁM SẢN VIP - LẦ",
+        "bg": "00000000",
+        "bold": true,
+        "size": 14.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "3": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "3": {
+        "v": "CÔNG TRÌNH: BỆNH VIỆN ĐA KHOA ",
+        "bg": "00000000",
+        "bold": true,
+        "size": 14.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "9": {
+      "1": {
+        "v": "STT",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": "HẠNG MỤC ",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "3": {
+        "v": "KÍCH THƯỚC",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": "Đ. VỊ ",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "7": {
+        "v": "SỐ LƯỢNG ",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "8": {
+        "v": "ĐƠN GIÁ",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "9": {
+        "v": "THÀNH TIỀN",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "10": {
+        "v": "GHI CHÚ",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      }
+    },
+    "10": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "2": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "3": {
+        "v": "DÀI",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "4": {
+        "v": "RỘNG",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "5": {
+        "v": "CAO",
+        "bg": "theme:8:0.7999816888943144",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "11": {
+      "1": {
+        "v": "I",
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "3": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "4": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "5": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "6": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "7": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "8": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "9": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "10": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "12": {
+      "1": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "3": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "4": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "5": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "6": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "7": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "8": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "9": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "10": {
+        "v": null,
+        "bg": "theme:0:0.0",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "27": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": "GHI CHÚ:",
+        "bg": "00000000",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "3": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": true,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      }
+    },
+    "28": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": "*Đơn giá này có giá trị 15  ng",
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "3": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "29": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": "*Thời gian sản xuất ",
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "3": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    },
+    "30": {
+      "1": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "center"
+      },
+      "2": {
+        "v": "*Thiết bị cũ hư hỏng sau khi t",
+        "bg": "00000000",
+        "bold": false,
+        "size": 12.0,
+        "fn": "Times New Roman",
+        "fc": null,
+        "ha": "left"
+      },
+      "3": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "4": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "5": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "6": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "7": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "8": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "9": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      },
+      "10": {
+        "v": null,
+        "bg": "00000000",
+        "bold": false,
+        "size": 11.0,
+        "fn": "Arial",
+        "fc": null,
+        "ha": null
+      }
+    }
+  }
+}

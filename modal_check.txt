@@ -1,0 +1,53 @@
+﻿Modal overlay: 5886 ΓåÆ 26319
+
+=== CURRENT STRUCTURE ===
+  0: <div class="modal-overlay" id="modal-room">
+  1:     <div class="modal-card modal-room-card">
+  2:       <div class="modal-header">
+  3:         <h3 id="modal-room-title">Th├¬m Ph├▓ng / Khu Vß╗▒c</h3>
+  4:         <button class="modal-close" id="btn-close-room-modal"><i data-lucide="x"></i></button>
+  5:       </div>
+  6:       <div class="modal-footer">
+  7:         <button class="btn-secondary" id="btn-cancel-room">Hß╗ºy</button>
+  8:         <button class="btn-primary" id="btn-save-room">
+  9:           <i data-lucide="plus-circle"></i> <span id="btn-save-room-label">Th├¬m Ph├▓ng</span>
+ 10:         </button>
+ 11:       </div>
+ 12:       <div class="modal-body">
+ 13:         <!-- T├¬n ph├▓ng -->
+ 14:         <div class="form-group">
+ 15:           <label>T├¬n ph├▓ng / khu vß╗▒c <span class="required">*</span></label>
+ 16:           <input type="text" id="room-name" placeholder="VD: Ph├▓ng kh├ích, Ph├▓ng ngß╗º master, Bß║┐p..." style="text-transfor
+ 17:         </div>
+ 18:         <!-- Quick select -->
+ 19:         <div class="quick-select-group">
+ 20:           <span class="quick-label">Chß╗ìn nhanh:</span>
+ 21:           <div class="quick-btns">
+ 22:             <button class="quick-btn" data-name="Ph├▓ng kh├ích">Ph├▓ng kh├ích</button>
+ 23:             <button class="quick-btn" data-name="Ph├▓ng ngß╗º master">PNgß╗º master</button>
+ 24:             <button class="quick-btn" data-name="Ph├▓ng ngß╗º 2">PNgß╗º 2</button>
+ 25:             <button class="quick-btn" data-name="Ph├▓ng ngß╗º 3">PNgß╗º 3</button>
+ 26:             <button class="quick-btn" data-name="Ph├▓ng bß║┐p">Bß║┐p</button>
+ 27:             <button class="quick-btn" data-name="Ph├▓ng ─ân">Ph├▓ng ─ân</button>
+ 28:             <button class="quick-btn" data-name="WC master">WC master</button>
+ 29:             <button class="quick-btn" data-name="WC chung">WC chung</button>
+ 30:             <button class="quick-btn" data-name="H├ánh lang">H├ánh lang</button>
+ 31:             <button class="quick-btn" data-name="Sß║únh">Sß║únh</button>
+ 32:             <button class="quick-btn" data-name="Ban c├┤ng">Ban c├┤ng</button>
+ 33:             <button class="quick-btn" data-name="Kho">Kho</button>
+ 34:           </div>
+ 35:         </div>
+ 36:         <!-- K├¡ch th╞░ß╗¢c -->
+ 37:         <div class="section-title">≡ƒôÉ K├¡ch th╞░ß╗¢c (mm ΓÇö nhß║¡p thß║│ng tß╗½ AutoCAD)</div>
+ 38:         <div class="dim-grid">
+ 39:           <div class="form-group">
+ 40:             <label>D├ái ΓÇö D (mm)</label>
+ 41:             <input type="number" id="room-D" placeholder="5200" step="1" min="0">
+ 42:           </div>
+ 43:           <div class="form-group">
+ 44:             <label>Rß╗Öng ΓÇö R (mm)</label>
+ 45:             <input type="number" id="room-R" placeholder="4000" step="1" min="0">
+ 46:           </div>
+ 47:           <div class="form-group">
+ 48:             <label>Cao ΓÇö H (mm)</label>
+ 49:             <input type="number" id="room-H" placeholder="3200" step="1" min="0"

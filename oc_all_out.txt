@@ -1,0 +1,44 @@
+﻿
+============================================================
+=== OC definition at ~233552 ===
+const OC_TEMPLATE = [
+    { key: 'transport',   label: 'Ph├¡ vß║¡n chuyß╗ân',   unit: 'g├│i',   autoQty: false, defaultQty: 1 },
+    { key: 'debris',      label: 'Ph├¡ th├ío gß╗í trß║ºn, vß║¡n chuyß╗ân + ─æß╗ò x├á bß║ºn, bao ─æß╗▒ng r├íc',       unit: 'm┬▓',       autoQty: true },
+    { key: 'scaffold',    label: 'Ph├¡ thu├¬ gi├án gi├ío',                                             unit: 'm┬▓',       autoQty: true },
+
+============================================================
+=== OC definition at ~303073 ===
+const OC_TEMPLATE = [
+    { key: 'transport', autoQty: false, defaultQty: 1 },
+    { key: 'debris',    autoQty: true },
+    { key: 'scaffold',  autoQty: true },
+    { key: 'design',    autoQty: true },
+
+============================================================
+=== OC definition at ~521550 ===
+const OC_TEMPLATE = [
+    { key: 'transport',   label: 'Ph├¡ vß║¡n chuyß╗ân',   unit: 'g├│i',   autoQty: false, defaultQty: 1 },
+    { key: 'debris',      label: 'Ph├¡ th├ío gß╗í trß║ºn, vß║¡n chuyß╗ân + ─æß╗ò x├á bß║ºn, bao ─æß╗▒ng r├íc',       unit: 'm┬▓',       autoQty: true },
+    { key: 'scaffold',    label: 'Ph├¡ thu├¬ gi├án gi├ío',                                             unit: 'm┬▓',       autoQty: true },
+
+============================================================
+=== OC definition at ~601717 ===
+const OC_T = [
+      {key:'transport',autoQty:false,defaultQty:1},
+      {key:'debris',autoQty:true},{key:'scaffold',autoQty:true},
+      {key:'design',autoQty:true},{key:'supervision',autoQty:false,defaultQty:1},
+    ];
+
+============================================================
+=== OC definition at ~644033 ===
+const OC_TEMPLATE = [
+    { key:'transport',   label:'Ph├¡ vß║¡n chuyß╗ân',   unit:'g├│i', autoQty:false, defaultQty:1 },
+    { key:'debris',      label:'Ph├¡ th├ío gß╗í trß║ºn, vß║¡n chuyß╗ân + ─æß╗ò x├á bß║ºn, bao ─æß╗▒ng r├íc', unit:'m┬▓', autoQty:true },
+    { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío', unit:'m┬▓',  autoQty:true },
+
+============================================================
+=== OC definition at ~663144 ===
+const OC_TEMPLATE = [
+      { key:'transport',   label:'Ph├¡ vß║¡n chuyß╗ân',   unit:'g├│i', autoQty:false, defaultQty:1 },
+      { key:'debris',      label:'Ph├¡ th├ío gß╗í trß║ºn, vß║¡n chuyß╗ân + ─æß╗ò x├á bß║ºn, bao ─æß╗▒ng r├íc', unit:'m┬▓', autoQty:true },
+      { key:'scaffold',    label:'Ph├¡ thu├¬ gi├án gi├ío', unit:'m┬▓',  autoQty:true },

@@ -1,0 +1,82 @@
+﻿FOUND in index.html at 2968
+ cho tß╗òng gi├í trß╗ï hß╗úp ─æß╗ông</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </label>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div style="display:flex;align-items:center;gap:8px;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <input type="number" id="proj-vat-rate" min="0" max="30" step="0.5" value="8" style="width:90px;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <span style="font-size:13px;color:var(--text-secondary);">%</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <span style="font-size:11px;color:var(--text-muted);">0 = kh├┤ng t├¡nh VAT ┬╖ th╞░ß╗¥ng d├╣ng 8% hoß║╖c 10%</span>

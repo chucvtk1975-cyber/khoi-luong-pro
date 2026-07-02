@@ -1,0 +1,12 @@
+Line 4272: noteWoodwork:  document.getElementById('note-woodwork')?.value.trim()  || '',
+Line 4274: notePlumbing:  document.getElementById('note-plumbing')?.value.trim()  || '',
+Line 4276: noteWaterproof: document.getElementById('note-waterproof')?.value.trim() || '',
+Line 4387: document.getElementById('note-woodwork').value  = room?.noteWoodwork  || '';
+Line 4391: document.getElementById('note-plumbing').value  = room?.notePlumbing  || '';
+Line 4395: document.getElementById('note-waterproof').value = room?.noteWaterproof || '';
+Line 6736: { text: room.noteWoodwork,   label: 'THIẾT BỊ NỘI THẤT' },
+Line 6738: { text: room.notePlumbing,   label: 'PHẦN NƯỚC' },
+Line 6740: { text: room.noteWaterproof, label: 'CHỐNG THẤM' },
+Line 8584: { text: room.noteWoodwork,   label: 'THIẾT BỊ NỘI THẤT' },
+Line 8586: { text: room.notePlumbing,   label: 'PHẦN NƯỚC' },
+Line 8588: { text: room.noteWaterproof, label: 'CHỐNG THẤM' },

@@ -1,0 +1,30 @@
+﻿Total "vatRate" occurrences: 28
+
+  [247717] const vatRate = +(project.vatRate ?? 8) / 100;
+  [247737] const vatRate = +(project.vatRate ?? 8) / 100;
+  [247931] const vatAmt  = Math.round(totalBeforeVat * vatRate);
+  [250680] VAT (<span id="boq-vat-label">${Math.round(vatRate*100)}%</span>):
+  [306143] const vatRate3 = +(p3.vatRate ?? 8) / 100;
+  [306159] const vatRate3 = +(p3.vatRate ?? 8) / 100;
+  [309119] const vatAmt3 = Math.round(totalBefore * vatRate3);
+  [311718] <td colspan="${colSpanLeft}" style="text-align:right;padding:6px 12px;color:var(--text-secondary);">VAT (${Math.round(vatRate3*100)}%):</td>
+  [353204] document.getElementById('proj-vat-rate').value     = project?.vatRate     ?? 8;
+  [358405] vatRate:     parseFloat(document.getElementById('proj-vat-rate').value) || 0,
+  [410564] const vatRate  = +(project.vatRate ?? 8) / 100;
+  [410585] const vatRate  = +(project.vatRate ?? 8) / 100;
+  [425966] const vatAmtPDF   = Math.round(grandSubPDF * vatRate);
+  [435878] <td colspan="${spanRight}" style="${colRight}">VAT (${Math.round(vatRate*100)}%)</td>
+  [444482] const vatRoom   = Math.round(roomTotal * vatRate);
+  [451655] <td colspan="8" style="${colRight}">VAT (${Math.round(vatRate*100)}%)</td>
+  [528020] const vatRateExcel = +(project.vatRate ?? 8) / 100;
+  [528045] const vatRateExcel = +(project.vatRate ?? 8) / 100;
+  [528243] const vatAmtExcel  = Math.round(grandTotalSum * vatRateExcel);
+  [530188] vatRow[1] = `VAT (${Math.round(vatRateExcel * 100)}%)`;
+  [587633] const vatRateRoom   = +(project.vatRate ?? 8) / 100;
+  [587659] const vatRateRoom   = +(project.vatRate ?? 8) / 100;
+  [587856] const vatAmtRoom    = Math.round(roomTotal * vatRateRoom);
+  [589637] vatRowRoom[1] = `VAT (${Math.round(vatRateRoom * 100)}%)`;
+  [600764] const vatRateSig = +(project.vatRate ?? 8) / 100;
+  [600787] const vatRateSig = +(project.vatRate ?? 8) / 100;
+  [603461] const vatAmtSig = Math.round(grandSig * vatRateSig);
+  [606832] const lv2 = blk(); lv2[0]=`VAT (${Math.round(vatRateSig*100)}%)`; lv2[SIG_COLS-1]=vatAmtSig>0?fmtNum(vatAmtSig,0):''; aoaSig.push(lv2);

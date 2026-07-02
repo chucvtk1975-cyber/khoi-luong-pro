@@ -1,0 +1,11 @@
+﻿[511317] 'exportExcel': function exportExcel() {
+[463316] 'XLSX': const range = XLSX.utils.decode_range(ws['!ref']);
+[495477] 'xlsx': // Helper: chuyß╗ân string nhß╗ï ph├ón sang ArrayBuffer (d├╣ng cho xlsx-style write)
+[253245] 'Cß╗ÿNG': Tß╗öNG Cß╗ÿNG:
+[134145] 'noteHeader': items.push({ surface: 'noteHeader', label: 'CHI TIET TU GHI CHU', unit:'',qty:0,dai:'',rong:'',cao:'',price:0,total:0,fo
+[383782] 'note-woodwork': noteWoodwork:  document.getElementById('note-woodwork')?.value.trim()  || '',
+[26568] 'noteItem': surface: 'noteItem', label, unit,
+[24496] 'ghi ch├║': // Ph├ón t├¡ch v─ân bß║ún ghi ch├║ th├ánh tß╗½ng d├▓ng BOQ c├│ sß╗æ l╞░ß╗úng
+[207975] 'Ghi ch├║': stt = 1; // Reset STT khi v├áo phß║ºn Ghi ch├║
+[110020] 'THIß║╛T Bß╗è': // ΓöÇΓöÇ THIß║╛T Bß╗è ─ÉIß╗åN ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+[208144] 'note-': html += `<tr class="boq-note-header" data-key="${key}" data-kr="${room.id}"><td colspan="10">${romanNums[subRomIdx++] ||

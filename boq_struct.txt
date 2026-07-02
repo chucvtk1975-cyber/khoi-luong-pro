@@ -1,0 +1,6 @@
+﻿renderBOQ at: 179399
+
+=== Surface/Section references in renderBOQ ===
+  +23878 [section]: let subRomIdx = 1; // sub-section Roman counter
+  +26880 [surface ===]: if (item.surface === 'elecHeader') {
+  +28896 [sub-header]: // --- Custom items (IN HOA = sub-header + reset STT) ---

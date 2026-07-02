@@ -1,0 +1,32 @@
+﻿=== openRoomModal ===
+function openRoomModal(room = null) {
+  state.editingRoomId = room?.id || null;
+  const isEdit = !!room;
+  const project = DB.get(state.currentProjectId);
+  const projSuffix = project ? ` ΓÇö Dß╗▒ ├ín: ${project.name}` : '';
+  document.getElementById('modal-room-title').textContent     = (isEdit ? 'Sß╗¡a Ph├▓ng' : 'Th├¬m Ph├▓ng / Khu Vß╗▒c') + projSuffix;
+  document.getElementById('btn-save-room-label').textContent  = isEdit ? 'L╞░u Thay ─Éß╗òi' : 'Th├¬m Ph├▓ng';
+  document.getElementById('room-name').value                  = room?.name     || '';
+  document.getElementById('room-D').value                     = room?.D        || '';
+  document.getElementById('room-R').value                     = room?.R        || '';
+  document.getElementById('room-H').value                     = room?.H        || '';
+  document.getElementById('room-doors').value                 = room?.doors    ?? 1;
+  document.getElementById('room-door-w').value                = room?.doorW    ?? 900;
+  document.getElementById('room-door-h').value                = room?.doorH    ?? 2100;
+  document.getElementById('room-windows'
+
+
+=== modal click handler ===
+['modal-project', 'modal-room'].forEach(id => {
+    document.getElementById(id).addEventListener('click', e => {
+      if (e.target === e.currentTarget) {
+        if (id === 'modal-room') {
+          closeRoomModal();
+        } else {
+          e.currentTarget.classList.remove('open');
+        }
+      }
+    });
+  });
+  // --- Ph├¡m tß║»t ---
+  docum

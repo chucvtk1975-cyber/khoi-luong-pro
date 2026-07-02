@@ -1,0 +1,44 @@
+﻿=== Footer block ===
+<div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-room">Hß╗ºy</button>
+        <button class="btn-primary" id="btn-save-room">
+          <i data-lucide="plus-circle"></i> <span id="btn-save-room-label">Th├¬m Ph├▓ng</span>
+        </button>
+      </div>
+
+Inserting after char 6250
+Context: '    </div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      <div cla'
+
+=== Result structure ===
+id="modal-room">
+    <div class="modal-card modal-room-card">
+      <div class="modal-header">
+        <h3 id="modal-room-title">Th├¬m Ph├▓ng / Khu Vß╗▒c</h3>
+        <button class="modal-close" id="btn-close-room-modal"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-room">Hß╗ºy</button>
+        <button class="btn-primary" id="btn-save-room">
+          <i data-lucide="plus-circle"></i> <span id="btn-save-room-label">Th├¬m Ph├▓ng</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- T├¬n ph├▓ng -->
+        <div class="form-group">
+          <label>T├¬n ph├▓ng / khu vß╗▒c <span class="required">*</span></label>
+          <input type="text" id="room-name" placeholder="VD: Ph├▓ng kh├ích, Ph├▓ng ngß╗º master, Bß║┐p..." style="text-transform:uppercase;">
+        </div>
+        <!-- Quick select -->
+        <div class="quick-select-group">
+          <span class="quick-label">Chß╗ìn nhanh:</span>
+          <div class="quick-btns">
+            <button class="quick-btn" data-name="Ph├▓ng kh├ích">Ph├▓ng kh├ích</button>
+            <button class="quick-btn" data-name="Ph├▓ng ngß╗º master">PNgß╗º master</button>
+            <button class="quick-btn" data-name="Ph├▓ng ngß╗º 2">PNgß╗º 2</button>
+            <button class="quick-btn" data-name="Ph├▓ng ngß╗º 3">PNgß╗º 3</button>
+            <button class="quick-btn" data-name="Ph├▓ng bß║┐p">Bß║┐p</button>
+            <button class="quick-btn" data-name="Ph├▓ng ─ân">Ph├▓ng ─ân</button>
+            <button class="quick-btn" data-name="WC master">WC master</button>
+            <button class="quick-btn" data-name="WC chung">WC chung</button>
+
+Γ£à modal-footer moved to top (after modal-header)

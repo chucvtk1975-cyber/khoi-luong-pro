@@ -1,0 +1,26 @@
+﻿=== After forEach ends (585627 ΓåÆ 589000) ===
+);
+}
+// ΓöÇΓöÇ Ghi ch├║ Mß╗Öc / N╞░ß╗¢c / Chß╗æng thß║Ñm
+if (room.noteWoodwork) {
+const wr = blkDetail(); wr[1] = `≡ƒ¢ï∩╕Å THIß║╛T Bß╗è Nß╗ÿI THß║ñT: ${room.noteWoodwork}`;
+aoa.push(wr); merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}}); curRow++;
+}
+if (room.notePlumbing) {
+const pr = blkDetail(); pr[1] = `≡ƒÜ┐ PHß║ªN N╞»ß╗ÜC: ${room.notePlumbing}`;
+aoa.push(pr); merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}}); curRow++;
+}
+if (room.noteWaterproof) {
+const wpR = blkDetail(); wpR[1] = `≡ƒ¢í∩╕Å CHß╗ÉNG THß║ñM: ${room.noteWaterproof}`;
+aoa.push(wpR); merges.push({s:{r:curRow,c:1}, e:{r:curRow,c:9}}); curRow++;
+}
+// ΓöÇΓöÇ Cß╗Öng ph├▓ng + VAT + Tß╗òng + Bß║▒ng chß╗»
+aoa.push(blkDetail()); curRow++;
+const vatRateRoom   = +(project.vatRate ?? 8) / 100;
+
+
+=== Unique strings to anchor insertion ===
+  [585318] roomTotal: roomTotal += item.total || 0;
+  [591863] totalRow: const totalRowRoom = blkDetail();
+  [594218] wsDetail: const wsDetail = XLSX.utils.aoa_to_sheet(aoa);
+  [594218] wsDe: const wsDetail = XLSX.utils.aoa_to_sheet(aoa);
