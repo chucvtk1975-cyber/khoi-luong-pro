@@ -159,66 +159,191 @@ body {
 }
 /* ========== PROJECT SIDEBAR ========== */
 .project-sidebar {
-  width: 270px;
-  background: var(--sidebar-gradient); /* Áp dụng Gradient */
-  border-right: 1px solid var(--color-primary-hover);
+  width: 280px;
+  background: #111827; /* Nền tối sâu Slate 950 */
+  border-right: 1px solid #1F2937;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   flex-shrink: 0;
+  padding: 16px 12px;
 }
-.sidebar-header {
+.sidebar-brand-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.brand-icon-orange {
+  width: 38px;
+  height: 38px;
+  background: #F97316; /* Màu cam thương hiệu */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+}
+.brand-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.brand-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 14px 12px;
+  gap: 4px;
+}
+.brand-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
+}
+.brand-version {
   font-size: 10px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--sidebar-text-muted); /* Chữ xám sáng */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(249, 115, 22, 0.2);
+  color: #F97316;
+  padding: 1px 5px;
+  border-radius: 4px;
 }
+.brand-copyright {
+  font-size: 10px;
+  color: #9CA3AF;
+  margin-top: 2px;
+}
+.sidebar-controls {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sidebar-search-wrapper {
+  position: relative;
+  width: 100%;
+}
+.sidebar-search-wrapper .search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+}
+.sidebar-search-wrapper input {
+  width: 100%;
+  padding: 8px 12px 8px 32px;
+  background: #1F2937;
+  border: 1px solid #F97316; /* Viền cam đất theo mẫu */
+  border-radius: 20px;
+  color: #FFFFFF;
+  font-size: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.sidebar-search-wrapper input:focus {
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+.sidebar-sort-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar-sort-label {
+  font-size: 11px;
+  color: #9CA3AF;
+}
+.sidebar-sort-select {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+.sidebar-sort-select option {
+  background: #111827;
+  color: #FFFFFF;
+}
+
+/* Thẻ dự án kiểu mới */
 .project-list {
   flex: 1;
   overflow-y: auto;
-  padding: 8px;
+  padding-right: 4px;
 }
 .project-item {
-  padding: 11px 13px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  margin-bottom: 3px;
+  padding: 14px 16px;
+  border-radius: 12px; /* Bo góc card */
+  background: #1F2937; /* Nền card xám tối */
   border: 1px solid transparent;
-  transition: all 0.15s ease;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .project-item:hover {
-  background: rgba(255, 255, 255, 0.05); /* Hover sáng nhẹ */
-  border-color: rgba(255, 255, 255, 0.08);
+  background: #374151;
 }
 .project-item.active {
-  background: var(--sidebar-active-bg); /* Kính mờ */
-  border-color: var(--sidebar-active-border);
-  backdrop-filter: blur(8px);
+  background: #1E293B; /* Navy tối sâu */
+  border-color: #F97316; /* Viền cam rực rỡ */
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+}
+.project-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-folder-icon {
+  color: #9CA3AF;
+  flex-shrink: 0;
+}
+.project-item.active .project-folder-icon {
+  color: #F97316; /* Folder màu cam */
 }
 .project-item-name {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
-  color: var(--sidebar-text-main); /* Chữ trắng sáng */
-  margin-bottom: 4px;
+  color: #FFFFFF; /* Mặc định chữ trắng */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 0; /* Override */
 }
 .project-item.active .project-item-name {
-  color: #FFFFFF; /* Chọn thì trắng tinh */
-  font-weight: 700;
+  color: #F97316; /* Active thì tên màu cam */
 }
-.project-item-meta {
+.project-item-client {
   font-size: 11px;
-  color: var(--sidebar-text-muted); /* Chữ xám sáng */
+  color: #9CA3AF;
+}
+.project-item-footer {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+.project-item-date {
+  font-size: 11px;
+  color: #6B7280;
+}
+.project-item-rooms-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: #374151;
+  color: #D1D5DB;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.project-item.active .project-item-rooms-badge {
+  background: #111827;
+  color: #93C5FD;
 }
 /* ========== WORKSPACE ========== */
 .workspace {
