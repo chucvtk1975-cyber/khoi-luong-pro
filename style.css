@@ -43,7 +43,7 @@
   --bg-card-hover:  var(--color-primary-light);
   
   /* Gradient Sidebar trái */
-  --sidebar-gradient:    linear-gradient(180deg, #2A4365 0%, #0B0F19 100%);
+  --sidebar-gradient:    linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
   --bg-sidebar:     #0F172A;
   
   /* Màu nền của Header (Đổi từ tối sang sáng) */
