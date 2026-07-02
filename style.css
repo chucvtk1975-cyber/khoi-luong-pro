@@ -2316,7 +2316,8 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
   }
   #excel-pdf-content .ep-page {
     position: relative;
-    height: 209mm;
+    min-height: 209mm;
+    height: auto !important;
     padding: 12mm 10mm !important;
     page-break-after: always;
     box-sizing: border-box;
