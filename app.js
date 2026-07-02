@@ -9504,7 +9504,11 @@ function _renderPreviewSummary(project, rooms) {
 
       grandTotal += total;
 
-      const blankCols = rooms.map(() => '<td>—</td>').join('');
+      const roomQtyCells = rooms.map(r => {
+        const tf = (+r.D || 0) / 1000 * (+r.R || 0) / 1000;
+        const roomQty = tmpl.autoQty ? +(tf.toFixed(2)) : +(saved.qty != null ? saved.qty : tmpl.defaultQty);
+        return `<td style="text-align:right;font-size:12px;padding:4px 8px;">${roomQty > 0 ? fmt(roomQty) : '—'}</td>`;
+      }).join('');
 
       sumHtml += `<tr class="pv-item">
 
@@ -9514,7 +9518,7 @@ function _renderPreviewSummary(project, rooms) {
 
         <td class="pv-center">${tmpl.unit}</td>
 
-        ${blankCols}
+        ${roomQtyCells}
 
         <td class="pv-num">${fmt(qty)}</td>
 
