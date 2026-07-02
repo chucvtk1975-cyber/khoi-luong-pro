@@ -9292,6 +9292,7 @@ function _renderPreviewSummary(project, rooms) {
   }
 
   let sumHtml = '';
+  let grandTotal = 0;
 
   const groups = { construction: [], furniture: [], elec: [], sanitary: [] };
 
