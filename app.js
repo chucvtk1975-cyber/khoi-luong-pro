@@ -8255,17 +8255,57 @@ function generateWorkbook(project) {
 
       const row = [ocStt++, tmpl.label, tmpl.unit];
 
-      rooms.forEach(() => row.push('')); // blank room columns
+      rooms.forEach((r, rIdx) => {
 
-      const totalQtyCol = XLSX.utils.encode_col(3 + rooms.length);
+        const rSheet = roomSheets[rIdx];
 
-      const priceCol = XLSX.utils.encode_col(4 + rooms.length);
+        const itemKey = `${tmpl.label.trim()}||${tmpl.unit.trim()}`;
 
-      row.push(qty);
+        const itemRowInRoom = rSheet.rowMap[itemKey];
+
+        if (itemRowInRoom) {
+
+          row.push(null);
+
+          formulaMapSum.push({
+
+            r: curRowSum,
+
+            c: 3 + rIdx,
+
+            f: `'${rSheet.finalSheetName}'!G${itemRowInRoom}`
+
+          });
+
+        } else {
+
+          row.push('');
+
+        }
+
+      });
+
+      row.push(null);
+
+      const totalFormula = `SUM(${XLSX.utils.encode_col(3)}${exRSum}:${XLSX.utils.encode_col(3 + rooms.length - 1)}${exRSum})`;
+
+      formulaMapSum.push({
+
+        r: curRowSum,
+
+        c: 3 + rooms.length,
+
+        f: totalFormula
+
+      });
 
       row.push(price);
 
       row.push('');
+
+      const totalQtyCol = XLSX.utils.encode_col(3 + rooms.length);
+
+      const priceCol = XLSX.utils.encode_col(4 + rooms.length);
 
       formulaMapSum.push({
 
