@@ -125,59 +125,55 @@ function genId() {
 
 // Dùng toFixed + regex để luôn hiện đúng số chữ số thập phân
 
+function hasKeyword(text, kw) {
+  const kwNorm = kw.trim();
+  if (!kwNorm) return false;
+  const escaped = kwNorm.replace(/[-\/\^$*+?.()|[\]{}]/g, '\$&');
+  const regex = new RegExp('\b' + escaped + '\b', 'i');
+  return regex.test(text);
+}
+
 function categorizeSummaryItem(item) {
   if (item.surface === 'woodworkNote') return 'furniture';
   if (item.surface === 'plumbingNote') return 'sanitary';
   if (item.surface === 'waterproofNote') return 'sanitary';
 
-  const labelNorm = (item.label || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
+  // 1. Kiểm tra loại bề mặt xây dựng cơ bản trước
+  if (['floor', 'wall', 'ceiling', 'perimeter', 'window', 'ceilPerim'].includes(item.surface)) {
+    return 'construction';
+  }
+
+  const labelNorm = (item.label || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').trim();
 
   const elecKeywords = [
-
-    'den ', 'spotlight', 'panel', 'tuyp', 'led', 'cong tac', 'o cam', 'cb ', 'pha', 'tu dien',
-
+    'den', 'spotlight', 'panel', 'tuyp', 'led', 'cong tac', 'o cam', 'cb', 'pha', 'tu dien',
     'may lanh', 'dieu hoa', 'quat hut', 'day dien', 'vat tu phu dien', 'nep nhua', 'ong ruot ga', 'ong cung', 'cadivi', 'panasonic', 'downlight'
-
   ];
 
-  if (elecKeywords.some(kw => labelNorm.includes(kw))) {
-
+  if (elecKeywords.some(kw => hasKeyword(labelNorm, kw))) {
     return 'elec';
-
   }
 
   const sanitaryKeywords = [
-
     'bon cau', 'lavabo', 'chau rua', 'voi sen', 'sen tam', 'chau tam', 'tieu nam', 've sinh',
-
     'thoat san', 'ong nuoc', 'ro nuoc', 'thiet bi ve sinh', 'lap dat ve sinh', 'sen cay', 'voi rua'
-
   ];
 
-  if (sanitaryKeywords.some(kw => labelNorm.includes(kw))) {
-
+  if (sanitaryKeywords.some(kw => hasKeyword(labelNorm, kw))) {
     return 'sanitary';
-
   }
 
   const furnitureKeywords = [
-
-    'giuong', 'tu ao', 'tu bep', 'ban an', 'ban trang diem', 'ban lam viec', 'ghe ', 'sofa',
-
-    'ke tivi', 'tap dau giuong', 'quay bar', 'noi that', 'tu giay', 'quay le tan', 'dem ', 'rem',
-
+    'giuong', 'tu ao', 'tu bep', 'ban an', 'ban trang diem', 'ban lam viec', 'ghe', 'sofa',
+    'ke tivi', 'tap dau giuong', 'quay bar', 'noi that', 'tu giay', 'quay le tan', 'dem', 'rem',
     'vach op', 'lam go', 'woodwork', 'ke sach', 'ke trang tri', 'ban tra', 'go'
-
   ];
 
-  if (furnitureKeywords.some(kw => labelNorm.includes(kw))) {
-
+  if (furnitureKeywords.some(kw => hasKeyword(labelNorm, kw))) {
     return 'furniture';
-
   }
 
   return 'construction';
-
 }
 
 function fmt(n, dec = 2) {
