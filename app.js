@@ -7572,13 +7572,13 @@ function generateWorkbook(project) {
       const isManual = item.surface === 'elecManual';
       const sttVal = noStt ? '' : itemStt++;
 
-      const daiNum  = item.dai  ? +item.dai  : '';
-      const rongNum = item.rong ? +item.rong : '';
-      const caoNum  = item.cao  ? +item.cao  : '';
+      const daiNum  = item.dai  ? +item.dai  : null;
+      const rongNum = item.rong ? +item.rong : null;
+      const caoNum  = item.cao  ? +item.cao  : null;
 
-      const qtyVal = (isManual && item.qty === 0) ? '' : fmtNum(item.qty, 2);
-      const priceVal = item.price ? fmtNum(item.price, 0) : '';
-      const totalVal = item.total ? fmtNum(item.total, 0) : '';
+      const qtyVal = (isManual && item.qty === 0) ? null : fmtNum(item.qty, 2);
+      const priceVal = (item.price !== undefined && item.price !== null && item.price !== '') ? fmtNum(item.price, 0) : null;
+      const totalVal = (item.total !== undefined && item.total !== null && item.total !== '') ? fmtNum(item.total, 0) : null;
       let wasteStr = item.note || '';
 
       const aoaRow = curRow;
@@ -8136,7 +8136,7 @@ function generateWorkbook(project) {
 
           if (itemRowInRoom) {
 
-            row.push('');
+            row.push(null);
 
             formulaMapSum.push({
 
@@ -8150,7 +8150,7 @@ function generateWorkbook(project) {
 
           } else {
 
-            row.push('');
+            row.push(null);
 
           }
 
@@ -8168,7 +8168,7 @@ function generateWorkbook(project) {
 
         const totalAmtCol = XLSX.utils.encode_col(5 + rooms.length);
 
-        row.push('');
+        row.push(null);
 
         formulaMapSum.push({
 
@@ -8182,11 +8182,11 @@ function generateWorkbook(project) {
 
         // ĐƠN GIÁ (static)
 
-        row.push(item.price ? fmtNum(item.price, 0) : '');
+        row.push((item.price !== undefined && item.price !== null && item.price !== '') ? fmtNum(item.price, 0) : null);
 
         // THÀNH TIỀN formula
 
-        row.push('');
+        row.push(null);
 
         formulaMapSum.push({
 
@@ -8714,17 +8714,17 @@ function generateWorkbook(project) {
 
         m.unit,
 
-        '', // KL tính toán formula
+        null, // KL tính toán formula
 
-        '', // KL cần mua formula
+        null, // KL cần mua formula
 
-        m.price ? fmtNum(m.price, 0) : '',
+        (m.price !== undefined && m.price !== null && m.price !== '') ? fmtNum(m.price, 0) : null,
 
-        '', // Thành tiền formula
+        null, // Thành tiền formula
 
         [...new Set(m.rooms)].join(', '),
 
-        '', // NCC
+        null, // NCC
 
         m.note || '',
 
