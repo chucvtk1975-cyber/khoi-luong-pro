@@ -91,8 +91,8 @@ body {
   justify-content: space-between;
   padding: 0 24px;
   height: 62px;
-  background: var(--bg-sidebar);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg-header); /* Đổi sang màu nền trắng */
+  border-bottom: 1px solid var(--color-border); /* Viền xám mỏng */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -4012,4 +4012,15 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
   font-size: 12px;
   color: var(--text-secondary, var(--color-text-secondary));
   margin-top: 2px;
+}
+
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-header);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
