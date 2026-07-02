@@ -737,12 +737,12 @@
     <header class="app-header">
 
       <div class="header-brand">
-
-        <img src="logo-bluedecor.png" alt="Blue Decor" style="height:42px;object-fit:contain;display:block;" onerror="this.style.display='none'">
-
+        <!-- Để trống hoặc nút back tùy ý, giữ cấu trúc flex -->
       </div>
 
-      <div class="header-center">Khối-Lượng-Pro</div>
+      <div class="header-center">
+        <img src="logo-bluedecor.png" alt="Blue Decor" style="height:42px;object-fit:contain;display:block;">
+      </div>
 
       <div class="header-actions">
 
@@ -766,16 +766,36 @@
 
       <aside class="project-sidebar">
 
-        <div class="sidebar-header">
+        <div class="sidebar-brand-area">
+          <div class="brand-icon-orange">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="16"></line><line x1="15" y1="22" x2="15" y2="16"></line><line x1="9" y1="16" x2="15" y2="16"></line><path d="M9 12h.01"></path><path d="M15 12h.01"></path><path d="M9 8h.01"></path><path d="M15 8h.01"></path></svg>
+          </div>
+          <div class="brand-info">
+            <div class="brand-title-row">
+              <span class="brand-title">BỐC KHỐI LƯỢNG PRO</span>
+              <span class="brand-version">v1.2</span>
+            </div>
+            <div class="brand-copyright">Bản quyền thuộc BlueDecor Design & Build</div>
+          </div>
+        </div>
 
-          <span>Dự Án</span>
-
-          <button class="btn-icon-sm" id="btn-new-project" title="Tạo dự án mới">
-
-            <i data-lucide="plus"></i>
-
-          </button>
-
+        <div class="sidebar-controls">
+          <div class="sidebar-search-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="sidebar-project-search" placeholder="Tìm dự án..." oninput="renderProjectList()">
+          </div>
+          
+          <div class="sidebar-sort-row">
+            <div class="sidebar-sort-label">Sắp xếp theo:</div>
+            <select id="sidebar-project-sort" onchange="renderProjectList()" class="sidebar-sort-select">
+              <option value="newest">Mới nhất</option>
+              <option value="az">A → Z</option>
+              <option value="za">Z → A</option>
+            </select>
+            <button class="btn-icon-sm" id="btn-new-project" title="Tạo dự án mới" style="margin-left: auto;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          </div>
         </div>
 
         <div class="project-list" id="project-list"></div>
