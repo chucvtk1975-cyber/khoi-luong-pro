@@ -10309,9 +10309,22 @@ function init() {
 
 // Nén ảnh về tối đa 1200px, JPEG 0.75 chất lượng
 
-function compressImage(file, maxW = 1280, quality = 0.7) {
+async function compressImage(file, maxW = 1280, quality = 0.7) {
+  let finalFile = file;
+  const isHeic = await isBlobHEIC(file);
+  if (isHeic && typeof heic2any === 'function') {
+    try {
+      const converted = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.7 });
+      const finalBlob = Array.isArray(converted) ? converted[0] : converted;
+      const newName = file.name.replace(/\.[^.]+$/i, '.jpg');
+      finalFile = new File([finalBlob], newName, { type: 'image/jpeg' });
+    } catch (heicErr) {
+      console.warn('heic2any failed, falling back:', heicErr);
+    }
+  }
+
   return new Promise((resolve, reject) => {
-    const objectUrl = URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(finalFile);
     const img = new Image();
 
     img.onerror = () => {
@@ -10404,6 +10417,8 @@ function fmtBytes(b) {
 
 }
 
+const IMAGE_PLACEHOLDER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23f1f5f9" rx="8"/><path d="M35 85 L50 65 L65 80 L85 55 L95 85 Z" fill="%23cbd5e1"/><circle cx="45" cy="45" r="8" fill="%23cbd5e1"/><text x="60" y="105" font-family="system-ui" font-size="10" fill="%2394a3b8" text-anchor="middle" font-weight="bold">Ảnh lỗi/thiếu</text></svg>';
+
 // Render ảnh hiện trạng
 
 async function renderSitePhotos() {
@@ -10451,14 +10466,14 @@ async function renderSitePhotos() {
           state.siteObjectUrls.push(imageUrl);
           p.data = imageUrl; // Cache URL in memory
         } else {
-          imageUrl = 'placeholder.png';
+          imageUrl = IMAGE_PLACEHOLDER;
         }
       } catch (err) {
         console.error('Failed to get site photo:', p.id, err);
-        imageUrl = 'placeholder.png';
+        imageUrl = IMAGE_PLACEHOLDER;
       }
     } else {
-      imageUrl = 'placeholder.png';
+      imageUrl = IMAGE_PLACEHOLDER;
     }
 
     img.src = imageUrl;
@@ -11429,14 +11444,14 @@ async function renderCategorizedRoomPhotos(category) {
           state.categoryObjectUrls[category].push(imageUrl);
           p.data = imageUrl; // Cache URL in memory
         } else {
-          imageUrl = 'placeholder.png';
+          imageUrl = IMAGE_PLACEHOLDER;
         }
       } catch (err) {
         console.error('Failed to get photo:', p.id, err);
-        imageUrl = 'placeholder.png';
+        imageUrl = IMAGE_PLACEHOLDER;
       }
     } else {
-      imageUrl = 'placeholder.png';
+      imageUrl = IMAGE_PLACEHOLDER;
     }
 
     img.src = imageUrl;
