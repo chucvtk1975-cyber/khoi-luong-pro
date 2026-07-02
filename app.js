@@ -2495,7 +2495,7 @@ function renderRooms(project) {
 
         <div class="room-card-photos" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
 
-          <span style="color: var(--text-secondary);">📷 Ảnh hiện trạng: <strong style="color: var(--brand-blue-light);">${(room.photos || []).length}</strong> tấm</span>
+          <span style="color: var(--text-secondary);">📷 Ảnh hiện trạng: <strong style="color: var(--brand-blue-light);">${getRoomPhotosCount(room)}</strong> tấm</span>
 
           <div>
 
