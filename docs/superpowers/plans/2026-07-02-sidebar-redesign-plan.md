@@ -68,7 +68,7 @@ Thay thế khối `<header class="app-header">` và `<aside class="project-sideb
               <span class="brand-title">BỐC KHỐI LƯỢNG PRO</span>
               <span class="brand-version">v1.2</span>
             </div>
-            <div class="brand-copyright">Bản quyền thuộc BluDecor Design & Build</div>
+            <div class="brand-copyright">Bản quyền thuộc BlueDecor Design & Build</div>
           </div>
         </div>
 
