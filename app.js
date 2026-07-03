@@ -7957,23 +7957,6 @@ function generateWorkbook(project) {
 
     curRow++;
 
-    const allCatPhotos = [];
-    ['overview', 'den', 'tudien', 'maylanh'].forEach(cat => {
-      const catPhotos = getRoomPhotos(room, cat);
-      if (catPhotos.length > 0) {
-        allCatPhotos.push(...catPhotos);
-      }
-    });
-
-    if (allCatPhotos.length > 0) {
-      aoa.push(blkDetail()); curRow++;
-      const photoRow = blkDetail();
-      photoRow[1] = `📸 Ảnh hiện trạng: ${allCatPhotos.map(p => p.name).join(', ')}`;
-      aoa.push(photoRow);
-      merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 9 } });
-      curRow++;
-    }
-
     const wsDetail = XLSX.utils.aoa_to_sheet(aoa);
 
     wsDetail.isDetail = true;
