@@ -1,6 +1,6 @@
 # Thiết kế sửa lỗi mất nút Lưu trên Mobile và tăng độ tương phản màu chữ
 
-Tài liệu này mô tả chi tiết phương án sửa lỗi mất nút bấm "Lưu dự án / Tiếp theo" trên điện thoại di động và tăng độ tương phản của chữ trên toàn ứng dụng để giúp người dùng dễ đọc hơn.
+Tài liệu này mô tả chi tiết phương án sửa lỗi mất nút bấm "Lưu dự án / Tiếp theo" trên điện thoại di động, tăng độ tương phản của chữ trên toàn ứng dụng và đổi màu các tiêu đề/nhãn trong Modal dự án thành màu xanh đậm rõ nét (#1E293B).
 
 ## Yêu cầu
 
@@ -11,11 +11,21 @@ Tài liệu này mô tả chi tiết phương án sửa lỗi mất nút bấm "
   - Thiết kế chân trang dạng dính dưới đáy màn hình (`position: sticky; bottom: 0;`) để người dùng luôn nhìn thấy và bấm được các nút chức năng (Lưu, Hủy, Tiếp theo) mà không cần cuộn trang tìm kiếm.
 
 ### 2. Tăng độ tương phản màu chữ (Đậm và rõ hơn)
-- **Hiện trạng**: Các màu chữ mặc định đang dùng tone xám hơi nhạt (Slate 800/700/600), gây khó đọc trên các màn hình có độ sáng thấp hoặc khi dùng điện thoại ngoài trời.
-- **Giải pháp**: Darken (làm đậm hơn) các biến CSS chỉ định màu chữ chính, chữ phụ và chữ ghi chú của hệ thống:
-  - Màu chữ chính (`--color-text-primary`): Chuyển từ `#1E293B` sang `#0F172A` (Slate 900 - gần như đen tuyền).
-  - Màu chữ phụ (`--color-text-secondary`): Chuyển từ `#475569` sang `#1E293B` (Slate 800 - xám đậm rõ nét).
-  - Màu chữ nhạt/ghi chú (`--color-text-muted`): Chuyển từ `#64748B` sang `#334155` (Slate 700 - xám vừa dễ đọc).
+- **Giải pháp**: Làm đậm các biến màu chữ chính trên toàn ứng dụng để đảm bảo độ sắc nét trên mọi loại màn hình.
+  - Màu chữ chính (`--color-text-primary`): Chuyển từ `#1E293B` sang `#0F172A` (Slate 900 - đen xanh cực đậm).
+  - Màu chữ phụ (`--color-text-secondary`): Chuyển từ `#475569` sang `#1E293B` (Slate 800 - xanh xám đậm rõ nét).
+  - Màu chữ nhạt/ghi chú (`--color-text-muted`): Chuyển từ `#64748B` sang `#334155` (Slate 700).
+
+### 3. Đổi màu tiêu đề/nhãn trong Modal Dự Án thành màu `#1E293B`
+- **Yêu cầu**: Thiết lập màu của các tiêu đề hạng mục và thông tin bên lập/nhận trong Modal tạo/sửa dự án (`#modal-project`) thành màu `#1E293B` để hiển thị đồng bộ và sắc nét.
+- **Các tiêu đề/nhãn áp dụng**:
+  - `TÊN HẠNG MỤC`
+  - `CÔNG TRÌNH`
+  - `NGÀY LẬP DỰ TOÁN`
+  - `LOẠI HÌNH CÔNG TRÌNH`
+  - `HÌNH THỨC THI CÔNG`
+  - `THÔNG TIN BÊN LẬP`
+  - `THÔNG TIN BÊN NHẬN`
 
 ---
 
@@ -24,7 +34,7 @@ Tài liệu này mô tả chi tiết phương án sửa lỗi mất nút bấm "
 ### CSS cần chỉnh sửa
 Trong [style.css](file:///d:/Kho%20tri%20th%E1%BB%A9c/khoi-luong-pro/style.css):
 
-1. **Thay đổi biến màu chữ (dòng ~19-21)**:
+1. **Thay đổi biến màu chữ toàn cục (dòng ~19-21)**:
 ```css
   --color-text-primary:   #1E293B; /* Đậm hơn để dễ đọc trên nền sáng */
   --color-text-secondary: #475569;
@@ -33,11 +43,21 @@ Trong [style.css](file:///d:/Kho%20tri%20th%E1%BB%A9c/khoi-luong-pro/style.css):
 Thay thế bằng:
 ```css
   --color-text-primary:   #0F172A; /* Slate 900 siêu đậm */
-  --color-text-secondary: #1E293B; /* Slate 800 xám đậm rõ nét */
-  --color-text-muted:     #334155; /* Slate 700 dễ đọc hơn */
+  --color-text-secondary: #1E293B; /* Slate 800 xanh xám đậm */
+  --color-text-muted:     #334155; /* Slate 700 dễ đọc */
 ```
 
-2. **Chỉnh sửa hiển thị chân trang modal trên Mobile (dòng ~1427-1431)**:
+2. **Cấu hình cứng màu các nhãn/tiêu đề trong Modal dự án thành `#1E293B`**:
+Thêm đoạn mã CSS sau vào file `style.css`:
+```css
+/* Màu tiêu đề và nhãn trong Modal Dự án */
+#modal-project .form-group label,
+#modal-project .section-title {
+  color: #1E293B !important;
+}
+```
+
+3. **Chỉnh sửa hiển thị chân trang modal trên Mobile (dòng ~1427-1431)**:
 ```css
   /* An nut footer goc (dua xuong duoi trong modal) */
   .modal-footer {
@@ -72,9 +92,7 @@ Thay thế bằng:
 
 ### Kiểm thử thủ công
 1. Mở ứng dụng trong trình duyệt.
-2. Thu nhỏ màn hình trình duyệt xuống kích thước Mobile (hoặc mở F12 chế độ Responsive).
-3. **Kiểm tra nút bấm**:
+2. Click nút **"Tạo Dự Án Mới"** -> Xác nhận các nhãn "Tên hạng mục", "Công trình", "Ngày lập dự toán", "Loại hình công trình", "Hình thức thi công" và hai tiêu đề phụ "Thông tin bên lập", "Thông tin bên nhận" đều có màu xanh đậm `#1E293B` rõ nét.
+3. Thu nhỏ màn hình xuống kích thước điện thoại di động:
    - Click "Tạo dự án mới" -> Xác nhận dưới đáy màn hình xuất hiện thanh chứa nút **"Lưu Dự Án"** và **"Hủy"** dính cố định.
-   - Click nút bút chì để sửa một phòng bất kỳ -> Xác nhận chân trang Wizard chứa nút **"Quay lại"** và **"Tiếp theo"** hiển thị rõ ràng và dính cố định ở đáy.
-4. **Kiểm tra tương phản màu chữ**:
-   - Xác nhận tất cả các nhãn (label), chữ tiêu đề, ghi chú trên ứng dụng hiển thị đậm, sắc nét và dễ nhìn thấy hơn hẳn phiên bản cũ.
+   - Click nút sửa một phòng bất kỳ -> Xác nhận chân trang Wizard chứa nút **"Quay lại"** và **"Tiếp theo"** hiển thị rõ ràng và dính cố định ở đáy.
