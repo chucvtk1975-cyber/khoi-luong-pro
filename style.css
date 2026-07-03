@@ -3245,17 +3245,24 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
 /* === MOBILE-FIRST ROOM FORM OVERRIDES (MIN 14PX FONT & 44PX TAP TARGET) === */
 #modal-room .section-title,
 #modal-room .mat-section-title {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #FFFFFF !important;
+  background-color: #0F172A;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 22px 0 12px 0;
+  border-bottom: none !important;
 }
 #modal-room .section-title svg,
 #modal-room .mat-section-header svg {
   width: 16px;
   height: 16px;
-  color: var(--text-secondary);
+  color: #FFFFFF !important;
   flex-shrink: 0;
   vertical-align: middle;
 }
