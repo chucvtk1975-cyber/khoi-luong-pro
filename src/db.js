@@ -2,7 +2,7 @@
 // DATABASE (localStorage & IndexedDB) MODULE
 // =============================================
 
-import { showToast } from './takeoff.js?v=20260704-v4';
+import { showToast } from './takeoff.js';
 
 let onSaveCallback = null;
 
