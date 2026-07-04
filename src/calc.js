@@ -1618,6 +1618,35 @@ export const CALC = {
 
     }
 
+    // Apply night work labor multiplier if isNightWork is enabled
+    if (room.isNightWork) {
+      const LABOR_KEYWORDS = [
+        'nhân công', 'nhan cong', 'thi công', 'thi cong', 'lắp đặt', 'lap dat', 
+        'tháo dỡ', 'thao do', 'đập phá', 'dap pha', 'di dời', 'di doi', 
+        'vận chuyển', 'van chuyen', 'bốc xếp', 'boc xep', 'khoan cắt', 'khoan cat'
+      ];
+      const isLaborItem = (label) => {
+        if (!label) return false;
+        const normLabel = label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+        return LABOR_KEYWORDS.some(kw => {
+          const normKw = kw.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+          return normLabel.includes(normKw);
+        });
+      };
+      items.forEach(item => {
+        if (isLaborItem(item.label)) {
+          if (item.price) {
+            item.price = item.price * 2;
+            item.total = item.qty * item.price;
+          }
+          const currentNote = item.note || '';
+          if (!currentNote.includes('Làm đêm')) {
+            item.note = currentNote ? `${currentNote}; Làm đêm (x2)` : 'Làm đêm (x2)';
+          }
+        }
+      });
+    }
+
     return { rawFloor, rawWall, rawCeil, perim, items };
 
   },

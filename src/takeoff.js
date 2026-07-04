@@ -4660,6 +4660,8 @@ function getRoomDataFromUI() {
 
     funcLabel:  document.getElementById('room-function').value,
 
+    isNightWork: document.getElementById('room-is-night-work').checked,
+
     D:          parseFloat(document.getElementById('room-D').value)           || 0,
 
     R:          parseFloat(document.getElementById('room-R').value)           || 0,
@@ -4892,6 +4894,7 @@ function openRoomModal(room = null) {
   const roomFunc = room?.funcLabel || 'kho';
   document.getElementById('room-function').value = roomFunc;
   updateRoomDiagnostic(roomFunc);
+  document.getElementById('room-is-night-work').checked       = room?.isNightWork || false;
 
   document.getElementById('room-D').value                     = room?.D        || '';
 
