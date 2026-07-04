@@ -2,9 +2,9 @@
 // MAIN ENTRY POINT (Root Controller)
 // =============================================
 
-import { DB, onDbSave, migratePhotosToIndexedDB } from './src/db.js?v=20260704-v3';
-import { triggerAutoSync } from './src/excel.js?v=20260704-v3';
-import { initTakeoffUI } from './src/takeoff.js?v=20260704-v3';
+import { DB, onDbSave, migratePhotosToIndexedDB } from './src/db.js?v=20260704-v4';
+import { triggerAutoSync } from './src/excel.js?v=20260704-v4';
+import { initTakeoffUI } from './src/takeoff.js?v=20260704-v4';
 
 // Application state definition
 export let state = {
