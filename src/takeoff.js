@@ -9399,7 +9399,8 @@ function _renderPreviewSummary(project, rooms) {
 
       const rom = catConf.rom;
 
-      sumHtml += `<tr class="pv-room-hdr"><td style="text-align:center;font-weight:700;">${rom}</td><td style="font-weight:700;text-align:left;">${catConf.label.toUpperCase()}</td>${Array(rooms.length + 5).fill('<td></td>').join('')}</tr>`;
+      sumHtml += `<tr class="pv-room-hdr"><td style="text-align:center;font-weight:700;">${rom}</td><td colspan="${rooms.length + 4}" style="font-weight:700;text-align:left;white-space:nowrap;">${catConf.label.toUpperCase()}</td><td></td><td></td></tr>`;
+
 
       let itemStt = 1;
 
@@ -9483,7 +9484,8 @@ function _renderPreviewSummary(project, rooms) {
 
         const rom = catRomNums[catRomIdx++];
 
-        sumHtml += `<tr class="pv-room-hdr"><td style="text-align:center;font-weight:700;">${rom}</td><td style="font-weight:700;text-align:left;">CHI PHÍ KHÁC</td>${Array(rooms.length + 5).fill('<td></td>').join('')}</tr>`;
+        sumHtml += `<tr class="pv-room-hdr"><td style="text-align:center;font-weight:700;">${rom}</td><td colspan="${rooms.length + 4}" style="font-weight:700;text-align:left;white-space:nowrap;">CHI PHÍ KHÁC</td><td></td><td></td></tr>`;
+
 
         hasOc = true;
 
