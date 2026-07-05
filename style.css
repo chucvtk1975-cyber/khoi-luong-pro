@@ -1401,6 +1401,9 @@ body {
     overflow-y: auto !important;
     padding: 0 !important;
     -webkit-overflow-scrolling: touch;
+    /* Mobile: xoá nền tối và blur khỏi overlay — modal-card đã chiếm toàn màn hình */
+    background: var(--bg-card) !important;
+    backdrop-filter: none !important;
   }
   .modal-card {
     display: block !important;
@@ -1448,6 +1451,8 @@ body {
   .project-sidebar { width: 100%; height: 160px; border-right: none; border-bottom: 1px solid var(--border); }
   .project-list { display: flex; gap: 6px; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
   .project-item { flex-shrink: 0; }
+  /* Cho phép cuộn trang chính trên mobile */
+  body { overflow: auto !important; -webkit-overflow-scrolling: touch; }
 }
 /* ========== MEDIA / TÀI LIỆU PANEL ========== */
 .media-panel {
@@ -1780,6 +1785,7 @@ body {
   font-weight: 800;
   font-size: 12px;
   padding: 6px 8px;
+  white-space: nowrap;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
   border-left: none !important;
