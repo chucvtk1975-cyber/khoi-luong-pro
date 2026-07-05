@@ -9729,35 +9729,8 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
 
     }
 
-    const hasAnyPhotos = getRoomPhotosCount(room) > 0;
-    if (hasAnyPhotos) {
-      let photosHtml = '';
-      const catNames = { overview: 'Toàn cảnh', den: 'Đèn', tudien: 'Tủ điện', maylanh: 'Máy lạnh' };
-      ['overview', 'den', 'tudien', 'maylanh'].forEach(cat => {
-        const catPhotos = getRoomPhotos(room, cat).filter(p => p.data);
-        if (catPhotos.length > 0) {
-          photosHtml += `<div style="margin-top:6px; font-weight:bold; font-size:11px; color:var(--text-secondary);">📷 ${catNames[cat]}:</div>`;
-          photosHtml += `<div class="pv-room-photos-gallery" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">` +
-            catPhotos.map(p => `
-              <div class="pv-photo-thumb" style="display:inline-block; border:1px solid rgba(255,255,255,0.1); padding:2px; border-radius:6px; background:rgba(0,0,0,0.2); cursor:pointer;" onclick="window.viewPhotoData('${p.data.replace(/'/g, "\\'")}')">
-                <img src="${p.data}" style="max-height:80px; display:block; border-radius:4px;" alt="${p.name}">
-              </div>
-            `).join('') + `</div>`;
-        }
-      });
-      
-      html += `
-        <tr class="pv-room-photos-row" style="border:none !important;">
-          <td style="border:none !important;"></td>
-          <td colspan="9" style="border:none !important; text-align:left; padding:8px 0;">
-            <div style="font-weight:bold; font-size:11px; margin-bottom:4px; color:var(--text-secondary);">📸 ẢNH HIỆN TRẠNG PHÒNG:</div>
-            ${photosHtml}
-          </td>
-        </tr>
-      `;
-    }
-
   });
+
 
   // Chi phí khác (chỉ khi xem tất cả phòng — dùng tham số showOtherCosts)
 
@@ -9795,7 +9768,10 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
 
       if (price > 0 || qty > 0) {
 
-        if (!hasOc) { html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;"></td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">CHI PHÍ KHÁC</td><td></td><td></td></tr>`; hasOc = true; }
+        if (!hasOc) {
+          html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">V</td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">CHI PHÍ KHÁC</td><td></td><td></td></tr>`;
+          hasOc = true;
+        }
 
         grandTotal += total;
 
