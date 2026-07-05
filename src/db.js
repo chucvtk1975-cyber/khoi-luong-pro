@@ -5,6 +5,10 @@
 import { showToast } from './takeoff.js';
 
 let onSaveCallback = null;
+let _cloudSync = null;
+
+// Lazy getter to avoid circular import — set by main.js after CloudSync is ready
+export function setCloudSync(cs) { _cloudSync = cs; }
 
 export function onDbSave(callback) {
   onSaveCallback = callback;
@@ -86,6 +90,9 @@ export const DB = {
 
   remove(id) {
     this.save(this.load().filter(p => p.id !== id));
+    if (_cloudSync && _cloudSync.client) {
+      _cloudSync.deleteProject(id);
+    }
   },
 
   addRoom(projectId, roomData) {
