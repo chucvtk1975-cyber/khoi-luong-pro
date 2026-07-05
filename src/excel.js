@@ -663,7 +663,12 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
       // Alignment
 
-      if (sheetType === 'detail' && totalRows.has(R)) {
+      // Note rows (Bằng chữ, _ Báo giá, _ Thời gian): always left-aligned
+      if (val.startsWith('Bằng chữ:') || val.startsWith('_ Báo giá trên') || val.startsWith('_ Thời gian thi công')) {
+
+        ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+
+      } else if (sheetType === 'detail' && totalRows.has(R)) {
 
         if (C < 8) {
 

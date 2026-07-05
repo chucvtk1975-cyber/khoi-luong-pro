@@ -3319,7 +3319,7 @@ function renderBOQ(project) {
 
         <tr class="boq-total-row boq-words-row" id="boq-row-words">
 
-      <td colspan="10" style="padding:8px 12px;font-style:italic;color:var(--text-secondary);font-size:12px;border-top:1px dashed var(--border-color);">
+      <td colspan="10" style="padding:8px 12px;font-style:italic;color:var(--text-secondary);font-size:12px;border-top:1px dashed var(--border-color);text-align:left;">
 
         Bằng chữ: <strong style="color:var(--text-main);">${numberToWords(grandTotal)}</strong>
 
