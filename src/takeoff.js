@@ -2638,7 +2638,7 @@ function renderBOQ(project) {
 
       if (itemsInCat && itemsInCat.length > 0) {
 
-        const rom = catConf.rom;
+        const rom = catRomNums[catRomIdx++]; // đếm đúng để CHI PHÍ KHÁC nhận số tiếp theo
 
         sumHtml += `<tr class="boq-room-header" style="background:rgba(255,255,255,0.05);"><td style="text-align:center;font-weight:700;color:var(--brand-blue-light);">${rom}</td><td colspan="${3 + rooms.length + 2}" style="font-weight:700;color:var(--text-main);">${catConf.label.toUpperCase()}</td></tr>`;
 
