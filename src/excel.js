@@ -663,7 +663,10 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
       // Alignment
 
-      // Note rows (Bằng chữ, _ Báo giá, _ Thời gian): always left-aligned
+      // ⚠️ WARNING — REGRESSION GUARD: Đừng xóa hoặc di chuyển khối này xuống dưới!
+      // Các dòng note (Bằng chữ, _ Báo giá, _ Thời gian thi công) PHẢI được căn trái.
+      // Nếu khối này bị di chuyển sau signatureStartRow/footerStartRow, chúng sẽ bị căn giữa.
+      // Đây là lỗi đã tái phát 3 lần. Xem AGENTS.md → "Known Regression Risks #2".
       if (val.startsWith('Bằng chữ:') || val.startsWith('_ Báo giá trên') || val.startsWith('_ Thời gian thi công')) {
 
         ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
