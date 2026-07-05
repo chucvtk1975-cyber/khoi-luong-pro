@@ -1025,15 +1025,15 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
           if (C === colOffset) {
 
-            ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
+            ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: false };
 
           } else if (C === colOffset + 1) {
 
-            ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+            ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
 
           } else {
 
-            ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
+            ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: false };
 
           }
 
@@ -1693,6 +1693,8 @@ export function generateWorkbook(project) {
     secIHeader[0] = 'I';
     secIHeader[1] = 'XÂY DỰNG CƠ BẢN';
     aoa.push(secIHeader);
+    // Merge STT → ĐƠn giá (col 0⊒7) cho dòng header nhóm
+    merges.push({ s: { r: curRow, c: 0 }, e: { r: curRow, c: 7 } });
     curRow++;
 
     if (room.roomNote) {
@@ -1721,6 +1723,8 @@ export function generateWorkbook(project) {
       secIIHeader[0] = 'II';
       secIIHeader[1] = 'THIẾT BỊ ĐIỆN';
       aoa.push(secIIHeader);
+      // Merge STT → ĐƠn giá (col 0⊒7) cho dòng header nhóm
+      merges.push({ s: { r: curRow, c: 0 }, e: { r: curRow, c: 7 } });
       curRow++;
       itemStt = 1;
       nextSectionNum = 3;
@@ -1735,6 +1739,8 @@ export function generateWorkbook(project) {
       secIIIHeader[0] = 'III';
       secIIIHeader[1] = 'THIẾT BỊ NỘI THẤT';
       aoa.push(secIIIHeader);
+      // Merge STT → ĐƠn giá (col 0⊒7) cho dòng header nhóm
+      merges.push({ s: { r: curRow, c: 0 }, e: { r: curRow, c: 7 } });
       curRow++;
       nextSectionNum = 4;
 
@@ -1768,6 +1774,8 @@ export function generateWorkbook(project) {
       secIVHeader[0] = 'IV';
       secIVHeader[1] = 'NHÀ VỆ SINH: THIẾT BỊ VỆ SINH VÀ CHỐNG THẤM';
       aoa.push(secIVHeader);
+      // Merge STT → ĐƠn giá (col 0⊒7) cho dòng header nhóm
+      merges.push({ s: { r: curRow, c: 0 }, e: { r: curRow, c: 7 } });
       curRow++;
       nextSectionNum = 5;
 
@@ -2163,6 +2171,9 @@ export function generateWorkbook(project) {
 
       aoaSum.push(catHdr);
 
+      // Merge STT → ĐƠn giá (col 0 → sumCols-3) cho dòng header nhóm
+      mergesSum.push({ s: { r: curRowSum, c: 0 }, e: { r: curRowSum, c: sumCols - 3 } });
+
       curRowSum++;
 
       let itemStt = 1;
@@ -2315,6 +2326,9 @@ export function generateWorkbook(project) {
         ocHdr[1] = 'CHI PHÍ KHÁC';
 
         aoaSum.push(ocHdr);
+
+        // Merge STT → ĐƠn giá (col 0 → sumCols-3) cho dòng header CHI PHÍ KHÁC
+        mergesSum.push({ s: { r: curRowSum, c: 0 }, e: { r: curRowSum, c: sumCols - 3 } });
 
         curRowSum++;
 
