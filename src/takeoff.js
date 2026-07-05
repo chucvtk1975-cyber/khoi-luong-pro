@@ -4760,7 +4760,8 @@ function getRoomDataFromUI() {
 
 function isRoomFormDirty() {
 
-  if (!document.getElementById('modal-room').classList.contains('open')) return false;
+  const modal = document.getElementById('modal-room');
+  if (!modal || !modal.classList.contains('open')) return false;
 
   return JSON.stringify(getRoomDataFromUI()) !== state.originalRoomData;
 
