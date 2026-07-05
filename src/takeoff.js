@@ -9608,7 +9608,7 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
         <td class="pv-num">${item.total ? fmt(item.total, 0) : ''}</td>
         <td class="pv-note">${(() => {
           let noteHtml = item.note || '';
-          const catPhotos = getRoomPhotos(room, item.photoCategory);
+          const catPhotos = getRoomPhotos(room, item.photoCategory).filter(p => p.data);
           if (catPhotos.length > 0) {
             const photosMarkup = `<div class="pv-row-photos" style="display:flex; flex-wrap:wrap; gap:4px; margin-top:4px;">` +
               catPhotos.map(p => `
@@ -9734,7 +9734,7 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
       let photosHtml = '';
       const catNames = { overview: 'Toàn cảnh', den: 'Đèn', tudien: 'Tủ điện', maylanh: 'Máy lạnh' };
       ['overview', 'den', 'tudien', 'maylanh'].forEach(cat => {
-        const catPhotos = getRoomPhotos(room, cat);
+        const catPhotos = getRoomPhotos(room, cat).filter(p => p.data);
         if (catPhotos.length > 0) {
           photosHtml += `<div style="margin-top:6px; font-weight:bold; font-size:11px; color:var(--text-secondary);">📷 ${catNames[cat]}:</div>`;
           photosHtml += `<div class="pv-room-photos-gallery" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">` +
