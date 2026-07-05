@@ -2,7 +2,7 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB } from './db.js';
+import { DB, PhotoDB, isBlobHEIC } from './db.js';
 import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem } from './calc.js';
 import { state } from '../main.js';
 
