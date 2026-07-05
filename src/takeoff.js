@@ -9624,7 +9624,7 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
     };
 
     // I. XÂY DỰNG CƠ BẢN
-    html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">I</td><td style="font-weight:700;text-align:left;">XÂY DỰNG CƠ BẢN — ${room.name.toUpperCase()}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+    html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">I</td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">XÂY DỰNG CƠ BẢN — ${room.name.toUpperCase()}</td><td></td><td></td></tr>`;
 
     html += `<tr class="pv-room-info"><td colspan="10">
       📏 ${fmtMM(room.D)} × ${fmtMM(room.R)} × cao ${fmtMM(room.H)} mm
@@ -9641,13 +9641,13 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
     const elecItems = calc.items.filter(item => item.surface === 'elec' || item.surface === 'elecManual');
     if (elecItems.length > 0) {
       stt = 1;
-      html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">II</td><td style="font-weight:700;text-align:left;">THIẾT BỊ ĐIỆN</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+      html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">II</td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">THIẾT BỊ ĐIỆN</td><td></td><td></td></tr>`;
       elecItems.forEach(item => renderItemHtml(item));
     }
 
     // III. THIẾT BỊ NỘI THẤT
     if (room.noteWoodwork && room.noteWoodwork.trim()) {
-      html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">III</td><td style="font-weight:700;text-align:left;">THIẾT BỊ NỘI THẤT</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+      html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">III</td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">THIẾT BỊ NỘI THẤT</td><td></td><td></td></tr>`;
       stt = 1;
       const noteLines = room.noteWoodwork.split('\n').map(l => l.trim()).filter(l => l);
       noteLines.forEach((line, li) => {
@@ -9682,7 +9682,7 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
     // IV. NHÀ VỆ SINH: THIẾT BỊ VỆ SINH VÀ CHỐNG THẤM
     const toiletText = [room.notePlumbing, room.noteWaterproof].filter(Boolean).join('\n');
     if (toiletText.trim()) {
-      html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">IV</td><td style="font-weight:700;text-align:left;">NHÀ VỆ SINH: THIẾT BỊ VỆ SINH VÀ CHỐNG THẤM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+      html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;">IV</td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">NHÀ VỆ SINH: THIẾT BỊ VỆ SINH VÀ CHỐNG THẤM</td><td></td><td></td></tr>`;
       stt = 1;
       const noteLines = toiletText.split('\n').map(l => l.trim()).filter(l => l);
       noteLines.forEach((line, li) => {
@@ -9794,7 +9794,7 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
 
       if (price > 0 || qty > 0) {
 
-        if (!hasOc) { html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;"></td><td style="font-weight:700;text-align:left;">CHI PHÍ KHÁC</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`; hasOc = true; }
+        if (!hasOc) { html += `<tr class="pv-room-hdr"><td class="pv-stt" style="text-align:center;font-weight:700;"></td><td colspan="7" style="font-weight:700;text-align:left;white-space:nowrap;">CHI PHÍ KHÁC</td><td></td><td></td></tr>`; hasOc = true; }
 
         grandTotal += total;
 
