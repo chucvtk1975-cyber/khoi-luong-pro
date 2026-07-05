@@ -102,6 +102,9 @@ export function categorizeSummaryItem(item) {
   if (item.surface === 'plumbingNote') return 'sanitary';
   if (item.surface === 'waterproofNote') return 'sanitary';
 
+  // Thiết bị điện (từ wizard)
+  if (item.surface === 'elec' || item.surface === 'elecManual') return 'elec';
+
   // 1. Kiểm tra loại bề mặt xây dựng cơ bản trước
   if (['floor', 'wall', 'ceiling', 'perimeter', 'window', 'ceilPerim'].includes(item.surface)) {
     return 'construction';
