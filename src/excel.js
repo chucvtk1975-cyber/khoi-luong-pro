@@ -2165,7 +2165,7 @@ export function generateWorkbook(project) {
 
       const catHdr = Array(sumCols).fill('');
 
-      catHdr[0] = catConf.rom;
+      catHdr[0] = catRomNums[catRomIdx++]; // đếm đúng để CHI PHÍ KHÁC nhận số tiếp theo
 
       catHdr[1] = catConf.label.toUpperCase();
 

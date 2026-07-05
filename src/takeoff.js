@@ -9397,7 +9397,7 @@ function _renderPreviewSummary(project, rooms) {
 
     if (itemsInCat && itemsInCat.length > 0) {
 
-      const rom = catConf.rom;
+      const rom = catRomNums[catRomIdx++];  // đếm đúng để CHI PHÍ KHÁC nhận số tiếp theo
 
       sumHtml += `<tr class="pv-room-hdr"><td style="text-align:center;font-weight:700;">${rom}</td><td colspan="${rooms.length + 4}" style="font-weight:700;text-align:left;white-space:nowrap;">${catConf.label.toUpperCase()}</td><td></td><td></td></tr>`;
 
