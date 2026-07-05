@@ -3,7 +3,7 @@
 // =============================================
 
 import { DB, PhotoDB, isBlobHEIC } from './db.js';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem } from './calc.js';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js';
 import { state } from '../main.js';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
