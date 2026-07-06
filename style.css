@@ -410,6 +410,21 @@ body {
   align-items: center;
   flex-wrap: wrap;
 }
+.project-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.project-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-left: 1px solid var(--border-color);
+  padding-left: 8px;
+  margin-left: 2px;
+}
+.project-filter-row select { flex: 1; }
 /* ========== STATS BAR ========== */
 .stats-bar {
   display: grid;
@@ -1453,6 +1468,41 @@ body {
   .project-item { flex-shrink: 0; }
   /* Cho phép cuộn trang chính trên mobile */
   body { overflow: auto !important; -webkit-overflow-scrolling: touch; }
+
+  /* === STATS COMPACT (mobile ~50% height) === */
+  .stats-bar { gap: 8px; margin-bottom: 10px; }
+  .stat-item { padding: 8px 10px; }
+  .stat-value { font-size: 16px; margin-bottom: 2px; }
+  .stat-label { font-size: 9px; }
+
+  /* === FULL PAGE SCROLL (mobile) === */
+  .app-wrapper { height: auto !important; overflow: visible !important; }
+  .main-layout { overflow: visible !important; }
+  .workspace { overflow-y: visible !important; height: auto !important; }
+
+  /* === ACTION BUTTONS FULL-WIDTH (mobile) === */
+  .project-actions { flex-direction: column; width: 100%; gap: 8px; }
+  .project-btn-row { width: 100%; }
+  .project-btn-row .btn-secondary,
+  .project-btn-row .btn-danger,
+  .project-btn-row .btn-outline {
+    flex: 1;
+    justify-content: center;
+    min-height: 42px;
+    padding: 8px 6px !important;
+    font-size: 12px !important;
+  }
+  .project-filter-row {
+    width: 100%;
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+  }
+  .project-filter-row select {
+    flex: 1;
+    min-height: 42px;
+    font-size: 14px !important;
+  }
 }
 /* ========== MEDIA / TÀI LIỆU PANEL ========== */
 .media-panel {
