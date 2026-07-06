@@ -41,3 +41,39 @@ Sau mỗi lần thay đổi liên quan đến xuất Excel hoặc PDF, **bắt b
 - [ ] Dòng "_ Thời gian thi công:" → **căn trái** (italic)
 - [ ] Dòng "Giám đốc" / "VŨ THỊ KIM CHÚC" → **căn giữa** (KHÔNG thay đổi)
 - [ ] Hàng header bảng (STT, HẠNG MỤC...) → **căn giữa**
+- [ ] Cột HẠNG MỤC (C=1) trong mọi data row (R≥9) → **căn trái + indent=1** (xem mục #4)
+- [ ] Header info rows Cột A (C=0): "Từ:", "Công Ty:", "Địa chỉ:" → **căn trái** (xem mục #5)
+- [ ] Header info rows Cột E (C=4): "Kính gởi:", "Công Ty:", "Địa chỉ:" → **căn trái** (xem mục #5)
+
+### 4. Lock-down Loop cho cột HẠNG MỤC (C=1) trong sheet Tổng Hợp
+- **Vấn đề đã xảy ra**: Cột HẠNG MỤC (C=1) trong `wsSum` bị căn giữa, dù `applySheetStyles` đã set LEFT. Nguyên nhân: `applySheetStyles` và `applyBoldSectionRows` tương tác không đảm bảo kết quả cuối cùng là LEFT+indent.
+- **Fix pattern**: Sau khi gọi `applyBoldSectionRows(wsSum, 7)`, có một **lock-down loop** (`// ⚠️ DEFENSIVE FIX`) trong [excel.js](file:///d:/Kho%20tri%20th%E1%BB%A9c/khoi-luong-pro/src/excel.js) tại ~L2680 chạy SAU CÙNG, ép buộc:
+  - `_isRoman` (section header): `horizontal='left'`, không indent
+  - data row thường: `horizontal='left', indent=1`
+  - total row (`tổng cộng`, `Bằng chữ:`): giữ nguyên
+- **TUYỆT ĐỐI KHÔNG XÓA hoặc di chuyển** vòng lặp lock-down này lên trước `applyBoldSectionRows`.
+- **Khi thêm sheet mới hoặc refactor**: Phải đảm bảo lock-down loop vẫn chạy CUỐI CÙNG sau mọi hàm style khác.
+
+### 5. Lock-down Loop cho Header Info Rows (R=4,5,6) — Cột A & E
+- **Vấn đề đã xảy ra**: SheetJS merged cell behavior reset alignment của các cell đã merge trong header rows R=4,5,6 về CENTER, dù `applySheetStyles` (L762-764) đã set LEFT.
+  - C=0 ("Từ:", "Công Ty:", "Địa chỉ:") — merge A4:D4, A5:D5, A6:D6
+  - C=4 ("Kính gởi:", "Công Ty:", "Địa chỉ:") — merge E4:I4, E5:I5, E6:I6
+- **Fix pattern**: Sau mỗi `applyBoldSectionRows(wsXXX, 7)` cho **cả 3 sheets** (wsDetail, wsSum, wsVT), có **lock-down loop** (`// ⚠️ LOCK-DOWN`) ép `horizontal='left'` cho `[0, 4]` tại `[4, 5, 6]`.
+- **TUYỆT ĐỐI KHÔNG XÓA** 3 lock-down loops này. Nếu thêm sheet mới có cùng cấu trúc header, phải thêm lock-down tương tự.
+- **Nguyên nhân gốc**: `applyBorders` là dead function (không bao giờ được gọi). `applySheetStyles` set LEFT nhưng SheetJS merge override. Chỉ lock-down loop chạy CUỐI mới đảm bảo kết quả đúng.
+
+### 6. Quy tắc Bất Biến: "Lock-Down Cuối Cùng"
+Khi nhiều hàm style (`applySheetStyles`, `applyBoldSectionRows`, v.v.) có thể override nhau theo thứ tự không rõ ràng, **LUÔN dùng pattern "lock-down loop chạy CUỐI"**:
+```javascript
+// Sau TẤT CẢ các hàm style:
+someRows.forEach(r => {
+  someCols.forEach(c => {
+    const ref = XLSX.utils.encode_cell({ r, c });
+    if (ws[ref]) {
+      if (!ws[ref].s) ws[ref].s = {};
+      ws[ref].s.alignment = { horizontal: 'left', ... };
+    }
+  });
+});
+```
+Đây là pattern đã được kiểm chứng cho cả HẠNG MỤC lẫn header rows. Không dùng CSS class hay hàm style thông thường cho các cell alignment quan trọng — dùng lock-down.
