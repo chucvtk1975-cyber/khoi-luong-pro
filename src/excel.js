@@ -2127,7 +2127,18 @@ export function generateWorkbook(project) {
 
     applyBoldSectionRows(wsDetail, 7);
 
-    // Resolve name collision
+    // ⚠️ LOCK-DOWN: Ép căn TRÁI cho header info rows (R=4,5,6) — C=0 (Từ:) và C=4 (Kính gởi:)
+    [4, 5, 6].forEach(_r => {
+      [0, 4].forEach(_c => {
+        const _hRef = XLSX.utils.encode_cell({ r: _r, c: _c });
+        if (wsDetail[_hRef]) {
+          if (!wsDetail[_hRef].s) wsDetail[_hRef].s = {};
+          wsDetail[_hRef].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+        }
+      });
+    });
+
+
 
     let sheetName = room.name.replace(/[:\?\*\\\/\[\]]/g, '').trim();
 
@@ -2668,6 +2679,17 @@ export function generateWorkbook(project) {
 
   applyBoldSectionRows(wsSum, 7);
 
+  // ⚠️ LOCK-DOWN: Ép căn TRÁI cho header info rows (R=4,5,6) — C=0 (Từ:) và C=4 (Kính gởi:)
+  [4, 5, 6].forEach(_r => {
+    [0, 4].forEach(_c => {
+      const _hRef = XLSX.utils.encode_cell({ r: _r, c: _c });
+      if (wsSum[_hRef]) {
+        if (!wsSum[_hRef].s) wsSum[_hRef].s = {};
+        wsSum[_hRef].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+      }
+    });
+  });
+
   // ⚠️ DEFENSIVE FIX: Sau tất cả các hàm style, ép buộc căn TRÁI + indent=1 cho cột
   // HẠNG MỤC (C=1) trong mọi data row của sheet Tổng Hợp.
   // Đây là vòng lặp "lock-down" chạy CUỐI CÙNG, ghi đè mọi center sai sót.
@@ -3080,6 +3102,17 @@ export function generateWorkbook(project) {
     applySheetStyles(wsVT, 8, 'vt');
 
     applyBoldSectionRows(wsVT, 7);
+
+  // ⚠️ LOCK-DOWN: Ép căn TRÁI cho header info rows (R=4,5,6) — C=0 (Từ:) và C=4 (Kính gởi:)
+  [4, 5, 6].forEach(_r => {
+    [0, 4].forEach(_c => {
+      const _hRef = XLSX.utils.encode_cell({ r: _r, c: _c });
+      if (wsVT[_hRef]) {
+        if (!wsVT[_hRef].s) wsVT[_hRef].s = {};
+        wsVT[_hRef].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+      }
+    });
+  });
 
     XLSX.utils.book_append_sheet(wb, wsVT, "Vật Tư Cần Mua");
 
