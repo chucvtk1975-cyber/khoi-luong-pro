@@ -4021,7 +4021,7 @@ function updateOtherCost(key, field, rawVal) {
 
   if (wdRow) wdRow.innerHTML = `
 
-    <td colspan="10" style="padding:8px 12px;font-style:italic;color:var(--text-secondary);font-size:12px;border-top:1px dashed var(--border-color);">Bằng chữ: <strong style="color:var(--text-main);">${numberToWords(grandTotal3)}</strong></td>`;
+    <td colspan="10" style="padding:8px 12px;font-style:italic;color:var(--text-secondary);font-size:12px;border-top:1px dashed var(--border-color);text-align:left;">Bằng chữ: <strong style="color:var(--text-main);">${numberToWords(grandTotal3)}</strong></td>`;
 
 }
 
