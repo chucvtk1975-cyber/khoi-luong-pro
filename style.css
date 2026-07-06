@@ -3229,7 +3229,8 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
 
 /* Cột Hạng mục của tất cả td hạng mục con: căn trái, lùi vào 15px */
 .boq-table td:nth-child(2),
-.pv-table tr.pv-item td:nth-child(2) {
+.pv-table tr.pv-item td:nth-child(2),
+.pv-table tr.pv-perim td:nth-child(2) {
   text-align: left !important;
   padding-left: 15px !important;
 }

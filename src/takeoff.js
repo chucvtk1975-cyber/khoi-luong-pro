@@ -9598,7 +9598,7 @@ function _renderPreviewDetail(project, filteredRooms, showOtherCosts = false) {
 
       html += `<tr class="${rowClass}">
         <td class="pv-stt">${stt++}</td>
-        <td style="${isManual ? 'color:var(--brand-gold);font-style:italic;' : ''} padding-left:15px !important;">${item.label}</td>
+        <td style="${isManual ? 'color:var(--brand-gold);font-style:italic;' : ''}text-align:left;padding-left:15px !important;">${item.label}</td>
         <td class="pv-num">${item.dai  ? fmtMM(item.dai)  : ''}</td>
         <td class="pv-num">${item.rong ? fmtMM(item.rong) : ''}</td>
         <td class="pv-num">${item.cao  ? fmtMM(item.cao)  : ''}</td>

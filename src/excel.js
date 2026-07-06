@@ -673,7 +673,13 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
       } else if (sheetType === 'detail' && totalRows.has(R)) {
 
-        if (C < 8) {
+        // ⚠️ FIX: C=1 (HẠNG MỤC) luôn căn TRÁI – kể cả khi row nằm trong totalRows
+        // (note GHI CHÚ chứa "tổng cộng" có thể trigger totalRows nhầm)
+        if (C === 1) {
+
+          ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+
+        } else if (C < 8) {
 
           ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
 
@@ -689,7 +695,12 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
       } else if (sheetType === 'vt' && totalRows.has(R)) {
 
-        if (C < 6) {
+        // ⚠️ FIX: C=1 (HẠNG MỤC) luôn căn TRÁI
+        if (C === 1) {
+
+          ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+
+        } else if (C < 6) {
 
           ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
 
@@ -705,7 +716,12 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
       } else if (sheetType === 'sum' && totalRows.has(R)) {
 
-        if (C < 6) {
+        // ⚠️ FIX: C=1 (HẠNG MỤC) luôn căn TRÁI – kể cả cho dòng tổng kết
+        if (C === 1) {
+
+          ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true };
+
+        } else if (C < 6) {
 
           ws[ref].s.alignment = { horizontal: 'center', vertical: 'center', wrapText: true };
 
@@ -849,7 +865,8 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
         const isSectionHeader = romanSet.has(valA);
 
-        if (sheetType === 'sum' && !isTitleRow && !isHeaderRow && R < footerStartRow && !isSectionHeader && val !== '') {
+        // Luôn căn TRÁI – thêm indent=1 cho dòng dữ liệu thực (không phải tiêu đề)
+        if (!isTitleRow && !isHeaderRow && R < footerStartRow && !isSectionHeader && val !== '') {
 
           ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true, indent: 1 };
 
@@ -1049,7 +1066,13 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
           } else if (C === colOffset + 1) {
 
-            ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
+            // Sub-items bị nhận nhầm là section (STT rỗng) → căn trái + lùi vào
+            // Section thật (số La Mã) → căn trái, không lùi
+            if (valA === '') {
+              ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true, indent: 1 };
+            } else {
+              ws[ref].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
+            }
 
           } else {
 
