@@ -2668,6 +2668,33 @@ export function generateWorkbook(project) {
 
   applyBoldSectionRows(wsSum, 7);
 
+  // ⚠️ DEFENSIVE FIX: Sau tất cả các hàm style, ép buộc căn TRÁI + indent=1 cho cột
+  // HẠNG MỤC (C=1) trong mọi data row của sheet Tổng Hợp.
+  // Đây là vòng lặp "lock-down" chạy CUỐI CÙNG, ghi đè mọi center sai sót.
+  {
+    const _rRomanSet = new Set(['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII']);
+    const _srng = XLSX.utils.decode_range(wsSum['!ref']);
+    for (let _R = 9; _R <= _srng.e.r; _R++) {
+      const _ref1 = XLSX.utils.encode_cell({ r: _R, c: 1 });
+      if (!wsSum[_ref1]) continue;
+      const _v = wsSum[_ref1].v != null ? String(wsSum[_ref1].v).trim() : '';
+      const _cell0 = wsSum[XLSX.utils.encode_cell({ r: _R, c: 0 })];
+      const _valA = _cell0 && _cell0.v != null ? String(_cell0.v).trim() : '';
+      const _isRoman = _rRomanSet.has(_valA);
+      const _isTotalRow = _v.toLowerCase().includes('tổng cộng') || _v.startsWith('Bằng chữ:');
+
+      if (!wsSum[_ref1].s) wsSum[_ref1].s = {};
+
+      if (_isRoman) {
+        // Section header: căn trái, không indent
+        wsSum[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
+      } else if (_v !== '' && !_isTotalRow) {
+        // Data row thực sự: căn trái + indent=1
+        wsSum[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true, indent: 1 };
+      }
+    }
+  }
+
   // Append Tổng hợp and Room sheets to wb
 
   XLSX.utils.book_append_sheet(wb, wsSum, "Tổng hợp");
