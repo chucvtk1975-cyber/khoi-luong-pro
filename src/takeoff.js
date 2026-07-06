@@ -2664,7 +2664,7 @@ function renderBOQ(project) {
 
               <td style="text-align:center;color:var(--text-muted);font-size:12px;">${itemStt++}</td>
 
-              <td style="font-weight:600;color:var(--text-main);">${item.label}</td>
+              <td style="font-weight:600;color:var(--text-main);text-align:left;padding-left:15px;">${item.label}</td>
 
               <td style="text-align:center;font-size:12px;color:var(--text-secondary);">${item.unit}</td>
 
@@ -2738,7 +2738,7 @@ function renderBOQ(project) {
 
           <td style="text-align:center;color:var(--text-muted);font-size:12px;">${ocSttSum++}</td>
 
-          <td style="color:var(--text-main);">${tmpl.label}${tmpl.autoQty ? ' <span style="font-size:10px;color:var(--brand-blue-light);">tự động theo sàn</span>' : ''}</td>
+          <td style="color:var(--text-main);text-align:left;padding-left:15px;">${tmpl.label}${tmpl.autoQty ? ' <span style="font-size:10px;color:var(--brand-blue-light);">tự động theo sàn</span>' : ''}</td>
 
           <td style="text-align:center;font-size:12px;color:var(--text-secondary);">${tmpl.unit}</td>
 
@@ -9425,7 +9425,7 @@ function _renderPreviewSummary(project, rooms) {
 
           <td class="pv-stt">${itemStt++}</td>
 
-          <td style="padding-left:15px !important;">${item.label}</td>
+          <td style="text-align:left;padding-left:15px;">${item.label}</td>
 
           <td class="pv-center">${item.unit}</td>
 
@@ -9504,7 +9504,7 @@ function _renderPreviewSummary(project, rooms) {
 
         <td class="pv-stt">${ocStt++}</td>
 
-        <td>${tmpl.label}</td>
+        <td style="text-align:left;padding-left:15px;">${tmpl.label}</td>
 
         <td class="pv-center">${tmpl.unit}</td>
 
