@@ -2,10 +2,10 @@
 // QUANTITY TAKEOFF UI MODULE
 // =============================================
 
-import { DB, PhotoDB, genId, dataURLtoBlob, blobToBase64, migratePhotosToIndexedDB, isBlobHEIC } from './db.js?v=20260803-v10';
-import { MATERIALS, ELEC_MAPPING, getMat, categorizeSummaryItem, hasKeyword, fmt, fmtMM, lamTron, fmtNum, today, reIcons, numberToWords, parseElecNote, parseNoteDimensionLine, parseNoteItems, CALC } from './calc.js?v=20260803-v10';
-import { exportExcel, exportPhotosExcel, exportVatTuTemplate, triggerAutoSync, generateWorkbook } from './excel.js?v=20260803-v10';
-import { state } from '../main.js?v=20260803-v10';
+import { DB, PhotoDB, genId, dataURLtoBlob, blobToBase64, migratePhotosToIndexedDB, isBlobHEIC } from './db.js?v=20260803-v11';
+import { MATERIALS, ELEC_MAPPING, getMat, categorizeSummaryItem, hasKeyword, fmt, fmtMM, lamTron, fmtNum, today, reIcons, numberToWords, parseElecNote, parseNoteDimensionLine, parseNoteItems, CALC } from './calc.js?v=20260803-v11';
+import { exportExcel, exportPhotosExcel, exportVatTuTemplate, triggerAutoSync, generateWorkbook } from './excel.js?v=20260803-v11';
+import { state } from '../main.js?v=20260803-v11';
 
 /* =============================================
 

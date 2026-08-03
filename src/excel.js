@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v10';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v10';
-import { state } from '../main.js?v=20260803-v10';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v11';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v11';
+import { state } from '../main.js?v=20260803-v11';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -153,7 +153,7 @@ function applyRowHeights(ws, headerCount = 8) {
     } else if (R >= 4 && R <= 6) {
       rows.push({ hpt: 19, hpx: 25 });
     } else if (R >= 8 && R <= headerCount) {
-      rows.push({ hpt: 30, hpx: 40 }); // Table headers (30pt)
+      rows.push({ hpt: 34, hpx: 45 }); // Table headers (34pt)
     } else {
       const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
       const valA = cellA && cellA.v != null ? String(cellA.v).trim() : '';
