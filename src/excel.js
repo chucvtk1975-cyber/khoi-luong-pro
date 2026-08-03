@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v22';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v22';
-import { state } from '../main.js?v=20260803-v22';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v23';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v23';
+import { state } from '../main.js?v=20260803-v23';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -34,73 +34,63 @@ let logoArrayBuffer = base64ToArrayBuffer(LOGO_BASE64);
 
 
 function applyPageSetup(ws, repeatRowsCount) {
+
   // Khổ giấy A4 ngang
+
   ws['!pageSetup'] = {
+
     paperSize:     9,           // 9 = A4
+
     orientation:   'landscape',
+
     fitToPage:     true,
+
     fitToWidth:    1,           // vừa 1 trang ngang (tự thu nhỏ nếu cần)
+
     fitToHeight:   0,           // tự do theo chiều dọc
+
     autoBreaks:    true,
+
     horizontalDpi: 300,
+
     verticalDpi:   300,
+
   };
 
-  // Lề trang (đơn vị: inches - quy đổi chuẩn cm: Left 1.8cm = 0.71, Right 1.0cm = 0.39, Top 1.4cm = 0.55, Bottom 1.4cm = 0.55)
+  // Lề trang (đơn vị: inches)
+
   ws['!margins'] = {
-    left:   0.71, // 1.8 cm
-    right:  0.39, // 1.0 cm
-    top:    0.55, // 1.4 cm
-    bottom: 0.55, // 1.4 cm
+
+    left:   0.3,
+
+    right:  0.3,
+
+    top:    0.4,
+
+    bottom: 0.5,
+
     header: 0.2,
+
     footer: 0.2,
+
   };
 
-  // Footer: góc trái = Du-Toan-BlueAI Lab | góc phải = Số trang 1/6 (&P/&N)
+  // Footer: góc trái = ngày giờ in | góc phải = Trang P/N
+
   ws['!headerFooter'] = {
-    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
-    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
+
+    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+
+    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+
   };
 
   // Rows to repeat at top khi in: lặp lại từ dòng 0 đến repeatRowsCount-1 (0-indexed)
+
   const rpt = (repeatRowsCount && repeatRowsCount > 0) ? repeatRowsCount : 9;
+
   ws['!printHeader'] = { rows: { min: 0, max: rpt - 1 } };
-}
 
-function applyRowHeights(ws, headerRowCount = 1) {
-  if (!ws || !ws['!ref']) return;
-  const range = XLSX.utils.decode_range(ws['!ref']);
-  const rows = [];
-
-  for (let r = 0; r <= range.e.r; r++) {
-    if (r < 8) {
-      // Info header rows (R 0 to 7)
-      rows[r] = { hpt: 20, hpx: 26 };
-    } else if (r >= 8 && r < 8 + headerRowCount) {
-      // Table header rows (STT, HẠNG MỤC...)
-      if (headerRowCount === 2) {
-        rows[r] = { hpt: 19, hpx: 25 }; // 2-row table headers on room detail sheets receive 19pt/row (combined 38pt)
-      } else {
-        rows[r] = { hpt: 34, hpx: 45 }; // Single-row table headers receive 34pt
-      }
-    } else {
-      // Data or Section or Total rows
-      const cellB = ws[XLSX.utils.encode_cell({ r, c: 1 })];
-      const valB = cellB && cellB.v ? String(cellB.v).trim() : '';
-
-      if (/^[I|V|X]+\.?$/i.test(valB) || /^[I|V|X]+\s/i.test(valB)) {
-        // Section header row (La Mã): 26pt
-        rows[r] = { hpt: 26, hpx: 35 };
-      } else if (valB.startsWith('TỔNG CỘNG') || valB.startsWith('Cộng trước VAT') || valB.startsWith('Tiền VAT') || valB.startsWith('Bằng chữ:')) {
-        // Total / Words row: 26pt
-        rows[r] = { hpt: 26, hpx: 35 };
-      } else {
-        // Data row: 24pt
-        rows[r] = { hpt: 24, hpx: 32 };
-      }
-    }
-  }
-  ws['!rows'] = rows;
 }
 
 function applyBorders(ws, headerRows) {
@@ -3252,10 +3242,7 @@ export function generateWorkbook(project) {
 
     });
 
-  // Ép chiều cao hàng mới (24pt cho data, 26pt cho section/tổng, 34pt cho header 1 hàng, 19pt cho header 2 hàng)
-  applyRowHeights(wsSum, 1);
-  roomSheets.forEach(s => applyRowHeights(s.ws, 2));
-  if (wsVT) applyRowHeights(wsVT, 1);
+  }
 
   return { wb, wsSum, roomSheets, wsVT };
 
