@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v27';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v27';
-import { state } from '../main.js?v=20260803-v27';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v26';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v26';
+import { state } from '../main.js?v=20260803-v26';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -34,63 +34,63 @@ let logoArrayBuffer = base64ToArrayBuffer(LOGO_BASE64);
 
 
 function applyPageSetup(ws, repeatRowsCount) {
+
   // Khổ giấy A4 ngang
+
   ws['!pageSetup'] = {
+
     paperSize:     9,           // 9 = A4
+
     orientation:   'landscape',
+
     fitToPage:     true,
+
     fitToWidth:    1,           // vừa 1 trang ngang (tự thu nhỏ nếu cần)
+
     fitToHeight:   0,           // tự do theo chiều dọc
+
     autoBreaks:    true,
+
     horizontalDpi: 300,
+
     verticalDpi:   300,
+
   };
 
   // Lề trang (đơn vị: inches)
+
   ws['!margins'] = {
-    left:   0.71, // 1.8 cm
-    right:  0.39, // 1.0 cm
-    top:    0.55, // 1.4 cm
-    bottom: 0.55, // 1.4 cm
+
+    left:   0.3,
+
+    right:  0.3,
+
+    top:    0.4,
+
+    bottom: 0.5,
+
     header: 0.2,
+
     footer: 0.2,
+
   };
 
-  // Footer: góc trái = ngày giờ in | góc phải = &P/&N (1/6, 2/6 ...)
+  // Footer: góc trái = ngày giờ in | góc phải = Trang P/N
+
   ws['!headerFooter'] = {
-    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
-    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
+
+    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+
+    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+
   };
 
   // Rows to repeat at top khi in: lặp lại từ dòng 0 đến repeatRowsCount-1 (0-indexed)
-  const rpt = (repeatRowsCount && repeatRowsCount > 0) ? repeatRowsCount : 9;
-  ws['!printHeader'] = { rows: { min: 0, max: rpt - 1 } };
-}
 
-function applyRowHeights(ws, headerCount = 8) {
-  if (!ws || !ws['!ref']) return;
-  const range = XLSX.utils.decode_range(ws['!ref']);
-  const rows = [];
-  const romanSet = new Set(['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII']);
-  for (let R = 0; R <= range.e.r; R++) {
-    if (R < 4) {
-      rows.push({ hpt: 20, hpx: 27 });
-    } else if (R >= 4 && R <= 6) {
-      rows.push({ hpt: 19, hpx: 25 });
-    } else if (R >= 8 && R <= headerCount) {
-      rows.push({ hpt: 30, hpx: 40 }); // Table headers (30pt)
-    } else {
-      const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
-      const valA = cellA && cellA.v != null ? String(cellA.v).trim() : '';
-      const isRoman = romanSet.has(valA);
-      if (isRoman) {
-        rows.push({ hpt: 26, hpx: 35 }); // Section headers (26pt)
-      } else {
-        rows.push({ hpt: 24, hpx: 32 }); // Data rows (24pt)
-      }
-    }
-  }
-  ws['!rows'] = rows;
+  const rpt = (repeatRowsCount && repeatRowsCount > 0) ? repeatRowsCount : 9;
+
+  ws['!printHeader'] = { rows: { min: 0, max: rpt - 1 } };
+
 }
 
 function applyBorders(ws, headerRows) {
@@ -2122,7 +2122,7 @@ export function generateWorkbook(project) {
     ];
 
     applyPageSetup(wsDetail, 9);
-    applyRowHeights(wsDetail, 8);
+
     applySheetStyles(wsDetail, 8, 'detail');
 
     applyBoldSectionRows(wsDetail, 7);
@@ -2709,7 +2709,7 @@ export function generateWorkbook(project) {
   wsSum['!cols'] = sumColWidths;
 
   applyPageSetup(wsSum, 9);
-  applyRowHeights(wsSum, 8);
+
   applySheetStyles(wsSum, 8, 'sum');
 
   applyBoldSectionRows(wsSum, 7);
@@ -3157,7 +3157,7 @@ export function generateWorkbook(project) {
     ];
 
     applyPageSetup(wsVT, 9);
-    applyRowHeights(wsVT, 8);
+
     applySheetStyles(wsVT, 8, 'vt');
 
     applyBoldSectionRows(wsVT, 7);
@@ -3389,7 +3389,7 @@ export async function triggerAutoSync() {
 
       if (xmlStr.includes("<pageMargins") && !xmlStr.includes("<headerFooter")) {
         const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
-        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
+        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;Trang &amp;P/&amp;N';
         const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
         xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `$1${pageSetupXml}${headerFooterXml}`);
       }
