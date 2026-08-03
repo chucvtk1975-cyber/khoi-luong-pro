@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v7';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v7';
-import { state } from '../main.js?v=20260803-v7';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v8';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v8';
+import { state } from '../main.js?v=20260803-v8';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -119,10 +119,10 @@ function applyPageSetup(ws, repeatRowsCount) {
     footer: 0.2,
   };
 
-  // Footer: góc trái = ngày giờ in | góc phải = Trang P/N
+  // Footer: góc trái = ngày giờ in | góc phải = Trang 1/6 (&P/&N)
   ws['!headerFooter'] = {
-    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
-    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
+    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
   };
 
   // Rows to repeat at top khi in: lặp lại từ dòng 0 đến repeatRowsCount-1 (0-indexed)
@@ -141,15 +141,15 @@ function applyRowHeights(ws, headerCount = 8) {
     } else if (R >= 4 && R <= 6) {
       rows.push({ hpt: 19, hpx: 25 });
     } else if (R >= 8 && R <= headerCount) {
-      rows.push({ hpt: 36, hpx: 48 }); // Table headers (1.5x 24pt)
+      rows.push({ hpt: 30, hpx: 40 }); // Table headers (30pt)
     } else {
       const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
       const valA = cellA && cellA.v != null ? String(cellA.v).trim() : '';
       const isRoman = romanSet.has(valA);
       if (isRoman) {
-        rows.push({ hpt: 30, hpx: 40 }); // Section headers (1.5x 20pt)
+        rows.push({ hpt: 26, hpx: 35 }); // Section headers (26pt)
       } else {
-        rows.push({ hpt: 27, hpx: 36 }); // Data rows (1.5x 18pt)
+        rows.push({ hpt: 24, hpx: 32 }); // Data rows (24pt)
       }
     }
   }
@@ -3457,7 +3457,7 @@ export async function triggerAutoSync() {
 
       if (xmlStr.includes("<pageMargins") && !xmlStr.includes("<headerFooter")) {
         const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
-        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;Trang &amp;P/&amp;N';
+        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
         const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
         xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `$1${pageSetupXml}${headerFooterXml}`);
       }
