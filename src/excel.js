@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v17';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v17';
-import { state } from '../main.js?v=20260803-v17';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v18';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v18';
+import { state } from '../main.js?v=20260803-v18';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -29,63 +29,6 @@ function base64ToArrayBuffer(base64) {
   return bytes.buffer;
 }
 let logoArrayBuffer = base64ToArrayBuffer(LOGO_BASE64);
-
-export async function injectLogoToBuffer(binBuf) {
-  if (typeof JSZip === 'undefined' || !logoArrayBuffer) {
-    return binBuf;
-  }
-  try {
-    const zip = await JSZip.loadAsync(binBuf);
-    const sheetFiles = Object.keys(zip.files).filter(name => name.startsWith("xl/worksheets/sheet") && name.endsWith(".xml"));
-
-    for (const file of sheetFiles) {
-      let xmlStr = await zip.file(file).async("string");
-
-      // Chèn Logo Drawing Link (Bắt buộc đứng CUỐI CÙNG ngay trước </worksheet>)
-      if (!xmlStr.includes("<drawing")) {
-        xmlStr = xmlStr.replace("</worksheet>", '<drawing r:id="rId2"/></worksheet>');
-        const match = file.match(/sheet(\d+)\.xml/);
-        if (match) {
-          const sheetNum = match[1];
-          const relsFile = `xl/worksheets/_rels/sheet${sheetNum}.xml.rels`;
-          let relsXml = zip.file(relsFile) ? await zip.file(relsFile).async("string") : null;
-          if (relsXml) {
-            if (!relsXml.includes('rId2')) {
-              relsXml = relsXml.replace('</Relationships>', '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/></Relationships>');
-              zip.file(relsFile, relsXml);
-            }
-          } else {
-            const sheetRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/>\n</Relationships>`;
-            zip.file(relsFile, sheetRelsXml);
-          }
-        }
-      }
-
-      zip.file(file, xmlStr);
-    }
-
-    const drawingXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">\n<xdr:oneCellAnchor editAs="oneCell">\n<xdr:from>\n<xdr:col>1</xdr:col>\n<xdr:colOff>38100</xdr:colOff>\n<xdr:row>0</xdr:row>\n<xdr:rowOff>38100</xdr:rowOff>\n</xdr:from>\n<xdr:ext cx="1333500" cy="742950"/>\n<xdr:pic>\n<xdr:nvPicPr>\n<xdr:cNvPr id="2" name="Picture 3"/>\n<xdr:cNvPicPr>\n<a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>\n</xdr:cNvPicPr>\n</xdr:nvPicPr>\n<xdr:blipFill>\n<a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId1" cstate="print"/>\n<a:srcRect/>\n<a:stretch>\n<a:fillRect/>\n</a:stretch>\n</xdr:blipFill>\n<xdr:spPr bwMode="auto">\n<a:xfrm>\n<a:off x="38100" y="38100"/>\n<a:ext cx="1333500" cy="742950"/>\n</a:xfrm>\n<a:prstGeom prst="rect">\n<a:avLst/>\n</a:prstGeom>\n<a:noFill/>\n<a:ln>\n<a:noFill/>\n</a:ln>\n</xdr:spPr>\n</xdr:pic>\n<xdr:clientData/>\n</xdr:oneCellAnchor>\n</xdr:wsDr>`;
-    const drawingRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/image1.png"/>\n</Relationships>`;
-
-    zip.file("xl/drawings/drawing1.xml", drawingXml);
-    zip.file("xl/drawings/_rels/drawing1.xml.rels", drawingRelsXml);
-    zip.file("xl/media/image1.png", logoArrayBuffer);
-
-    let contentTypes = await zip.file("[Content_Types].xml").async("string");
-    if (!contentTypes.includes('Extension="png"') && !contentTypes.includes('Extension="PNG"')) {
-      contentTypes = contentTypes.replace("</Types>", '<Default Extension="png" ContentType="image/png"/></Types>');
-    }
-    if (!contentTypes.includes("/xl/drawings/drawing1.xml")) {
-      contentTypes = contentTypes.replace("</Types>", '<Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/></Types>');
-    }
-    zip.file("[Content_Types].xml", contentTypes);
-
-    return await zip.generateAsync({ type: "arraybuffer" });
-  } catch (err) {
-    console.warn("Logo injection failed, returning original buffer:", err);
-    return binBuf;
-  }
-}
 
 // =============================================
 
@@ -114,57 +57,40 @@ function applyPageSetup(ws, repeatRowsCount) {
 
   };
 
-  // Lề trang (đơn vị: inches - quy đổi 1.8cm, 1.0cm, 1.4cm, 1.4cm)
+  // Lề trang (đơn vị: inches)
+
   ws['!margins'] = {
-    left:   0.71, // 1.8 cm
-    right:  0.39, // 1.0 cm
-    top:    0.55, // 1.4 cm
-    bottom: 0.55, // 1.4 cm
+
+    left:   0.3,
+
+    right:  0.3,
+
+    top:    0.4,
+
+    bottom: 0.5,
+
     header: 0.2,
+
     footer: 0.2,
+
   };
 
-  // Footer: góc trái = ngày giờ in | góc phải = Trang 1/6 (&P/&N)
+  // Footer: góc trái = ngày giờ in | góc phải = Trang P/N
+
   ws['!headerFooter'] = {
-    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
-    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"&P/&N',
+
+    oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+
+    evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
+
   };
 
   // Rows to repeat at top khi in: lặp lại từ dòng 0 đến repeatRowsCount-1 (0-indexed)
-  const rpt = (repeatRowsCount && repeatRowsCount > 0) ? repeatRowsCount : 9;
-  ws['!printHeader'] = { rows: { min: 0, max: rpt - 1 } };
-}
 
-function applyRowHeights(ws, headerCount = 8) {
-  if (!ws || !ws['!ref']) return;
-  const range = XLSX.utils.decode_range(ws['!ref']);
-  const rows = [];
-  const romanSet = new Set(['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII']);
-  for (let R = 0; R <= range.e.r; R++) {
-    if (R < 4) {
-      rows.push({ hpt: 20, hpx: 27 });
-    } else if (R >= 4 && R <= 6) {
-      rows.push({ hpt: 19, hpx: 25 });
-    } else if (R >= 8 && R <= headerCount) {
-      if (headerCount >= 9) {
-        // Sheet phòng có tiêu đề 2 hàng (dòng 9 & dòng 10) -> 19pt mỗi hàng (tổng 38pt)
-        rows.push({ hpt: 19, hpx: 25 });
-      } else {
-        // Sheet 1 hàng tiêu đề (dòng 9) -> 34pt
-        rows.push({ hpt: 34, hpx: 45 });
-      }
-    } else {
-      const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
-      const valA = cellA && cellA.v != null ? String(cellA.v).trim() : '';
-      const isRoman = romanSet.has(valA);
-      if (isRoman) {
-        rows.push({ hpt: 26, hpx: 35 }); // Section headers (26pt)
-      } else {
-        rows.push({ hpt: 24, hpx: 32 }); // Data rows (24pt)
-      }
-    }
-  }
-  ws['!rows'] = rows;
+  const rpt = (repeatRowsCount && repeatRowsCount > 0) ? repeatRowsCount : 9;
+
+  ws['!printHeader'] = { rows: { min: 0, max: rpt - 1 } };
+
 }
 
 function applyBorders(ws, headerRows) {
@@ -1162,16 +1088,17 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
   }
 
-async function xlsxWriteSheetJS(wb, fileName) {
+function xlsxWriteSheetJS(wb, fileName) {
   try {
     if (typeof XLSX === 'undefined') {
       throw new Error('Thư viện SheetJS (XLSX) chưa được tải thành công.');
     }
+    // Ghi workbook ra định dạng binary string
     const out = XLSX.write(wb, { bookType: 'xlsx', bookSST: false, type: 'binary' });
-    let buf = s2ab(out);
-    buf = await injectLogoToBuffer(buf);
-    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    // Chuyển binary string sang Blob nhị phân
+    const blob = new Blob([s2ab(out)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     
+    // Tải file tương thích tốt trên PC và điện thoại (Android/iOS)
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -3317,16 +3244,11 @@ export function generateWorkbook(project) {
 
   }
 
-  // Ép chiều cao hàng 1.5 lần (27pt cho data, 30-36pt cho headers)
-  applyRowHeights(wsSum, 8);
-  roomSheets.forEach(s => applyRowHeights(s.ws, 9));
-  if (wsVT) applyRowHeights(wsVT, 8);
-
   return { wb, wsSum, roomSheets, wsVT };
 
 }
 
-export async function exportExcel() {
+export function exportExcel() {
   try {
     if (typeof XLSX === 'undefined') {
       throw new Error('Thư viện SheetJS (XLSX) chưa được tải thành công. Vui lòng kiểm tra kết nối mạng!');
@@ -3344,8 +3266,8 @@ export async function exportExcel() {
     const safeProjName = (project.name || 'Du_Toan').trim().replace(/[^a-zA-Z0-9À-ỹ]+/g, '_');
     const fileName = `${safeProjName}_KhoiLuong_${dateStr}.xlsx`;
 
-    // Xuất trực tiếp bằng SheetJS kèm Logo
-    await xlsxWriteSheetJS(wbData.wb, fileName);
+    // Xuất trực tiếp bằng SheetJS
+    xlsxWriteSheetJS(wbData.wb, fileName);
 
     // Increment export count in localStorage
     const currentCount = parseInt(localStorage.getItem('bkl_export_count') || '0');
@@ -3463,24 +3385,13 @@ export async function triggerAutoSync() {
     const sheetFiles = Object.keys(zip.files).filter(name => name.startsWith("xl/worksheets/sheet") && name.endsWith(".xml"));
 
     for (const file of sheetFiles) {
-      const drawingXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">\n<xdr:oneCellAnchor editAs="oneCell">\n<xdr:from>\n<xdr:col>1</xdr:col>\n<xdr:colOff>38100</xdr:colOff>\n<xdr:row>0</xdr:row>\n<xdr:rowOff>38100</xdr:rowOff>\n</xdr:from>\n<xdr:ext cx="1333500" cy="742950"/>\n<xdr:pic>\n<xdr:nvPicPr>\n<xdr:cNvPr id="2" name="Picture 3"/>\n<xdr:cNvPicPr>\n<a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>\n</xdr:cNvPicPr>\n</xdr:nvPicPr>\n<xdr:blipFill>\n<a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId1" cstate="print"/>\n<a:srcRect/>\n<a:stretch>\n<a:fillRect/>\n</a:stretch>\n</xdr:blipFill>\n<xdr:spPr bwMode="auto">\n<a:xfrm>\n<a:off x="38100" y="38100"/>\n<a:ext cx="1333500" cy="742950"/>\n</a:xfrm>\n<a:prstGeom prst="rect">\n<a:avLst/>\n</a:prstGeom>\n<a:noFill/>\n<a:ln>\n<a:noFill/>\n</a:ln>\n</xdr:spPr>\n</xdr:pic>\n<xdr:clientData/>\n</xdr:oneCellAnchor>\n</xdr:wsDr>`;
-      // Ép fitToPage="1" vào sheetPr để Excel tự động co vừa 1 trang ngang
-      if (!xmlStr.includes("<pageSetUpPr")) {
-        if (xmlStr.includes("<sheetPr>")) {
-          xmlStr = xmlStr.replace("<sheetPr>", "<sheetPr><pageSetUpPr fitToPage=\"1\"/>");
-        } else if (xmlStr.includes("<sheetPr ")) {
-          xmlStr = xmlStr.replace(/(<sheetPr[^>]*>)/, "$1<pageSetUpPr fitToPage=\"1\"/>");
-        } else {
-          xmlStr = xmlStr.replace(/(<worksheet[^>]*>)/, "$1<sheetPr><pageSetUpPr fitToPage=\"1\"/></sheetPr>");
-        }
-      }
+      let xmlStr = await zip.file(file).async("string");
 
       if (xmlStr.includes("<pageMargins") && !xmlStr.includes("<headerFooter")) {
-        const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
         const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
-        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
+        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;Trang &amp;P/&amp;N';
         const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
-        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `${pageMarginsXml}${pageSetupXml}${headerFooterXml}`);
+        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `$1${pageSetupXml}${headerFooterXml}`);
       }
 
       if (logoBuf && !xmlStr.includes("<drawing")) {
