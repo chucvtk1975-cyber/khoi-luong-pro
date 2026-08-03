@@ -2895,7 +2895,7 @@ function renderBOQ(project) {
 
               <td style="color:var(--text-muted);font-size:12px;text-align:center;">${stt++}</td>
 
-              <td style="color:#a78bfa;font-weight:600;">${ci.label}</td>
+              <td class="boq-item-name" style="color:#a78bfa;font-weight:600;text-align:left;padding-left:15px;">${ci.label}</td>
 
               <td class="boq-dim"></td><td class="boq-dim"></td><td class="boq-dim"></td>
 
@@ -2959,7 +2959,7 @@ function renderBOQ(project) {
 
             <td style="color:var(--text-muted);font-size:12px;text-align:center;">${noStt?'':stt++}</td>
 
-            <td${isManual?' style="color:var(--brand-gold);font-style:italic;"':''}${isNoteItem?' style="color:var(--text-secondary);font-style:italic;"':''}>${item.label}</td>
+            <td class="boq-item-name"${isManual?' style="color:var(--brand-gold);font-style:italic;text-align:left;padding-left:15px;"':''}${isNoteItem?' style="color:var(--text-secondary);font-style:italic;text-align:left;padding-left:15px;"':''} style="text-align:left;padding-left:15px;">${item.label}</td>
 
             <td class="boq-dim">${item.dai  ? fmtMM(item.dai)  : ''}</td>
 

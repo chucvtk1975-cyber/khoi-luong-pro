@@ -4197,3 +4197,14 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
+/* Align Column B (HẠNG MỤC) data cells to left with 15px indent */
+.boq-item-name,
+.boq-table td.boq-item-name,
+.ep-detail-table td.boq-item-name,
+.boq-table tbody tr:not(.boq-room-title):not(.boq-room-header):not(.boq-elec-header):not(.boq-note-header):not(.boq-sub-header):not(.boq-other-header) td:nth-child(2),
+.ep-detail-table tbody tr:not(.boq-room-title):not(.boq-room-header):not(.boq-elec-header):not(.boq-note-header):not(.boq-sub-header):not(.boq-other-header) td:nth-child(2) {
+  text-align: left !important;
+  padding-left: 15px !important;
+}
+
