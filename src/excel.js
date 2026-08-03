@@ -2138,6 +2138,41 @@ export function generateWorkbook(project) {
       });
     });
 
+    // ⚠️ DEFENSIVE FIX: Sau tất cả các hàm style, ép buộc căn TRÁI + indent=1 cho cột
+    // HẠNG MỤC (C=1) và numFmt = '#,##0' cho DÀI, RỘNG, CAO (C=2,3,4) trong mọi data row của sheet Chi Tiết.
+    {
+      const _rRomanSet = new Set(['I','II','III','IV','V','VI','VII','VIII','IX','X']);
+      const _drng = XLSX.utils.decode_range(wsDetail['!ref']);
+      for (let _R = 10; _R <= _drng.e.r; _R++) {
+        // Format D, R, H (c=2,3,4)
+        [2, 3, 4].forEach(_c => {
+          const _dRef = XLSX.utils.encode_cell({ r: _R, c: _c });
+          if (wsDetail[_dRef] && typeof wsDetail[_dRef].v === 'number') {
+            if (!wsDetail[_dRef].s) wsDetail[_dRef].s = {};
+            wsDetail[_dRef].s.numFmt = '#,##0';
+            wsDetail[_dRef].z = '#,##0';
+          }
+        });
+
+        // Format HẠNG MỤC (c=1)
+        const _ref1 = XLSX.utils.encode_cell({ r: _R, c: 1 });
+        if (!wsDetail[_ref1]) continue;
+        const _v = wsDetail[_ref1].v != null ? String(wsDetail[_ref1].v).trim() : '';
+        const _cell0 = wsDetail[XLSX.utils.encode_cell({ r: _R, c: 0 })];
+        const _valA = _cell0 && _cell0.v != null ? String(_cell0.v).trim() : '';
+        const _isRoman = _rRomanSet.has(_valA);
+        const _isTotalRow = _v.toLowerCase().includes('tổng cộng') || _v.startsWith('Bằng chữ:') || _v.includes('Cộng trước VAT');
+
+        if (!wsDetail[_ref1].s) wsDetail[_ref1].s = {};
+
+        if (_isRoman) {
+          wsDetail[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
+        } else if (_v !== '' && !_isTotalRow) {
+          wsDetail[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true, indent: 1 };
+        }
+      }
+    }
+
 
 
     let sheetName = room.name.replace(/[:\?\*\\\/\[\]]/g, '').trim();
@@ -3113,6 +3148,29 @@ export function generateWorkbook(project) {
       }
     });
   });
+
+  // ⚠️ DEFENSIVE FIX: Ép căn TRÁI + indent=1 cho cột TÊN VẬT TƯ / HẠNG MỤC (C=1) trong mọi data row của sheet Vật Tư Cần Mua
+  {
+    const _rRomanSet = new Set(['I','II','III','IV','V','VI','VII','VIII','IX','X']);
+    const _vrng = XLSX.utils.decode_range(wsVT['!ref']);
+    for (let _R = 9; _R <= _vrng.e.r; _R++) {
+      const _ref1 = XLSX.utils.encode_cell({ r: _R, c: 1 });
+      if (!wsVT[_ref1]) continue;
+      const _v = wsVT[_ref1].v != null ? String(wsVT[_ref1].v).trim() : '';
+      const _cell0 = wsVT[XLSX.utils.encode_cell({ r: _R, c: 0 })];
+      const _valA = _cell0 && _cell0.v != null ? String(_cell0.v).trim() : '';
+      const _isRoman = _rRomanSet.has(_valA);
+      const _isTotalRow = _v.toLowerCase().includes('tổng cộng') || _v.startsWith('Bằng chữ:');
+
+      if (!wsVT[_ref1].s) wsVT[_ref1].s = {};
+
+      if (_isRoman) {
+        wsVT[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
+      } else if (_v !== '' && !_isTotalRow) {
+        wsVT[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true, indent: 1 };
+      }
+    }
+  }
 
     XLSX.utils.book_append_sheet(wb, wsVT, "Vật Tư Cần Mua");
 
