@@ -3069,7 +3069,7 @@ function renderBOQ(project) {
 
           <td style="text-align:center;color:var(--text-muted);font-size:12px;">${prStt++}</td>
 
-          <td>${tmpl.label}${tmpl.autoQty ? ' <span class="oc-auto-tag">diện tích phòng này</span>' : ''}</td>
+          <td class="boq-item-name" style="text-align:left;padding-left:15px;">${tmpl.label}${tmpl.autoQty ? ' <span class="oc-auto-tag">diện tích phòng này</span>' : ''}</td>
 
           <td class="boq-dim"></td><td class="boq-dim"></td><td class="boq-dim"></td>
 
@@ -3147,7 +3147,7 @@ function renderBOQ(project) {
 
         <td style="color:var(--text-muted);font-size:12px;text-align:center;">${stt++}</td>
 
-        <td class="boq-other-label">${tmpl.label}
+        <td class="boq-other-label boq-item-name" style="text-align:left;padding-left:15px;">${tmpl.label}
 
           ${tmpl.autoQty ? '<span class="oc-auto-tag">tự động theo sàn</span>' : ''}
 

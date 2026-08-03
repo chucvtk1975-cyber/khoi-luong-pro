@@ -2752,6 +2752,30 @@ export function generateWorkbook(project) {
     }
   }
 
+  // ⚠️ DEFENSIVE LOCK-DOWN FOR ALL ROOM DETAIL SHEETS
+  roomSheets.forEach(s => {
+    const ws = s.ws;
+    if (!ws || !ws['!ref']) return;
+    const _drng = XLSX.utils.decode_range(ws['!ref']);
+    for (let _R = 10; _R <= _drng.e.r; _R++) {
+      const _ref1 = XLSX.utils.encode_cell({ r: _R, c: 1 });
+      if (!ws[_ref1]) continue;
+      const _v = ws[_ref1].v != null ? String(ws[_ref1].v).trim() : '';
+      const _cell0 = ws[XLSX.utils.encode_cell({ r: _R, c: 0 })];
+      const _valA = _cell0 && _cell0.v != null ? String(_cell0.v).trim() : '';
+      const _isRoman = ['I','II','III','IV','V','VI','VII','VIII','IX','X'].includes(_valA);
+      const _isTotalRow = _v.toLowerCase().includes('tổng cộng') || _v.startsWith('Bằng chữ:') || _v.includes('Cộng trước VAT');
+
+      if (!ws[_ref1].s) ws[_ref1].s = {};
+
+      if (_isRoman) {
+        ws[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: false };
+      } else if (_v !== '' && !_isTotalRow) {
+        ws[_ref1].s.alignment = { horizontal: 'left', vertical: 'center', wrapText: true, indent: 1 };
+      }
+    }
+  });
+
   // Append Tổng hợp and Room sheets to wb
 
   XLSX.utils.book_append_sheet(wb, wsSum, "Tổng hợp");

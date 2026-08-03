@@ -4198,7 +4198,9 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
   text-transform: uppercase;
 }
 
-/* Align Column B (HẠNG MỤC) data cells to left with 15px indent */
+/* Align Column B (HẠNG MỤC) data cells to left with 15px indent across ALL tables and detail sheets */
+#boq-tbody tr:not(.boq-room-title):not(.boq-room-header):not(.boq-elec-header):not(.boq-note-header):not(.boq-sub-header):not(.boq-other-header) td:nth-child(2),
+#boq-summary-tbody tr:not(.boq-room-header):not(.boq-other-header) td:nth-child(2),
 .boq-item-name,
 .boq-table td.boq-item-name,
 .ep-detail-table td.boq-item-name,
