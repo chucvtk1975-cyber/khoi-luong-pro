@@ -2,8 +2,8 @@
 // CLOUD SYNC MODULE (Supabase)
 // =============================================
 
-import { DB } from './db.js?v=20260803-v19';
-import { showToast, renderProjectList } from './takeoff.js?v=20260803-v19';
+import { DB } from './db.js?v=20260803-v20';
+import { showToast, renderProjectList } from './takeoff.js?v=20260803-v20';
 
 export const CloudSync = {
   client: null,
