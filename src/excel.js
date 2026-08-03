@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v6';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v6';
-import { state } from '../main.js?v=20260803-v6';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v7';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v7';
+import { state } from '../main.js?v=20260803-v7';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -109,40 +109,51 @@ function applyPageSetup(ws, repeatRowsCount) {
 
   };
 
-  // Lề trang (đơn vị: inches)
-
+  // Lề trang (đơn vị: inches - quy đổi 1.8cm, 1.0cm, 1.4cm, 1.4cm)
   ws['!margins'] = {
-
-    left:   0.3,
-
-    right:  0.3,
-
-    top:    0.4,
-
-    bottom: 0.5,
-
+    left:   0.71, // 1.8 cm
+    right:  0.39, // 1.0 cm
+    top:    0.55, // 1.4 cm
+    bottom: 0.55, // 1.4 cm
     header: 0.2,
-
     footer: 0.2,
-
   };
 
   // Footer: góc trái = ngày giờ in | góc phải = Trang P/N
-
   ws['!headerFooter'] = {
-
     oddFooter:  '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
-
     evenFooter: '&L&"Arial,Italic"Du-Toan-BlueAI Lab&R&"Arial,Bold"Trang &P/&N',
-
   };
 
   // Rows to repeat at top khi in: lặp lại từ dòng 0 đến repeatRowsCount-1 (0-indexed)
-
   const rpt = (repeatRowsCount && repeatRowsCount > 0) ? repeatRowsCount : 9;
-
   ws['!printHeader'] = { rows: { min: 0, max: rpt - 1 } };
+}
 
+function applyRowHeights(ws, headerCount = 8) {
+  if (!ws || !ws['!ref']) return;
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  const rows = [];
+  const romanSet = new Set(['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII']);
+  for (let R = 0; R <= range.e.r; R++) {
+    if (R < 4) {
+      rows.push({ hpt: 20, hpx: 27 });
+    } else if (R >= 4 && R <= 6) {
+      rows.push({ hpt: 19, hpx: 25 });
+    } else if (R >= 8 && R <= headerCount) {
+      rows.push({ hpt: 36, hpx: 48 }); // Table headers (1.5x 24pt)
+    } else {
+      const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
+      const valA = cellA && cellA.v != null ? String(cellA.v).trim() : '';
+      const isRoman = romanSet.has(valA);
+      if (isRoman) {
+        rows.push({ hpt: 30, hpx: 40 }); // Section headers (1.5x 20pt)
+      } else {
+        rows.push({ hpt: 27, hpx: 36 }); // Data rows (1.5x 18pt)
+      }
+    }
+  }
+  ws['!rows'] = rows;
 }
 
 function applyBorders(ws, headerRows) {
@@ -3294,6 +3305,11 @@ export function generateWorkbook(project) {
     });
 
   }
+
+  // Ép chiều cao hàng 1.5 lần (27pt cho data, 30-36pt cho headers)
+  applyRowHeights(wsSum, 8);
+  roomSheets.forEach(s => applyRowHeights(s.ws, 9));
+  if (wsVT) applyRowHeights(wsVT, 8);
 
   return { wb, wsSum, roomSheets, wsVT };
 
