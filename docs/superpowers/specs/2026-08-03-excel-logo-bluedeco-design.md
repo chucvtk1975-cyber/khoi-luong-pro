@@ -1,48 +1,75 @@
-# Design Spec: Thêm Logo Bluedeco vào File Excel (Cột B Hàng 1 Căn Trái)
+# Design Spec: Thêm Logo Bluedeco vào File Excel (Bảo Toàn Tỷ Lệ Gốc 1.80:1)
 
 **Ngày:** 2026-08-03  
-**Trạng thái:** Đã duyệt bởi người dùng (Phương án 1)
+**Trạng thái:** Đã duyệt bởi người dùng (Phương án 1 - oneCellAnchor 108px x 60px)
 
 ---
 
 ## 1. Mục tiêu
-Tự động nhúng hình ảnh logo thương hiệu BlueDeco (`logo-bluedecor.png`) vào góc trên bên trái của tất cả các trang tính (Sheet 1 *Tổng hợp*, Sheet 2+ *Chi tiết phòng*, *Vật tư cần mua*) trong file Excel xuất ra.
+Bảo toàn 100% tỷ lệ khung hình gốc (Aspect Ratio 1.80:1) của tệp ảnh logo thương hiệu BlueDeco (`logo-bluedecor.png` - 931px x 517px) khi hiển thị trong tất cả các trang tính Excel. Ngăn chặn hoàn toàn hiện tượng logo bị biến dạng hay kéo giãn.
 
 ---
 
-## 2. Vị trí & Định dạng Logo trong Excel
+## 2. Thông số Kỹ thuật Logo
 
-- **Vị trí cell**: Bắt đầu tại ô **B1** (Column index = 1, Row index = 0), căn lề trái.
-- **Kích thước anchor**: Tọa độ từ ô B1 (Row 0, Col 1) đến B3 (Row 3, Col 1).
-- **Tệp nguồn ảnh**: Nạp từ dữ liệu base64/buffer của `logo-bluedecor.png` đã được nạp sẵn trên client-side.
+- **Tệp nguồn ảnh**: `logo-bluedecor.png` (Gốc: 931px × 517px, tỷ lệ 1.8008 : 1).
+- **Vị trí neo (Anchor)**: Neo góc trên trái tại **ô B1** (Col = 1, Row = 0).
+- **Cấu trúc Anchor**: Khóa bằng `<xdr:oneCellAnchor editAs="oneCell">`.
+- **Kích thước hiển thị**:
+  - Chiều rộng (`width`): `108px` (`cx = 1028700` EMUs).
+  - Chiều cao (`height`): `60px` (`cy = 571500` EMUs).
+  - Tỷ lệ hiển thị: `1.80 : 1` (khớp hoàn hảo với ảnh gốc).
+- **Khóa tỷ lệ hình ảnh**: Thêm thuộc tính `<a:picLocks noChangeAspect="1"/>` để Excel không kéo giãn khi thay đổi kích thước ô.
 
 ---
 
-## 3. Kiến trúc & Kỹ thuật Triển khai
+## 3. Kiến trúc XML Drawing (`xl/drawings/drawing1.xml`)
 
-### 3.1 Hàm helper `injectLogoToBuffer(binBuf)`
-Trong `src/excel.js`:
-- Nhận mảng nhị phân `ArrayBuffer` tạo ra từ SheetJS (`XLSX.write`).
-- Sử dụng `JSZip` giải nén workbook.
-- Quét qua tất cả các file trang tính `xl/worksheets/sheet*.xml`.
-- Thêm liên kết drawing XML `<drawing r:id="rId2"/>` vào từng worksheet chưa có thẻ drawing.
-- Đóng gói file `xl/drawings/drawing1.xml` định vị hình ảnh tại Cột B (Col=1, ColOff=100000), Hàng 1 (Row=0, RowOff=63500) căn trái.
-- Đóng gói file ảnh nhị phân vào `xl/media/image1.png`.
-- Trả về `ArrayBuffer` hoàn chỉnh chứa logo.
-
-### 3.2 Tích hợp vào `exportExcel()` & `xlsxWriteSheetJS()`
-- Chuyển `xlsxWriteSheetJS` thành hàm `async`.
-- Sau khi `XLSX.write` tạo ra binary buffer, tự động gọi `await injectLogoToBuffer(buf)` trước khi tạo `Blob` tải xuống cho người dùng.
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+  <xdr:oneCellAnchor editAs="oneCell">
+    <xdr:from>
+      <xdr:col>1</xdr:col>
+      <xdr:colOff>38100</xdr:colOff>
+      <xdr:row>0</xdr:row>
+      <xdr:rowOff>38100</xdr:rowOff>
+    </xdr:from>
+    <xdr:ext cx="1028700" cy="571500"/>
+    <xdr:pic>
+      <xdr:nvPicPr>
+        <xdr:cNvPr id="2" name="Picture 3"/>
+        <xdr:cNvPicPr>
+          <a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>
+        </xdr:cNvPicPr>
+      </xdr:nvPicPr>
+      <xdr:blipFill>
+        <a:blip xmlns:r="http://schemas.openxmlformats.org/package/2006/relationships" r:embed="rId1" cstate="print"/>
+        <a:srcRect/>
+        <a:stretch><a:fillRect/></a:stretch>
+      </xdr:blipFill>
+      <xdr:spPr bwMode="auto">
+        <a:xfrm>
+          <a:off x="38100" y="38100"/>
+          <a:ext cx="1028700" cy="571500"/>
+        </a:xfrm>
+        <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+        <a:noFill/><a:ln><a:noFill/></a:ln>
+      </xdr:spPr>
+    </xdr:pic>
+    <xdr:clientData/>
+  </xdr:oneCellAnchor>
+</xdr:wsDr>
+```
 
 ---
 
 ## 4. File Thay Đổi
-- `src/excel.js`: Bổ sung helper `injectLogoToBuffer()` và tích hợp vào luồng `exportExcel()` / `xlsxWriteSheetJS()`.
-- `main.js`, `index.html`: Cập nhật phiên bản Cache-Buster `?v=20260803-v5`.
+- `src/excel.js`: Cập nhật chuỗi XML trong `injectLogoToBuffer()` và `triggerAutoSync()` sang `oneCellAnchor` với `cx=1028700, cy=571500`.
+- `main.js`, `index.html`: Cập nhật phiên bản Cache-Buster `?v=20260803-v6`.
 
 ---
 
-## 5. Kế hoạch Kiểm tra (Verification)
-- [ ] Mở file Excel vừa xuất: Tất cả các sheet (*Tổng hợp*, *PHÒNG XÔNG*...) đều có logo BlueDeco xuất hiện ở cột B hàng 1 căn trái.
-- [ ] Đảm bảo không làm ảnh hưởng đến căn lề cột B (hạng mục) và dữ liệu các hàng bên dưới.
-- [ ] Chạy `check_final.py` xác minh cú pháp và tính toàn vẹn của ứng dụng.
+## 5. Verification Plan
+- [ ] Xuất file Excel: Logo xuất hiện ở B1 sắc nét, đúng tỷ lệ `1.80:1` (108px x 60px), không bị méo hay biến dạng.
+- [ ] Chạy `check_final.py` xác minh cú pháp và HTML.
