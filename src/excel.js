@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v23';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v23';
-import { state } from '../main.js?v=20260803-v23';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v26';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v26';
+import { state } from '../main.js?v=20260803-v26';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
