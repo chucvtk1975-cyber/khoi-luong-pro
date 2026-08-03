@@ -12,6 +12,40 @@
 
   <meta name="description" content="Công cụ bốc khối lượng thông minh cho thiết kế nội thất và thi công xây dựng">
 
+  <!-- Cấu hình chống lưu Cache trình duyệt -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <script>
+    // CƠ CHẾ TỰ ĐỘNG XÓA CACHE & CẬP NHẬT PHIÊN BẢN MỚI
+    (function() {
+      const CURRENT_APP_VERSION = '20260803-v12';
+      const lastVersion = localStorage.getItem('bkl_app_version');
+
+      // Tự động gỡ bỏ Service Worker cũ nếu có
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(r => r.unregister());
+        });
+      }
+
+      if (lastVersion !== CURRENT_APP_VERSION) {
+        localStorage.setItem('bkl_app_version', CURRENT_APP_VERSION);
+        // Tự động xóa bộ nhớ CacheStorage của trình duyệt
+        if ('caches' in window) {
+          caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+          });
+        }
+        // Nếu phát hiện phiên bản mới hơn bản cũ -> Tự động làm sạch & tải lại trang
+        if (lastVersion && lastVersion !== CURRENT_APP_VERSION) {
+          window.location.reload(true);
+        }
+      }
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
