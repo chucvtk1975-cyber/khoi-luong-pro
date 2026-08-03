@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v14';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v14';
-import { state } from '../main.js?v=20260803-v14';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v15';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v15';
+import { state } from '../main.js?v=20260803-v15';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -55,7 +55,7 @@ export async function injectLogoToBuffer(binBuf) {
       // 2. Ép lề in chuẩn cm: Left 1.8cm (0.71in), Right 1.0cm (0.39in), Top 1.4cm (0.55in), Bottom 1.4cm (0.55in)
       const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
       if (xmlStr.includes("<pageMargins")) {
-        xmlStr = xmlStr.replace(/<pageMargins[^>]*\/>/, pageMarginsXml);
+        xmlStr = xmlStr.replace(/<pageMargins[\s\S]*?(?:\/>|<\/pageMargins>)/, pageMarginsXml);
       } else {
         xmlStr = xmlStr.replace(/(?=<pageSetup|<headerFooter|<drawing|<\/worksheet>)/, pageMarginsXml);
       }
@@ -63,7 +63,7 @@ export async function injectLogoToBuffer(binBuf) {
       // 3. Ép khổ in A4 Landscape (Xoay Ngang) vừa 1 trang
       const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
       if (xmlStr.includes("<pageSetup")) {
-        xmlStr = xmlStr.replace(/<pageSetup[^>]*\/>/, pageSetupXml);
+        xmlStr = xmlStr.replace(/<pageSetup[\s\S]*?(?:\/>|<\/pageSetup>)/, pageSetupXml);
       } else {
         xmlStr = xmlStr.replace(/(?=<headerFooter|<drawing|<\/worksheet>)/, pageSetupXml);
       }
@@ -72,8 +72,7 @@ export async function injectLogoToBuffer(binBuf) {
       const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
       const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
       if (xmlStr.includes("<headerFooter")) {
-        xmlStr = xmlStr.replace(/<headerFooter[^>]*>[\s\S]*?<\/headerFooter>/, headerFooterXml);
-        xmlStr = xmlStr.replace(/<headerFooter[^>]*\/>/, headerFooterXml);
+        xmlStr = xmlStr.replace(/<headerFooter[\s\S]*?(?:\/>|<\/headerFooter>)/, headerFooterXml);
       } else {
         xmlStr = xmlStr.replace(/(?=<drawing|<\/worksheet>)/, headerFooterXml);
       }
