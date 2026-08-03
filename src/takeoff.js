@@ -2959,7 +2959,7 @@ function renderBOQ(project) {
 
             <td style="color:var(--text-muted);font-size:12px;text-align:center;">${noStt?'':stt++}</td>
 
-            <td class="boq-item-name"${isManual?' style="color:var(--brand-gold);font-style:italic;text-align:left;padding-left:15px;"':''}${isNoteItem?' style="color:var(--text-secondary);font-style:italic;text-align:left;padding-left:15px;"':''} style="text-align:left;padding-left:15px;">${item.label}</td>
+            <td class="boq-item-name" style="${isManual ? 'color:var(--brand-gold);font-style:italic;' : isNoteItem ? 'color:var(--text-secondary);font-style:italic;' : ''}text-align:left;padding-left:15px;">${item.label}</td>
 
             <td class="boq-dim">${item.dai  ? fmtMM(item.dai)  : ''}</td>
 

@@ -4199,6 +4199,7 @@ tr[data-key]:hover .ci-action-group { opacity: 1; }
 }
 
 /* Align Column B (HẠNG MỤC) data cells to left with 15px indent across ALL tables and detail sheets */
+table tbody tr:not(.boq-room-title):not(.boq-room-header):not(.boq-elec-header):not(.boq-note-header):not(.boq-other-header):not(.pv-head-row-1):not(.pv-head-row-2) td:nth-child(2),
 #boq-tbody tr:not(.boq-room-title):not(.boq-room-header):not(.boq-elec-header):not(.boq-note-header):not(.boq-sub-header):not(.boq-other-header) td:nth-child(2),
 #boq-summary-tbody tr:not(.boq-room-header):not(.boq-other-header) td:nth-child(2),
 .boq-item-name,
