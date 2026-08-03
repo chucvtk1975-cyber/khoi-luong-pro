@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v21';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v21';
-import { state } from '../main.js?v=20260803-v21';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v22';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v22';
+import { state } from '../main.js?v=20260803-v22';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -1098,100 +1098,15 @@ function applySheetStyles(ws, headerDataRow, sheetType) {
 
   }
 
-async function applyOpenXMLPrintSetup(binBuf) {
-  if (typeof JSZip === 'undefined') return binBuf;
-  try {
-    const zip = await JSZip.loadAsync(binBuf);
-    const sheetFiles = Object.keys(zip.files).filter(name => name.startsWith("xl/worksheets/sheet") && name.endsWith(".xml"));
-
-    for (const file of sheetFiles) {
-      let xmlStr = await zip.file(file).async("string");
-      const isRoomSheet = file !== 'xl/worksheets/sheet1.xml' && !xmlStr.includes('Vật Tư Cần Mua');
-
-      // 1. sheetPr & pageSetUpPr (Bắt buộc cho fitToPage="1")
-      if (!xmlStr.includes("<pageSetUpPr")) {
-        if (xmlStr.includes("<sheetPr/>")) {
-          xmlStr = xmlStr.replace("<sheetPr/>", '<sheetPr><pageSetUpPr fitToPage="1"/></sheetPr>');
-        } else if (xmlStr.includes("<sheetPr>")) {
-          xmlStr = xmlStr.replace("<sheetPr>", '<sheetPr><pageSetUpPr fitToPage="1"/>');
-        } else if (xmlStr.includes("<sheetPr ")) {
-          xmlStr = xmlStr.replace(/<sheetPr([^>]*)>/, '<sheetPr$1><pageSetUpPr fitToPage="1"/>');
-        } else {
-          xmlStr = xmlStr.replace(/(<worksheet[^>]*>)/, '$1<sheetPr><pageSetUpPr fitToPage="1"/></sheetPr>');
-        }
-      }
-
-      // 2. Ép chiều cao hàng ht="..." customHeight="1" vào các thẻ <row>
-      xmlStr = xmlStr.replace(/<row\b[^>]*>/g, (rowTag) => {
-        const rMatch = rowTag.match(/r="(\d+)"/);
-        if (!rMatch) return rowTag;
-        const rNum = parseInt(rMatch[1], 10);
-
-        let cleanTag = rowTag.replace(/\s+ht="[^"]*"/g, '').replace(/\s+customHeight="[^"]*"/g, '');
-        let ht = 24;
-
-        if (rNum < 9) {
-          ht = 20;
-        } else if (rNum === 9 || (isRoomSheet && rNum === 10)) {
-          ht = isRoomSheet ? 19 : 34;
-        } else {
-          ht = 24;
-        }
-
-        if (cleanTag.endsWith('/>')) {
-          return cleanTag.slice(0, -2) + ` ht="${ht}" customHeight="1"/>`;
-        } else if (cleanTag.endsWith('>')) {
-          return cleanTag.slice(0, -1) + ` ht="${ht}" customHeight="1">`;
-        }
-        return rowTag;
-      });
-
-      // 3. pageMargins chuẩn cm (Left 1.8cm, Right 1.0cm, Top 1.4cm, Bottom 1.4cm)
-      const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
-      if (xmlStr.includes("<pageMargins")) {
-        xmlStr = xmlStr.replace(/<pageMargins[\s\S]*?(?:\/>|<\/pageMargins>)/, pageMarginsXml);
-      } else {
-        xmlStr = xmlStr.replace(/(?=<pageSetup|<headerFooter|<drawing|<\/worksheet>)/, pageMarginsXml);
-      }
-
-      // 4. pageSetup A4 Landscape vừa 1 trang ngang
-      const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
-      if (xmlStr.includes("<pageSetup")) {
-        xmlStr = xmlStr.replace(/<pageSetup[\s\S]*?(?:\/>|<\/pageSetup>)/, pageSetupXml);
-      } else {
-        xmlStr = xmlStr.replace(/(?=<headerFooter|<drawing|<\/worksheet>)/, pageSetupXml);
-      }
-
-      // 5. headerFooter số trang 1/6
-      const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
-      const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
-      if (xmlStr.includes("<headerFooter")) {
-        xmlStr = xmlStr.replace(/<headerFooter[\s\S]*?(?:\/>|<\/headerFooter>)/, headerFooterXml);
-      } else {
-        xmlStr = xmlStr.replace(/(?=<drawing|<\/worksheet>)/, headerFooterXml);
-      }
-
-      zip.file(file, xmlStr);
-    }
-
-    return await zip.generateAsync({ type: "arraybuffer" });
-  } catch (err) {
-    console.warn("Print setup injection failed:", err);
-    return binBuf;
-  }
-}
-
-async function xlsxWriteSheetJS(wb, fileName) {
+function xlsxWriteSheetJS(wb, fileName) {
   try {
     if (typeof XLSX === 'undefined') {
       throw new Error('Thư viện SheetJS (XLSX) chưa được tải thành công.');
     }
     // Ghi workbook ra định dạng binary string
-    const out = XLSX.write(wb, { bookType: 'xlsx', bookSST: false, type: 'binary', cellStyles: true });
-    let buf = s2ab(out);
-    buf = await applyOpenXMLPrintSetup(buf);
+    const out = XLSX.write(wb, { bookType: 'xlsx', bookSST: false, type: 'binary' });
     // Chuyển binary string sang Blob nhị phân
-    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([s2ab(out)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     
     // Tải file tương thích tốt trên PC và điện thoại (Android/iOS)
     const url = URL.createObjectURL(blob);
