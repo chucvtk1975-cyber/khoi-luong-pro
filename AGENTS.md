@@ -77,3 +77,12 @@ someRows.forEach(r => {
 });
 ```
 Đây là pattern đã được kiểm chứng cho cả HẠNG MỤC lẫn header rows. Không dùng CSS class hay hàm style thông thường cho các cell alignment quan trọng — dùng lock-down.
+
+### 7. Quy Tắc Bất Biến Cho Trang In & Chiều Cao Hàng Excel Export
+Tất cả các hàm xuất file Excel (`xlsxWriteSheetJS`, `injectLogoToBuffer`, `applyPageSetup`, `applyRowHeights`, `triggerAutoSync`) **BẮT BUỘC** phải tuân thủ 5 tiêu chuẩn sau:
+- [ ] **Co vừa 1 trang ngang**: Thẻ `<pageSetUpPr fitToPage="1"/>` trong `<sheetPr>` & `<pageSetup fitToWidth="1" fitToHeight="0" fitToPage="1"/>`.
+- [ ] **Lề in (cm)**: Left 1.8cm (`0.71in`), Right 1.0cm (`0.39in`), Top 1.4cm (`0.55in`), Bottom 1.4cm (`0.55in`).
+- [ ] **Chiều cao hàng**: Dữ liệu `24pt`, Dòng La Mã `26pt`, Header 1 hàng `34pt`, Header 2 hàng (Room sheets) `19pt`/hàng.
+- [ ] **Số trang góc phải**: Chuỗi Footer `&P/&N` (dạng `1/6`, `2/6` ... `6/6`, không thêm từ "Trang").
+- [ ] **Logo BlueDeco 1.3x**: Ô B1, kích thước `140px × 78px` (`cx=1333500`, `cy=742950`), tỉ lệ gốc `1.80:1` khóa bằng `<a:picLocks noChangeAspect="1"/>`.
+
