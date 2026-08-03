@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v12';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v12';
-import { state } from '../main.js?v=20260803-v12';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v13';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v13';
+import { state } from '../main.js?v=20260803-v13';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -41,7 +41,7 @@ export async function injectLogoToBuffer(binBuf) {
     for (const file of sheetFiles) {
       let xmlStr = await zip.file(file).async("string");
 
-      // Ép fitToPage="1" vào sheetPr để Excel tự động co vừa 1 trang ngang
+      // 1. Ép fitToPage="1" vào sheetPr để Excel tự động co vừa 1 trang ngang
       if (!xmlStr.includes("<pageSetUpPr")) {
         if (xmlStr.includes("<sheetPr>")) {
           xmlStr = xmlStr.replace("<sheetPr>", "<sheetPr><pageSetUpPr fitToPage=\"1\"/>");
@@ -52,22 +52,49 @@ export async function injectLogoToBuffer(binBuf) {
         }
       }
 
-      if (xmlStr.includes("<pageMargins") && !xmlStr.includes("<headerFooter")) {
-        const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
-        const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
-        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
-        const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
-        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `${pageMarginsXml}${pageSetupXml}${headerFooterXml}`);
+      // 2. Ép lề in chuẩn cm: Left 1.8cm (0.71in), Right 1.0cm (0.39in), Top 1.4cm (0.55in), Bottom 1.4cm (0.55in)
+      const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
+      if (xmlStr.includes("<pageMargins")) {
+        xmlStr = xmlStr.replace(/<pageMargins[^>]*\/>/, pageMarginsXml);
+      } else {
+        xmlStr = xmlStr.replace("</worksheet>", `${pageMarginsXml}</worksheet>`);
       }
 
+      // 3. Ép khổ in A4 Landscape (Xoay Ngang) vừa 1 trang
+      const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
+      if (xmlStr.includes("<pageSetup")) {
+        xmlStr = xmlStr.replace(/<pageSetup[^>]*\/>/, pageSetupXml);
+      } else {
+        xmlStr = xmlStr.replace("</worksheet>", `${pageSetupXml}</worksheet>`);
+      }
+
+      // 4. Ép Footer góc phải 1/6 (&P/&N)
+      const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
+      const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
+      if (xmlStr.includes("<headerFooter")) {
+        xmlStr = xmlStr.replace(/<headerFooter[^>]*>[\s\S]*?<\/headerFooter>/, headerFooterXml);
+        xmlStr = xmlStr.replace(/<headerFooter[^>]*\/>/, headerFooterXml);
+      } else {
+        xmlStr = xmlStr.replace("</worksheet>", `${headerFooterXml}</worksheet>`);
+      }
+
+      // 5. Chèn Logo Drawing Link
       if (!xmlStr.includes("<drawing")) {
         xmlStr = xmlStr.replace("</worksheet>", '<drawing r:id="rId2"/></worksheet>');
         const match = file.match(/sheet(\d+)\.xml/);
         if (match) {
           const sheetNum = match[1];
           const relsFile = `xl/worksheets/_rels/sheet${sheetNum}.xml.rels`;
-          const sheetRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/>\n</Relationships>`;
-          zip.file(relsFile, sheetRelsXml);
+          let relsXml = zip.file(relsFile) ? await zip.file(relsFile).async("string") : null;
+          if (relsXml) {
+            if (!relsXml.includes('rId2')) {
+              relsXml = relsXml.replace('</Relationships>', '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/></Relationships>');
+              zip.file(relsFile, relsXml);
+            }
+          } else {
+            const sheetRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/>\n</Relationships>`;
+            zip.file(relsFile, sheetRelsXml);
+          }
         }
       }
 
