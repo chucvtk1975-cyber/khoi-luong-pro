@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v9';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v9';
-import { state } from '../main.js?v=20260803-v9';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v10';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v10';
+import { state } from '../main.js?v=20260803-v10';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -41,11 +41,23 @@ export async function injectLogoToBuffer(binBuf) {
     for (const file of sheetFiles) {
       let xmlStr = await zip.file(file).async("string");
 
+      // Ép fitToPage="1" vào sheetPr để Excel tự động co vừa 1 trang ngang
+      if (!xmlStr.includes("<pageSetUpPr")) {
+        if (xmlStr.includes("<sheetPr>")) {
+          xmlStr = xmlStr.replace("<sheetPr>", "<sheetPr><pageSetUpPr fitToPage=\"1\"/>");
+        } else if (xmlStr.includes("<sheetPr ")) {
+          xmlStr = xmlStr.replace(/(<sheetPr[^>]*>)/, "$1<pageSetUpPr fitToPage=\"1\"/>");
+        } else {
+          xmlStr = xmlStr.replace(/(<worksheet[^>]*>)/, "$1<sheetPr><pageSetUpPr fitToPage=\"1\"/></sheetPr>");
+        }
+      }
+
       if (xmlStr.includes("<pageMargins") && !xmlStr.includes("<headerFooter")) {
+        const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
         const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
-        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;Trang &amp;P/&amp;N';
+        const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
         const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
-        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `$1${pageSetupXml}${headerFooterXml}`);
+        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `${pageMarginsXml}${pageSetupXml}${headerFooterXml}`);
       }
 
       if (!xmlStr.includes("<drawing")) {
@@ -3453,13 +3465,23 @@ export async function triggerAutoSync() {
 
     for (const file of sheetFiles) {
       const drawingXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">\n<xdr:oneCellAnchor editAs="oneCell">\n<xdr:from>\n<xdr:col>1</xdr:col>\n<xdr:colOff>38100</xdr:colOff>\n<xdr:row>0</xdr:row>\n<xdr:rowOff>38100</xdr:rowOff>\n</xdr:from>\n<xdr:ext cx="1333500" cy="742950"/>\n<xdr:pic>\n<xdr:nvPicPr>\n<xdr:cNvPr id="2" name="Picture 3"/>\n<xdr:cNvPicPr>\n<a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>\n</xdr:cNvPicPr>\n</xdr:nvPicPr>\n<xdr:blipFill>\n<a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId1" cstate="print"/>\n<a:srcRect/>\n<a:stretch>\n<a:fillRect/>\n</a:stretch>\n</xdr:blipFill>\n<xdr:spPr bwMode="auto">\n<a:xfrm>\n<a:off x="38100" y="38100"/>\n<a:ext cx="1333500" cy="742950"/>\n</a:xfrm>\n<a:prstGeom prst="rect">\n<a:avLst/>\n</a:prstGeom>\n<a:noFill/>\n<a:ln>\n<a:noFill/>\n</a:ln>\n</xdr:spPr>\n</xdr:pic>\n<xdr:clientData/>\n</xdr:oneCellAnchor>\n</xdr:wsDr>`;
-      let xmlStr = await zip.file(file).async("string");
+      // Ép fitToPage="1" vào sheetPr để Excel tự động co vừa 1 trang ngang
+      if (!xmlStr.includes("<pageSetUpPr")) {
+        if (xmlStr.includes("<sheetPr>")) {
+          xmlStr = xmlStr.replace("<sheetPr>", "<sheetPr><pageSetUpPr fitToPage=\"1\"/>");
+        } else if (xmlStr.includes("<sheetPr ")) {
+          xmlStr = xmlStr.replace(/(<sheetPr[^>]*>)/, "$1<pageSetUpPr fitToPage=\"1\"/>");
+        } else {
+          xmlStr = xmlStr.replace(/(<worksheet[^>]*>)/, "$1<sheetPr><pageSetUpPr fitToPage=\"1\"/></sheetPr>");
+        }
+      }
 
       if (xmlStr.includes("<pageMargins") && !xmlStr.includes("<headerFooter")) {
+        const pageMarginsXml = '<pageMargins left="0.71" right="0.39" top="0.55" bottom="0.55" header="0.2" footer="0.2"/>';
         const pageSetupXml = '<pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0" fitToPage="1"/>';
         const footerText = '&amp;L&amp;&quot;Arial,Italic&quot;Du-Toan-BlueAI Lab&amp;R&amp;&quot;Arial,Bold&quot;&amp;P/&amp;N';
         const headerFooterXml = `<headerFooter oddFooter="${footerText}" evenFooter="${footerText}"/>`;
-        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `$1${pageSetupXml}${headerFooterXml}`);
+        xmlStr = xmlStr.replace(/(<pageMargins[^>]*\/>)/, `${pageMarginsXml}${pageSetupXml}${headerFooterXml}`);
       }
 
       if (logoBuf && !xmlStr.includes("<drawing")) {
