@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v15';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v15';
-import { state } from '../main.js?v=20260803-v15';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v16';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v16';
+import { state } from '../main.js?v=20260803-v16';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -43,10 +43,10 @@ export async function injectLogoToBuffer(binBuf) {
 
       // 1. Ép fitToPage="1" vào sheetPr để Excel tự động co vừa 1 trang ngang
       if (!xmlStr.includes("<pageSetUpPr")) {
-        if (xmlStr.includes("<sheetPr>")) {
+        if (xmlStr.includes("<sheetPr") && xmlStr.includes("</sheetPr>")) {
           xmlStr = xmlStr.replace("<sheetPr>", "<sheetPr><pageSetUpPr fitToPage=\"1\"/>");
-        } else if (xmlStr.includes("<sheetPr ")) {
-          xmlStr = xmlStr.replace(/(<sheetPr[^>]*>)/, "$1<pageSetUpPr fitToPage=\"1\"/>");
+        } else if (xmlStr.includes("<sheetPr")) {
+          xmlStr = xmlStr.replace(/<sheetPr[^>]*\/>/, "<sheetPr><pageSetUpPr fitToPage=\"1\"/></sheetPr>");
         } else {
           xmlStr = xmlStr.replace(/(<worksheet[^>]*>)/, "$1<sheetPr><pageSetUpPr fitToPage=\"1\"/></sheetPr>");
         }
@@ -108,10 +108,13 @@ export async function injectLogoToBuffer(binBuf) {
     zip.file("xl/media/image1.png", logoArrayBuffer);
 
     let contentTypes = await zip.file("[Content_Types].xml").async("string");
+    if (!contentTypes.includes('Extension="png"') && !contentTypes.includes('Extension="PNG"')) {
+      contentTypes = contentTypes.replace("</Types>", '<Default Extension="png" ContentType="image/png"/></Types>');
+    }
     if (!contentTypes.includes("/xl/drawings/drawing1.xml")) {
       contentTypes = contentTypes.replace("</Types>", '<Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/></Types>');
-      zip.file("[Content_Types].xml", contentTypes);
     }
+    zip.file("[Content_Types].xml", contentTypes);
 
     return await zip.generateAsync({ type: "arraybuffer" });
   } catch (err) {
