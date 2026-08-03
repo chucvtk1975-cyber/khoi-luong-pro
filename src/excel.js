@@ -2,9 +2,9 @@
 // EXCEL EXPORT MODULE (SheetJS & ExcelJS)
 // =============================================
 
-import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v13';
-import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v13';
-import { state } from '../main.js?v=20260803-v13';
+import { DB, PhotoDB, isBlobHEIC } from './db.js?v=20260803-v14';
+import { CALC, fmt, fmtNum, today, numberToWords, categorizeSummaryItem, parseNoteDimensionLine } from './calc.js?v=20260803-v14';
+import { state } from '../main.js?v=20260803-v14';
 
 // Hàm này được định nghĩa lại ở đây vì excel.js là module riêng biệt,
 // không thể import từ takeoff.js
@@ -57,7 +57,7 @@ export async function injectLogoToBuffer(binBuf) {
       if (xmlStr.includes("<pageMargins")) {
         xmlStr = xmlStr.replace(/<pageMargins[^>]*\/>/, pageMarginsXml);
       } else {
-        xmlStr = xmlStr.replace("</worksheet>", `${pageMarginsXml}</worksheet>`);
+        xmlStr = xmlStr.replace(/(?=<pageSetup|<headerFooter|<drawing|<\/worksheet>)/, pageMarginsXml);
       }
 
       // 3. Ép khổ in A4 Landscape (Xoay Ngang) vừa 1 trang
@@ -65,7 +65,7 @@ export async function injectLogoToBuffer(binBuf) {
       if (xmlStr.includes("<pageSetup")) {
         xmlStr = xmlStr.replace(/<pageSetup[^>]*\/>/, pageSetupXml);
       } else {
-        xmlStr = xmlStr.replace("</worksheet>", `${pageSetupXml}</worksheet>`);
+        xmlStr = xmlStr.replace(/(?=<headerFooter|<drawing|<\/worksheet>)/, pageSetupXml);
       }
 
       // 4. Ép Footer góc phải 1/6 (&P/&N)
@@ -75,10 +75,10 @@ export async function injectLogoToBuffer(binBuf) {
         xmlStr = xmlStr.replace(/<headerFooter[^>]*>[\s\S]*?<\/headerFooter>/, headerFooterXml);
         xmlStr = xmlStr.replace(/<headerFooter[^>]*\/>/, headerFooterXml);
       } else {
-        xmlStr = xmlStr.replace("</worksheet>", `${headerFooterXml}</worksheet>`);
+        xmlStr = xmlStr.replace(/(?=<drawing|<\/worksheet>)/, headerFooterXml);
       }
 
-      // 5. Chèn Logo Drawing Link
+      // 5. Chèn Logo Drawing Link (Bắt buộc đứng CUỐI CÙNG ngay trước </worksheet>)
       if (!xmlStr.includes("<drawing")) {
         xmlStr = xmlStr.replace("</worksheet>", '<drawing r:id="rId2"/></worksheet>');
         const match = file.match(/sheet(\d+)\.xml/);
