@@ -565,24 +565,8 @@
         
         <div class="wizard-step-content" id="step-content-3" style="display:none;">
 
-          <!-- THIẾT BỊ NỘI THẤT -->
-          <div class="section-title">
-            <i data-lucide="sofa" class="section-icon"></i> Thiết Bị Nội Thất <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(tủ bếp, tủ quần áo, cửa nội thất, kệ, cầu thang...)</span>
-          </div>
-
-          <div class="form-group">
-            <textarea id="note-woodwork" rows="3"
-              placeholder="VD: Tủ bếp trên 2,4m dài, tủ bếp dưới 2,4m dài, mặt đá granite&#10;Tủ quần áo 3 cánh 1,8×2,4m, cửa gỗ HDF 2 cái&#10;Kệ TV treo tường 1,6m, kệ sách 0,8m"
-              style="width:100%;resize:vertical;"></textarea>
-            <div style="margin-top: 4px;">
-              <button type="button" class="btn-primary" style="padding: 2px 8px; font-size: 11px; height: auto; text-transform: none;" onclick="document.getElementById('room-photo-input-noithat').click()">📷 Đính kèm ảnh Nội thất</button>
-              <input type="file" id="room-photo-input-noithat" accept="image/png, image/jpeg, image/heic, image/heif, .png, .jpg, .jpeg, .heic, .heif" multiple style="display:none;" onchange="handleRoomPhotoSelect(this.files, 'noithat')">
-              <div class="room-photo-thumbs" id="room-photo-thumbs-noithat" style="margin-top: 6px;"></div>
-            </div>
-          </div>
-
           <!-- GHI CHÚ PHÒNG -->
-          <div class="section-title" style="margin-top:16px;">
+          <div class="section-title">
             <i data-lucide="file-text" class="section-icon"></i> Ghi chú phòng (tùy chọn)
           </div>
 
@@ -594,6 +578,22 @@
               <button type="button" class="btn-primary" style="padding: 2px 8px; font-size: 11px; height: auto; text-transform: none;" onclick="document.getElementById('room-photo-input-overview').click()">📷 Đính kèm ảnh Toàn cảnh</button>
               <input type="file" id="room-photo-input-overview" accept="image/png, image/jpeg, image/heic, image/heif, .png, .jpg, .jpeg, .heic, .heif" multiple style="display:none;" onchange="handleRoomPhotoSelect(this.files, 'overview')">
               <div class="room-photo-thumbs" id="room-photo-thumbs-overview" style="margin-top: 6px;"></div>
+            </div>
+          </div>
+
+          <!-- THIẾT BỊ NỘI THẤT -->
+          <div class="section-title" style="margin-top:16px;">
+            <i data-lucide="sofa" class="section-icon"></i> Thiết Bị Nội Thất <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(tủ bếp, tủ quần áo, cửa nội thất, kệ, cầu thang...)</span>
+          </div>
+
+          <div class="form-group">
+            <textarea id="note-woodwork" rows="3"
+              placeholder="VD: Tủ bếp trên 2,4m dài, tủ bếp dưới 2,4m dài, mặt đá granite&#10;Tủ quần áo 3 cánh 1,8×2,4m, cửa gỗ HDF 2 cái&#10;Kệ TV treo tường 1,6m, kệ sách 0,8m"
+              style="width:100%;resize:vertical;"></textarea>
+            <div style="margin-top: 4px;">
+              <button type="button" class="btn-primary" style="padding: 2px 8px; font-size: 11px; height: auto; text-transform: none;" onclick="document.getElementById('room-photo-input-noithat').click()">📷 Đính kèm ảnh Nội thất</button>
+              <input type="file" id="room-photo-input-noithat" accept="image/png, image/jpeg, image/heic, image/heif, .png, .jpg, .jpeg, .heic, .heif" multiple style="display:none;" onchange="handleRoomPhotoSelect(this.files, 'noithat')">
+              <div class="room-photo-thumbs" id="room-photo-thumbs-noithat" style="margin-top: 6px;"></div>
             </div>
           </div>
 
@@ -1797,7 +1797,7 @@
     </div>
   </div>
 
-  <script type="module" src="main.js?v=20260805-v1"></script>
+  <script type="module" src="main.js?v=20260805-v2"></script>
 
   <script>
 
