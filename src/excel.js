@@ -1809,7 +1809,7 @@ export function generateWorkbook(project) {
         rowMap[itemKey] = curRow + 1;
 
         if (!parsed.dai && !parsed.rong && !parsed.cao) {
-          merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 4 } });
+          // Do not merge columns C, D, E so user can fill in dimensions (Dài, Rộng, Cao)
         }
         curRow++;
       });
@@ -1844,7 +1844,7 @@ export function generateWorkbook(project) {
         rowMap[itemKey] = curRow + 1;
 
         if (!parsed.dai && !parsed.rong && !parsed.cao) {
-          merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 4 } });
+          // Do not merge columns C, D, E so user can fill in dimensions (Dài, Rộng, Cao)
         }
         curRow++;
       });
