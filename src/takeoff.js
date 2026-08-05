@@ -11973,16 +11973,19 @@ Lưu ý: length, width, height là số nguyên đơn vị mm. elecNoteLights, n
     }
 
     if (parsedData.length) {
-      const elLen = document.getElementById('room-length');
-      if (elLen) elLen.value = typeof fmtNum === 'function' ? fmtNum(parsedData.length) : parsedData.length;
+      const elD = document.getElementById('room-D');
+      if (elD) elD.value = Math.round(Number(parsedData.length));
     }
     if (parsedData.width) {
-      const elWidth = document.getElementById('room-width');
-      if (elWidth) elWidth.value = typeof fmtNum === 'function' ? fmtNum(parsedData.width) : parsedData.width;
+      const elR = document.getElementById('room-R');
+      if (elR) elR.value = Math.round(Number(parsedData.width));
     }
     if (parsedData.height) {
-      const elH = document.getElementById('room-height');
-      if (elH) elH.value = typeof fmtNum === 'function' ? fmtNum(parsedData.height) : parsedData.height;
+      const elH = document.getElementById('room-H');
+      if (elH) {
+        elH.value = Math.round(Number(parsedData.height));
+        if (typeof autoFillZ1Height === 'function') autoFillZ1Height(elH.value);
+      }
     }
 
     if (parsedData.noteWoodwork) {
