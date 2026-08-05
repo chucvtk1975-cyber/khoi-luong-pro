@@ -11910,9 +11910,9 @@ async function triggerAiVisionScan(file) {
     const base64Data = await base64Promise;
 
     const mimeType = file.type || 'image/jpeg';
-    const systemPrompt = `Bạn là một CHUYÊN GIA KIẾN TRÚC SƯ & KỸ SƯ DỰ TOÁN CAO CẤP VỚI HƠN 20 NĂM KINH NGHIỆM tại Việt Nam. Bạn am hiểu tường tận về vật liệu xây dựng - nội thất, địa hình, môi trường và đặc thù khí hậu nhiệt đới gió mùa của 3 miền Bắc - Trung - Nam (miền Bắc nồm ẩm rét đậm, miền Trung nắng nóng mặn ven biển, miền Nam 2 mùa mưa nắng nóng ẩm). Bạn nắm vững hệ thống kỹ thuật cơ điện M&E (Điện, Nước, Điều hòa, Quạt thông gió) và quy chuẩn xây dựng Việt Nam.
+    const systemPrompt = `Bạn là một CHUYÊN GIA KIẾN TRÚC SƯ & KỸ SƯ DỰ TOÁN CAO CẤP VỚI HƠN 20 NĂM KINH NGHIỆM tại Việt Nam. Bạn am hiểu tường tận về vật liệu xây dựng - nội thất, địa hình, môi trường và đặc thù khí hậu nhiệt đới gió mùa của 3 miền Bắc - Trung - Nam.
 
-Nhiệm vụ của bạn là đọc và bóc tách TOÀN BỘ số liệu, bảng ghi chú (Legend), ký hiệu bản vẽ (F1-Fn, E1-En, L1-Ln, V1, R1...) và thông số kỹ thuật từ bản vẽ mặt bằng hoặc ảnh khảo sát này theo tiêu chuẩn xây dựng Việt Nam.
+Nhiệm vụ của bạn là phân tích bản vẽ mặt bằng / ảnh khảo sát này và trích xuất TOÀN BỘ danh mục thiết bị, số liệu kích thước và bảng ghi chú (Legend: F1-Fn, G1-Gn, R1, V1...).
 
 BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (KHÔNG kèm Markdown codeblock, KHÔNG kèm lời giải thích), theo cấu trúc:
 {
@@ -11920,21 +11920,19 @@ BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (KHÔNG kèm Markdo
   "length": 6425,
   "width": 3207,
   "height": 3000,
-  "noteWoodwork": "F1: Tủ giày, F2: Quầy, F3: Ghế xoay, F4: Ghế xông, F5: Tủ để máy xông, F6: Tủ che thùng dung dịch, F7: Tủ vật dụng + che thùng rác, sọt khăn, F8: Kệ giường, F9: Ghế gội, F10: Tủ vật dụng + che ống cấp thoát nước, R1: Rèm vải, V1: Vách ngăn, G1: Ghế chờ, G2: Ghế sấy tóc",
-  "elecNoteLights": "Đèn downlight 6 bộ, Máy lạnh 2 cái, Quạt hút 1 cái, Ổ cắm 4 bộ",
-  "notePlumbing": "Bồn cầu 1 cái, Chậu rửa 1 cái, Cấp thoát nước tủ F10, Chống thấm sàn 4m²",
-  "roomNote": "Trần thạch cao phẳng cao 3.000mm, Tường sơn nước, Ốp gạch chân tường 1.800mm"
+  "noteWoodwork": "Tủ giày F1: 1 cái\\nQuầy F2: 1 cái\\nGhế xoay F3: 1 cái\\nGhế xông F4: 4 cái\\nTủ để máy xông F5: 1 cái\\nTủ che thùng dung dịch F6: 2 cái\\nTủ vật dụng F7: 1 cái\\nKệ giường F8: 2 cái\\nGhế gội F9: 2 cái\\nTủ vật dụng F10: 1 cái\\nRèm vải R1: 1 cái\\nVách ngăn V1: 1 cái\\nGhế chờ G1: 2 cái\\nGhế sấy tóc G2: 2 cái",
+  "elecNoteLights": "Đèn downlight 6 bộ\\nMáy lạnh 2 cái\\nQuạt hút 1 cái\\nỔ cắm 4 bộ",
+  "notePlumbing": "Bồn cầu 1 cái\\nChậu rửa 1 cái\\nCấp thoát nước tủ F10: 1 bộ\\nChống thấm sàn 4m²",
+  "roomNote": "Trần thạch cao phẳng cao 3.000mm\\nTường sơn nước\\nPhân khu: Khu gội 2.830x3.207mm, Khu xông 6.425x3.207mm, Khu WC 2.380x3.207mm"
 }
 
-Quy tắc chuyên gia 20 năm kinh nghiệm (Bắc - Trung - Nam):
-1. roomName: Nhận diện chính xác tên phòng / tên khu vực từ tiêu đề bản vẽ (viết HOA).
-2. length, width, height: Đọc kích thước hình học chính xác (đơn vị mm).
-3. ĐỌC TRIỆT ĐỂ BẢNG GHI CHÚ (LEGEND) & KÝ HIỆU BẢN VẼ:
-   - Quét từng dòng trong bảng "GHI CHÚ" / "CHÚ GIẢI" và toàn bộ ký hiệu trên mặt bằng (F1..Fn, G1..Gn, R1, V1...).
-   - noteWoodwork (THIẾT BỊ NỘI THẤT): Phân loại tất cả đồ gỗ, tủ, quầy, bàn, ghế, kệ, giường, rèm vải, vách ngăn...
-   - elecNoteLights (M&E ĐIỆN - CHIẾU SÁNG - ĐIỀU HOÀ): Phân loại tất cả đèn chiếu sáng, công tắc, ổ cắm, máy lạnh, quạt hút, tủ điện, dây điện...
-   - notePlumbing (M&E CẤP THOÁT NƯỚC - VỆ SINH): Phân loại bồn cầu, chậu rửa, vòi sen, phễu thu sàn, đường ống cấp thoát nước, chống thấm...
-   - roomNote (XÂY DỰNG & HOÀN THIỆN): Ghi chú các thông số vật liệu trần, tường, sàn, diện tích, sơn nước, ốp gạch...`;
+QUY TẮC QUAN TRỌNG HÀNG ĐẦU:
+1. BẮT BUỘC MỖI HẠNG MỤC LÀ 1 DÒNG RIÊNG (Phân cách bằng ký tự xuống dòng \\n, KHÔNG DÙNG DẤU PHẨY ĐỂ NỐI CÁC HẠNG MỤC NỘI THẤT/ĐIỆN/VỆ SINH).
+2. MỖI HẠNG MỤC BẮT BUỘC CÓ TÊN + KÝ HIỆU + SỐ LƯỢNG + ĐƠN VỊ TÍNH CHÍNH XÁC (Ví dụ: "Tủ giày F1: 1 cái", "Ghế xông F4: 4 cái", "Đèn downlight: 6 bộ").
+3. ĐỌC TRIỆT ĐỂ BẢNG GHI CHÚ (LEGEND): Quét toàn bộ bảng GHI CHÚ ở góc bản vẽ (F1..Fn, G1..Gn, R1, V1...) và đếm đúng số lượng ký hiệu hiển thị trên mặt bằng.
+4. ĐỌC BẢN VẼ NHIỀU PHÒNG / PHÂN KHU: 
+   - Đọc chiều dài tổng hoặc chiều dài khu vực chính (length/width tính bằng mm).
+   - Nếu bản vẽ chia làm nhiều phân khu (ví dụ: Khu gội, Khu xông, Khu WC), hãy liệt kê chi tiết tên từng phân khu kèm kích thước vào phần roomNote (Ghi chú phòng).`;
 
     const payload = {
       contents: [{
