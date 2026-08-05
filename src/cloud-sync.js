@@ -142,8 +142,10 @@ export const CloudSync = {
       const { url, key } = this.getSettings();
       const urlInput = document.getElementById('supabase-url');
       const keyInput = document.getElementById('supabase-key');
+      const geminiInput = document.getElementById('gemini-key');
       if (urlInput) urlInput.value = url;
       if (keyInput) keyInput.value = key;
+      if (geminiInput) geminiInput.value = localStorage.getItem('gemini_api_key') || '';
       document.getElementById('modal-supabase')?.classList.add('open');
     });
 
@@ -164,7 +166,15 @@ export const CloudSync = {
     document.getElementById('btn-save-supabase')?.addEventListener('click', () => {
       const url = document.getElementById('supabase-url')?.value.trim();
       const key = document.getElementById('supabase-key')?.value.trim();
-      if (!url || !key) { showToast('Vui long nhap day du URL va API Key!', 'error'); return; }
+      const geminiKey = document.getElementById('gemini-key')?.value.trim();
+      if (geminiKey !== undefined) {
+        localStorage.setItem('gemini_api_key', geminiKey || '');
+      }
+      if (!url || !key) {
+        showToast('Đã lưu Gemini API Key!', 'success');
+        document.getElementById('modal-supabase')?.classList.remove('open');
+        return;
+      }
       this.saveSettings(url, key);
       document.getElementById('modal-supabase')?.classList.remove('open');
       showToast('Da luu cau hinh dong bo dam may!', 'success');

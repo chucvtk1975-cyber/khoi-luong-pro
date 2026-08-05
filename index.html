@@ -265,12 +265,24 @@
       <div class="modal-body">
         <div class="wizard-step-content" id="step-content-1">
 
+          <!-- AI Vision Quét Bản Vẽ / Ảnh -->
+          <div style="background: linear-gradient(135deg, #EFF6FF 0%, #E0F2FE 100%); border: 1px solid #BFDBFE; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+            <div>
+              <div style="font-weight: 600; font-size: 13px; color: #1E40AF;">✨ AI Vision Quét Bản Vẽ / Ảnh</div>
+              <div style="font-size: 11px; color: #3B82F6;">Tự động đọc kích thước (mm) & trích xuất ghi chú phòng</div>
+            </div>
+            <button type="button" class="btn-accent" id="btn-ai-scan-room" style="padding: 6px 12px; font-size: 12px; height: auto; font-weight: 600; white-space: nowrap;">✨ AI Quét Ảnh</button>
+            <input type="file" id="ai-vision-file-input" accept="image/*, .pdf, .heic, .heif" style="display:none;">
+          </div>
+          <div id="ai-vision-loading-status" style="display:none; font-size: 12px; color: var(--brand-blue, #2563EB); font-weight: 500; margin-bottom: 12px; text-align: center; background: #F0F9FF; padding: 8px; border-radius: 6px;">
+            ⏳ AI (Gemini 2.0 Flash) đang đọc bản vẽ & trích xuất số liệu...
+          </div>
 
-        <!-- Tên phòng -->
+          <!-- Tên phòng -->
 
-        <div class="form-group">
+          <div class="form-group">
 
-          <label>Tên phòng / khu vực <span class="required">*</span></label>
+            <label>Tên phòng / khu vực <span class="required">*</span></label>
 
           <input type="text" id="room-name" placeholder="VD: Phòng khách, Phòng ngủ master, Bếp..." style="text-transform:uppercase;">
 
@@ -1785,6 +1797,11 @@
           <label style="color:#1E293B !important;">Supabase Anon Key (API Key)</label>
           <input type="password" id="supabase-key" placeholder="Nhập API Key (Anon Key) của dự án">
         </div>
+        <div class="form-group" style="margin-top: 14px; border-top: 1px dashed var(--border-color, #E2E8F0); padding-top: 12px;">
+          <label style="color:#1E293B !important;">✨ Google Gemini API Key (AI Vision)</label>
+          <input type="password" id="gemini-key" placeholder="Nhập Gemini API Key để quét bản vẽ/ảnh">
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Dùng để tự động đọc bản vẽ & ảnh khảo sát phòng.</div>
+        </div>
         <div id="supabase-status-info" style="font-size:12px; margin-top:12px; display:flex; align-items:center; gap:6px;">
           <span style="width:8px; height:8px; border-radius:50%; background:#CBD5E1; display:inline-block; flex-shrink:0;" id="supabase-status-dot"></span>
           <span id="supabase-status-text" style="color:var(--text-muted); font-weight:500;">Chưa cấu hình</span>
@@ -1797,7 +1814,7 @@
     </div>
   </div>
 
-  <script type="module" src="main.js?v=20260805-v3"></script>
+  <script type="module" src="main.js?v=20260805-v4"></script>
 
   <script>
 

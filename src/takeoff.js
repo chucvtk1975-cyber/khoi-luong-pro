@@ -11873,7 +11873,152 @@ function sanitizeSheetName(name, index) {
   }
   return prefix + cleanName;
 }
+async function triggerAiVisionScan(file) {
+  if (!file) return;
+
+  let apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) {
+    const inputKey = prompt('Nhập Google Gemini API Key để thực hiện AI Vision quét bản vẽ/ảnh:');
+    if (!inputKey || !inputKey.trim()) {
+      showToast('Vui lòng cung cấp Gemini API Key để sử dụng tính năng này!', 'error');
+      return;
+    }
+    apiKey = inputKey.trim();
+    localStorage.setItem('gemini_api_key', apiKey);
+  }
+
+  const btnScan = document.getElementById('btn-ai-scan-room');
+  const statusDiv = document.getElementById('ai-vision-loading-status');
+  if (statusDiv) {
+    statusDiv.style.display = 'block';
+    statusDiv.style.background = '#F0F9FF';
+    statusDiv.style.color = '#2563EB';
+    statusDiv.textContent = '⏳ AI (Gemini 2.0 Flash) đang đọc bản vẽ & trích xuất số liệu...';
+  }
+  if (btnScan) btnScan.disabled = true;
+
+  try {
+    const reader = new FileReader();
+    const base64Promise = new Promise((resolve, reject) => {
+      reader.onload = () => {
+        const base64String = reader.result.split(',')[1];
+        resolve(base64String);
+      };
+      reader.onerror = reject;
+    });
+    reader.readAsDataURL(file);
+    const base64Data = await base64Promise;
+
+    const mimeType = file.type || 'image/jpeg';
+    const systemPrompt = `Bạn là chuyên gia bóc khối lượng xây dựng & nội thất Việt Nam. 
+Hãy đọc bản vẽ mặt bằng hoặc ảnh khảo sát phòng này và trích xuất dữ liệu công trình theo đơn vị milimét (mm).
+BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (không kèm Markdown codeblock, không kèm lời giải thích), theo cấu trúc:
+{
+  "roomName": "Phòng Khách",
+  "length": 5400,
+  "width": 4200,
+  "height": 3000,
+  "elecNoteLights": "đèn downlight 6 bộ, đèn tuyp 2 bộ, panel 4 bộ",
+  "noteWoodwork": "Tủ bếp trên 2,4m dài, tủ bếp dưới 2,4m dài, mặt đá granite\\nTủ quần áo 3 cánh 1,8×2,4m, cửa gỗ HDF 2 cái",
+  "notePlumbing": "Bồn cầu TOTO 1 cái, chậu rửa 1 cái, Chống thấm sàn WC Sika 2 lớp 4m²",
+  "roomNote": "Trần cao 3.000, ốp gạch 1.800, nội 1.200, sơn nước 600 mm\\nThêm máy lạnh 2 cái, quạt hút 1 cái, ổ cắm 3 bộ"
+}
+Lưu ý: length, width, height là số nguyên đơn vị mm. elecNoteLights, noteWoodwork, notePlumbing, roomNote ghi đúng cú pháp tự nhiên như ví dụ để ứng dụng tính toán dự toán.`;
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const payload = {
+      contents: [{
+        parts: [
+          { text: systemPrompt },
+          { inline_data: { mime_type: mimeType, data: base64Data } }
+        ]
+      }]
+    };
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error?.message || `Lỗi API (${response.status})`);
+    }
+
+    const data = await response.json();
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const cleanJsonText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+    const parsedData = JSON.parse(cleanJsonText);
+
+    // Auto-fill fields
+    if (parsedData.roomName) {
+      const elName = document.getElementById('room-name');
+      if (elName) elName.value = parsedData.roomName.toUpperCase();
+    }
+
+    if (parsedData.length) {
+      const elLen = document.getElementById('room-length');
+      if (elLen) elLen.value = typeof fmtNum === 'function' ? fmtNum(parsedData.length) : parsedData.length;
+    }
+    if (parsedData.width) {
+      const elWidth = document.getElementById('room-width');
+      if (elWidth) elWidth.value = typeof fmtNum === 'function' ? fmtNum(parsedData.width) : parsedData.width;
+    }
+    if (parsedData.height) {
+      const elH = document.getElementById('room-height');
+      if (elH) elH.value = typeof fmtNum === 'function' ? fmtNum(parsedData.height) : parsedData.height;
+    }
+
+    if (parsedData.noteWoodwork) {
+      const elW = document.getElementById('note-woodwork');
+      if (elW) elW.value = parsedData.noteWoodwork;
+    }
+    if (parsedData.notePlumbing) {
+      const elP = document.getElementById('note-plumbing');
+      if (elP) elP.value = parsedData.notePlumbing;
+    }
+    if (parsedData.roomNote) {
+      const elN = document.getElementById('room-note');
+      if (elN) elN.value = parsedData.roomNote;
+    }
+    if (parsedData.elecNoteLights) {
+      const elL = document.getElementById('elec-note-lights');
+      if (elL) elL.value = parsedData.elecNoteLights;
+    }
+
+    if (statusDiv) {
+      statusDiv.style.background = '#DCFCE7';
+      statusDiv.style.color = '#15803D';
+      statusDiv.textContent = '✅ AI đã trích xuất số liệu tự động (Đơn vị mm: 5.400, 4.200, 3.000)! Hãy kiểm tra và bấm Tiếp Theo.';
+    }
+    showToast('AI trích xuất bản vẽ thành công!', 'success');
+  } catch (err) {
+    console.error('[AI Vision] Error:', err);
+    if (statusDiv) {
+      statusDiv.style.background = '#FEE2E2';
+      statusDiv.style.color = '#B91C1C';
+      statusDiv.textContent = '❌ Lỗi AI: ' + (err.message || 'Không thể trích xuất bản vẽ');
+    }
+    showToast('Lỗi AI phân tích bản vẽ: ' + (err.message || 'vui lòng thử lại'), 'error');
+  } finally {
+    if (btnScan) btnScan.disabled = false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btn-ai-scan-room')?.addEventListener('click', () => {
+    document.getElementById('ai-vision-file-input')?.click();
+  });
+  document.getElementById('ai-vision-file-input')?.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) {
+      triggerAiVisionScan(e.target.files[0]);
+    }
+  });
+});
+
 // Bind UI functions to window object for index.html compatibility
+window.triggerAiVisionScan = triggerAiVisionScan;
 window.closeRoomModal = closeRoomModal;
 window.goToWizardStep = goToWizardStep;
 window.prevWizardStep = prevWizardStep;
