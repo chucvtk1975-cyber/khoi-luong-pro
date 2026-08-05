@@ -11910,20 +11910,30 @@ async function triggerAiVisionScan(file) {
     const base64Data = await base64Promise;
 
     const mimeType = file.type || 'image/jpeg';
-    const systemPrompt = `Bạn là chuyên gia bóc khối lượng xây dựng & nội thất Việt Nam. 
-Hãy đọc bản vẽ mặt bằng hoặc ảnh khảo sát phòng này và trích xuất dữ liệu công trình theo đơn vị milimét (mm).
-BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (không kèm Markdown codeblock, không kèm lời giải thích), theo cấu trúc:
+    const systemPrompt = `Bạn là chuyên gia bóc khối lượng xây dựng, kiến trúc & nội thất Việt Nam.
+Hãy phân tích bản vẽ mặt bằng / sơ đồ hoặc ảnh khảo sát này và trích xuất TOÀN BỘ thông tin công trình theo đơn vị milimét (mm).
+
+BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (KHÔNG kèm Markdown codeblock, KHÔNG kèm lời giải thích), theo cấu trúc:
 {
-  "roomName": "Phòng Khách",
-  "length": 5400,
-  "width": 4200,
+  "roomName": "PHÒNG XÔNG SÀN CHẬU KHOA SẢN TẦNG 1",
+  "length": 6425,
+  "width": 3207,
   "height": 3000,
-  "elecNoteLights": "đèn downlight 6 bộ, đèn tuyp 2 bộ, panel 4 bộ",
-  "noteWoodwork": "Tủ bếp trên 2,4m dài, tủ bếp dưới 2,4m dài, mặt đá granite\\nTủ quần áo 3 cánh 1,8×2,4m, cửa gỗ HDF 2 cái",
-  "notePlumbing": "Bồn cầu TOTO 1 cái, chậu rửa 1 cái, Chống thấm sàn WC Sika 2 lớp 4m²",
-  "roomNote": "Trần cao 3.000, ốp gạch 1.800, nội 1.200, sơn nước 600 mm\\nThêm máy lạnh 2 cái, quạt hút 1 cái, ổ cắm 3 bộ"
+  "noteWoodwork": "F1: Tủ giày, F2: Quầy, F3: Ghế xoay, F4: Ghế xông, F5: Tủ để máy xông, F6: Tủ che thùng dung dịch, F7: Tủ vật dụng + che thùng rác, sọt khăn, F8: Kệ giường, F9: Ghế gội, F10: Tủ vật dụng + che ống cấp thoát nước, R1: Rèm vải, V1: Vách ngăn, G1: Ghế chờ, G2: Ghế sấy tóc",
+  "elecNoteLights": "Đèn downlight 6 bộ, Máy lạnh 2 cái, Quạt hút 1 cái",
+  "notePlumbing": "Bồn cầu 1 cái, Chậu rửa 1 cái, Cấp thoát nước tủ F10",
+  "roomNote": "Trần cao 3.000, ốp gạch 1.800 mm"
 }
-Lưu ý: length, width, height là số nguyên đơn vị mm. elecNoteLights, noteWoodwork, notePlumbing, roomNote ghi đúng cú pháp tự nhiên như ví dụ để ứng dụng tính toán dự toán.`;
+
+Quy tắc bóc tách quan trọng:
+1. roomName: Đọc tên phòng / tiêu đề bản vẽ chính xác ở góc dưới hoặc giữa bản vẽ (viết HOA).
+2. length, width, height: Chiều dài và chiều rộng phòng tính bằng mm (số nguyên).
+3. QUAN TRỌNG - BẢNG GHI CHÚ & KÝ HIỆU THIẾT BỊ:
+   - Đọc kỹ TOÀN BỘ bảng "GHI CHÚ" / chú giải ở góc bản vẽ (ví dụ: F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, R1, V1, G1, G2...) và vị trí các thiết bị trên mặt bằng.
+   - noteWoodwork (THIẾT BỊ NỘI THẤT): Ghi toàn bộ các loại tủ, quầy, kệ, ghế, bàn, giường, rèm vải, vách ngăn... tìm thấy trong bảng ghi chú kèm mã số/tên gọi đầy đủ.
+   - elecNoteLights (THIẾT BỊ ĐIỆN & ĐÈN): Ghi toàn bộ đèn, máy lạnh, quạt hút, công tắc, ổ cắm, bảng điện...
+   - notePlumbing (THIẾT BỊ VỆ SINH & CHỐNG THẤM): Ghi toàn bộ bồn cầu, chậu rửa, vòi sen, ống cấp thoát nước, chống thấm...
+   - roomNote (GHI CHÚ PHÒNG): Ghi các thông số trần, tường, sơn nước, ốp gạch...`;
 
     const payload = {
       contents: [{
@@ -12008,7 +12018,7 @@ Lưu ý: length, width, height là số nguyên đơn vị mm. elecNoteLights, n
     if (statusDiv) {
       statusDiv.style.background = '#DCFCE7';
       statusDiv.style.color = '#15803D';
-      statusDiv.textContent = '✅ AI đã trích xuất số liệu tự động (Đơn vị mm: 5.400, 4.200, 3.000)! Hãy kiểm tra và bấm Tiếp Theo.';
+      statusDiv.textContent = `✅ AI đã trích xuất thành công: Kích thước ${parsedData.length || 0}x${parsedData.width || 0}mm + Đã trích xuất Bảng Ghi Chú Ký Hiệu Thiết Bị vào form!`;
     }
     showToast('AI trích xuất bản vẽ thành công!', 'success');
   } catch (err) {
