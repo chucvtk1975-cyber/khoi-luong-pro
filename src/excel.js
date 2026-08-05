@@ -1791,27 +1791,23 @@ export function generateWorkbook(project) {
       merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 7 } });
       curRow++;
       nextSectionNum = 4;
+      itemStt = 1;
 
       const noteLines = room.noteWoodwork.split('\n').map(l => l.trim()).filter(l => l);
-      noteLines.forEach((line, li) => {
+      noteLines.forEach((line) => {
         const parsed = parseNoteDimensionLine(line);
-        const lr = blkDetail();
-        lr[0] = li + 1;
-        lr[1] = parsed.label;
-        lr[2] = parsed.dai;
-        lr[3] = parsed.rong;
-        lr[4] = parsed.cao;
-        lr[5] = parsed.unit;
-        lr[6] = parsed.qty;
-        aoa.push(lr);
-
-        const itemKey = `${parsed.label.trim()}||${parsed.unit.trim()}`;
-        rowMap[itemKey] = curRow + 1;
-
-        if (!parsed.dai && !parsed.rong && !parsed.cao) {
-          // Do not merge columns C, D, E so user can fill in dimensions (Dài, Rộng, Cao)
-        }
-        curRow++;
+        renderItem({
+          surface: 'woodworkNote',
+          label: parsed.label,
+          dai: parsed.dai ? +parsed.dai : null,
+          rong: parsed.rong ? +parsed.rong : null,
+          cao: parsed.cao ? +parsed.cao : null,
+          unit: parsed.unit || 'cái',
+          qty: parsed.qty || 1,
+          price: null,
+          total: null,
+          note: ''
+        });
       });
     }
 
@@ -1826,27 +1822,23 @@ export function generateWorkbook(project) {
       merges.push({ s: { r: curRow, c: 1 }, e: { r: curRow, c: 7 } });
       curRow++;
       nextSectionNum = 5;
+      itemStt = 1;
 
       const noteLines = toiletText.split('\n').map(l => l.trim()).filter(l => l);
-      noteLines.forEach((line, li) => {
+      noteLines.forEach((line) => {
         const parsed = parseNoteDimensionLine(line);
-        const lr = blkDetail();
-        lr[0] = li + 1;
-        lr[1] = parsed.label;
-        lr[2] = parsed.dai;
-        lr[3] = parsed.rong;
-        lr[4] = parsed.cao;
-        lr[5] = parsed.unit;
-        lr[6] = parsed.qty;
-        aoa.push(lr);
-
-        const itemKey = `${parsed.label.trim()}||${parsed.unit.trim()}`;
-        rowMap[itemKey] = curRow + 1;
-
-        if (!parsed.dai && !parsed.rong && !parsed.cao) {
-          // Do not merge columns C, D, E so user can fill in dimensions (Dài, Rộng, Cao)
-        }
-        curRow++;
+        renderItem({
+          surface: 'plumbingNote',
+          label: parsed.label,
+          dai: parsed.dai ? +parsed.dai : null,
+          rong: parsed.rong ? +parsed.rong : null,
+          cao: parsed.cao ? +parsed.cao : null,
+          unit: parsed.unit || 'cái',
+          qty: parsed.qty || 1,
+          price: null,
+          total: null,
+          note: ''
+        });
       });
     }
 
