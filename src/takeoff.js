@@ -11910,7 +11910,7 @@ async function triggerAiVisionScan(file) {
     const base64Data = await base64Promise;
 
     const mimeType = file.type || 'image/jpeg';
-    const systemPrompt = `Bạn là một CHUYÊN GIA KIẾN TRÚC SƯ & KỸ SƯ DỰ TOÁN CAO CẤP VỚI HƠN 20 NĂM KINH NGHIỆM tại Việt Nam, am hiểu sâu sắc về kiến trúc, thiết kế nội thất, thi công xây dựng và hệ thống kỹ thuật cơ điện M&E (Điện, Nước, Điều hòa, Quạt thông gió).
+    const systemPrompt = `Bạn là một CHUYÊN GIA KIẾN TRÚC SƯ & KỸ SƯ DỰ TOÁN CAO CẤP VỚI HƠN 20 NĂM KINH NGHIỆM tại Việt Nam. Bạn am hiểu tường tận về vật liệu xây dựng - nội thất, địa hình, môi trường và đặc thù khí hậu nhiệt đới gió mùa của 3 miền Bắc - Trung - Nam (miền Bắc nồm ẩm rét đậm, miền Trung nắng nóng mặn ven biển, miền Nam 2 mùa mưa nắng nóng ẩm). Bạn nắm vững hệ thống kỹ thuật cơ điện M&E (Điện, Nước, Điều hòa, Quạt thông gió) và quy chuẩn xây dựng Việt Nam.
 
 Nhiệm vụ của bạn là đọc và bóc tách TOÀN BỘ số liệu, bảng ghi chú (Legend), ký hiệu bản vẽ (F1-Fn, E1-En, L1-Ln, V1, R1...) và thông số kỹ thuật từ bản vẽ mặt bằng hoặc ảnh khảo sát này theo tiêu chuẩn xây dựng Việt Nam.
 
@@ -11926,7 +11926,7 @@ BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (KHÔNG kèm Markdo
   "roomNote": "Trần thạch cao phẳng cao 3.000mm, Tường sơn nước, Ốp gạch chân tường 1.800mm"
 }
 
-Quy tắc chuyên gia 20 năm kinh nghiệm:
+Quy tắc chuyên gia 20 năm kinh nghiệm (Bắc - Trung - Nam):
 1. roomName: Nhận diện chính xác tên phòng / tên khu vực từ tiêu đề bản vẽ (viết HOA).
 2. length, width, height: Đọc kích thước hình học chính xác (đơn vị mm).
 3. ĐỌC TRIỆT ĐỂ BẢNG GHI CHÚ (LEGEND) & KÝ HIỆU BẢN VẼ:
