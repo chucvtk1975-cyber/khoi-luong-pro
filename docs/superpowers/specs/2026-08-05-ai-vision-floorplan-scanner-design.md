@@ -1,11 +1,11 @@
 # AI Vision Floorplan & Room Survey Scanner Design Specification
 
 ## Overview
-Integrate an AI Vision feature into the Room Creation/Editing Modal Wizard (Step 1) using **Google Gemini 2.0 Flash Lite Vision API**. The feature allows users to upload a floorplan drawing or room photo (JPG, PNG, HEIC, PDF). The AI analyzes the image and automatically extracts structured data in millimeters (`mm`) to auto-fill the room inputs.
+Integrate an AI Vision feature into the Room Creation/Editing Modal Wizard (Step 1) using **Google Gemini 2.0 Flash Lite Vision API**. The feature allows users to upload a floorplan drawing or room photo (JPG, PNG, HEIC, PDF). The AI analyzes the image and automatically extracts structured data in millimeters (`mm`) formatted with thousands separator dots (e.g. `5.400`, `4.200`, `3.000`) to auto-fill the room inputs.
 
 ## User Intent & Requirements
 - **Primary Goal**: Auto-extract room dimensions and notes from floorplan drawings/survey photos using Gemini 2.0 Flash Lite Vision API.
-- **Unit of Measurement**: Dimensions (`length`, `width`, `height`) must be strictly in **millimeters (`mm`)** (e.g., `5400`, `4200`, `3000`), matching the app's standard dimension input fields.
+- **Unit of Measurement & Formatting Constraint**: Dimensions (`length`, `width`, `height`) must be strictly in **millimeters (`mm`) formatted with thousands separator dots** (e.g. `5.400`, `4.200`, `3.000`), matching the app's Vietnamese number formatting rules (`fmtNum`).
 - **Client-Side Execution**: Pure Vanilla JS execution via direct REST fetch to Google Gemini API. API key stored in `localStorage` under `gemini_api_key`.
 - **Non-breaking Constraint**: All existing form fields, IDs, event bindings, and calculations remain intact.
 
@@ -33,15 +33,16 @@ Integrate an AI Vision feature into the Room Creation/Editing Modal Wizard (Step
   "height": 3000,
   "elecNoteLights": "đèn downlight 6 bộ, đèn led dây 12m",
   "noteWoodwork": "Kệ TV treo tường 2,0m dài, tủ giày 1,2m",
-  "roomNote": "Trần thạch cao phẳng 3000mm, sơn nước màu kem"
+  "roomNote": "Trần thạch cao phẳng 3.000 mm, sơn nước màu kem"
 }
 ```
 
 ### 4. Auto-Fill Execution
 Upon successful AI response:
-- Populates `#room-name`, `#room-length`, `#room-width`, `#room-height` (in mm).
+- Populates `#room-name`.
+- Formats extracted dimensions using `fmtNum` to ensure thousand dot separators: `#room-length` (`5.400`), `#room-width` (`4.200`), `#room-height` (`3.000`).
 - Populates `#note-woodwork`, `#room-note`, `#elec-note-lights` if extracted.
-- Displays success badge: `✅ Đã trích xuất dữ liệu tự động (Đơn vị: mm)`.
+- Displays success badge: `✅ Đã trích xuất dữ liệu tự động (Dạng mm: 5.400, 4.200, 3.000)`.
 
 ## Verification Plan
 
@@ -53,4 +54,4 @@ Upon successful AI response:
 1. Click `✨ AI Quét Bản Vẽ / Ảnh` in Add Room modal.
 2. Enter Gemini API key if prompted.
 3. Upload sample floorplan/room photo.
-4. Verify auto-filled dimensions are in **millimeters (`mm`)** and notes are accurately populated.
+4. Verify auto-filled dimensions are displayed with thousands separator dots (e.g. `5.400`, `4.200`, `3.000`).
