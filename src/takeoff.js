@@ -11925,7 +11925,6 @@ BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (không kèm Markdo
 }
 Lưu ý: length, width, height là số nguyên đơn vị mm. elecNoteLights, noteWoodwork, notePlumbing, roomNote ghi đúng cú pháp tự nhiên như ví dụ để ứng dụng tính toán dự toán.`;
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`;
     const payload = {
       contents: [{
         parts: [
@@ -11935,18 +11934,34 @@ Lưu ý: length, width, height là số nguyên đơn vị mm. elecNoteLights, n
       }]
     };
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash'];
+    let lastErr = null;
+    let data = null;
 
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error?.message || `Lỗi API (${response.status})`);
+    for (const modelName of modelsToTry) {
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          data = await response.json();
+          break;
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          lastErr = new Error(errData.error?.message || `Lỗi API ${modelName} (${response.status})`);
+        }
+      } catch (e) {
+        lastErr = e;
+      }
     }
 
-    const data = await response.json();
+    if (!data) {
+      throw lastErr || new Error('Không thể kết nối Gemini API');
+    }
     const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const cleanJsonText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
     const parsedData = JSON.parse(cleanJsonText);
