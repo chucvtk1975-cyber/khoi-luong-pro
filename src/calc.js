@@ -10,7 +10,7 @@ export const MATERIALS = {
 
     { id: 'goCN12',    label: 'Gỗ CN 12mm',    unit: 'm²', waste: 0.10 },
 
-    { id: 'goCN18',    label: 'Gỗ CN 18mm',    unit: 'm²', waste: 0.10 },
+    { id: 'gach4040',  label: 'Gạch 40×40',    unit: 'm²', waste: 0.05 },
 
     { id: 'gach6060',  label: 'Gạch 60×60',    unit: 'm²', waste: 0.05 },
 
