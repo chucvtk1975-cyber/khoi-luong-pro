@@ -11910,8 +11910,9 @@ async function triggerAiVisionScan(file) {
     const base64Data = await base64Promise;
 
     const mimeType = file.type || 'image/jpeg';
-    const systemPrompt = `Bạn là chuyên gia bóc khối lượng xây dựng, kiến trúc & nội thất Việt Nam.
-Hãy phân tích bản vẽ mặt bằng / sơ đồ hoặc ảnh khảo sát này và trích xuất TOÀN BỘ thông tin công trình theo đơn vị milimét (mm).
+    const systemPrompt = `Bạn là một CHUYÊN GIA KIẾN TRÚC SƯ & KỸ SƯ DỰ TOÁN CAO CẤP VỚI HƠN 20 NĂM KINH NGHIỆM tại Việt Nam, am hiểu sâu sắc về kiến trúc, thiết kế nội thất, thi công xây dựng và hệ thống kỹ thuật cơ điện M&E (Điện, Nước, Điều hòa, Quạt thông gió).
+
+Nhiệm vụ của bạn là đọc và bóc tách TOÀN BỘ số liệu, bảng ghi chú (Legend), ký hiệu bản vẽ (F1-Fn, E1-En, L1-Ln, V1, R1...) và thông số kỹ thuật từ bản vẽ mặt bằng hoặc ảnh khảo sát này theo tiêu chuẩn xây dựng Việt Nam.
 
 BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (KHÔNG kèm Markdown codeblock, KHÔNG kèm lời giải thích), theo cấu trúc:
 {
@@ -11920,20 +11921,20 @@ BẮT BUỘC trả về duy nhất 1 chuỗi JSON hợp lệ (KHÔNG kèm Markdo
   "width": 3207,
   "height": 3000,
   "noteWoodwork": "F1: Tủ giày, F2: Quầy, F3: Ghế xoay, F4: Ghế xông, F5: Tủ để máy xông, F6: Tủ che thùng dung dịch, F7: Tủ vật dụng + che thùng rác, sọt khăn, F8: Kệ giường, F9: Ghế gội, F10: Tủ vật dụng + che ống cấp thoát nước, R1: Rèm vải, V1: Vách ngăn, G1: Ghế chờ, G2: Ghế sấy tóc",
-  "elecNoteLights": "Đèn downlight 6 bộ, Máy lạnh 2 cái, Quạt hút 1 cái",
-  "notePlumbing": "Bồn cầu 1 cái, Chậu rửa 1 cái, Cấp thoát nước tủ F10",
-  "roomNote": "Trần cao 3.000, ốp gạch 1.800 mm"
+  "elecNoteLights": "Đèn downlight 6 bộ, Máy lạnh 2 cái, Quạt hút 1 cái, Ổ cắm 4 bộ",
+  "notePlumbing": "Bồn cầu 1 cái, Chậu rửa 1 cái, Cấp thoát nước tủ F10, Chống thấm sàn 4m²",
+  "roomNote": "Trần thạch cao phẳng cao 3.000mm, Tường sơn nước, Ốp gạch chân tường 1.800mm"
 }
 
-Quy tắc bóc tách quan trọng:
-1. roomName: Đọc tên phòng / tiêu đề bản vẽ chính xác ở góc dưới hoặc giữa bản vẽ (viết HOA).
-2. length, width, height: Chiều dài và chiều rộng phòng tính bằng mm (số nguyên).
-3. QUAN TRỌNG - BẢNG GHI CHÚ & KÝ HIỆU THIẾT BỊ:
-   - Đọc kỹ TOÀN BỘ bảng "GHI CHÚ" / chú giải ở góc bản vẽ (ví dụ: F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, R1, V1, G1, G2...) và vị trí các thiết bị trên mặt bằng.
-   - noteWoodwork (THIẾT BỊ NỘI THẤT): Ghi toàn bộ các loại tủ, quầy, kệ, ghế, bàn, giường, rèm vải, vách ngăn... tìm thấy trong bảng ghi chú kèm mã số/tên gọi đầy đủ.
-   - elecNoteLights (THIẾT BỊ ĐIỆN & ĐÈN): Ghi toàn bộ đèn, máy lạnh, quạt hút, công tắc, ổ cắm, bảng điện...
-   - notePlumbing (THIẾT BỊ VỆ SINH & CHỐNG THẤM): Ghi toàn bộ bồn cầu, chậu rửa, vòi sen, ống cấp thoát nước, chống thấm...
-   - roomNote (GHI CHÚ PHÒNG): Ghi các thông số trần, tường, sơn nước, ốp gạch...`;
+Quy tắc chuyên gia 20 năm kinh nghiệm:
+1. roomName: Nhận diện chính xác tên phòng / tên khu vực từ tiêu đề bản vẽ (viết HOA).
+2. length, width, height: Đọc kích thước hình học chính xác (đơn vị mm).
+3. ĐỌC TRIỆT ĐỂ BẢNG GHI CHÚ (LEGEND) & KÝ HIỆU BẢN VẼ:
+   - Quét từng dòng trong bảng "GHI CHÚ" / "CHÚ GIẢI" và toàn bộ ký hiệu trên mặt bằng (F1..Fn, G1..Gn, R1, V1...).
+   - noteWoodwork (THIẾT BỊ NỘI THẤT): Phân loại tất cả đồ gỗ, tủ, quầy, bàn, ghế, kệ, giường, rèm vải, vách ngăn...
+   - elecNoteLights (M&E ĐIỆN - CHIẾU SÁNG - ĐIỀU HOÀ): Phân loại tất cả đèn chiếu sáng, công tắc, ổ cắm, máy lạnh, quạt hút, tủ điện, dây điện...
+   - notePlumbing (M&E CẤP THOÁT NƯỚC - VỆ SINH): Phân loại bồn cầu, chậu rửa, vòi sen, phễu thu sàn, đường ống cấp thoát nước, chống thấm...
+   - roomNote (XÂY DỰNG & HOÀN THIỆN): Ghi chú các thông số vật liệu trần, tường, sàn, diện tích, sơn nước, ốp gạch...`;
 
     const payload = {
       contents: [{
