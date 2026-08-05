@@ -11865,7 +11865,6 @@ function setExcelButtonsLoading(isLoading) {
 
 function sanitizeSheetName(name, index) {
   const prefix = String(index + 1).padStart(2, '0') + '. ';
-  // Loại bỏ các ký tự cấm: / \ ? * [ ] :
   let cleanName = (name || 'Phong').replace(/[\/\\\?\*\[\]\:]/g, '');
   const maxLen = 31 - prefix.length;
   if (cleanName.length > maxLen) {
@@ -11873,6 +11872,22 @@ function sanitizeSheetName(name, index) {
   }
   return prefix + cleanName;
 }
+
+function formatNoteToIndividualLines(rawStr) {
+  if (!rawStr) return '';
+  if (Array.isArray(rawStr)) rawStr = rawStr.join('\n');
+  
+  const rawItems = String(rawStr).split(/[\n,;]+/).map(s => s.trim()).filter(Boolean);
+  
+  return rawItems.map(item => {
+    let cleaned = item.replace(/[:\-–—]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!/\d+\s*[a-zA-Zà-ỹÀ-Ỹ]*$/i.test(cleaned)) {
+      cleaned += ' 1 cái';
+    }
+    return cleaned;
+  }).join('\n');
+}
+
 async function triggerAiVisionScan(file) {
   if (!file) return;
 
@@ -11999,11 +12014,11 @@ QUY TẮC QUAN TRỌNG HÀNG ĐẦU:
 
     if (parsedData.noteWoodwork) {
       const elW = document.getElementById('note-woodwork');
-      if (elW) elW.value = parsedData.noteWoodwork;
+      if (elW) elW.value = formatNoteToIndividualLines(parsedData.noteWoodwork);
     }
     if (parsedData.notePlumbing) {
       const elP = document.getElementById('note-plumbing');
-      if (elP) elP.value = parsedData.notePlumbing;
+      if (elP) elP.value = formatNoteToIndividualLines(parsedData.notePlumbing);
     }
     if (parsedData.roomNote) {
       const elN = document.getElementById('room-note');
@@ -12011,7 +12026,7 @@ QUY TẮC QUAN TRỌNG HÀNG ĐẦU:
     }
     if (parsedData.elecNoteLights) {
       const elL = document.getElementById('elec-note-lights');
-      if (elL) elL.value = parsedData.elecNoteLights;
+      if (elL) elL.value = formatNoteToIndividualLines(parsedData.elecNoteLights);
     }
 
     if (statusDiv) {
